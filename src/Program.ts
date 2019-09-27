@@ -5,25 +5,10 @@ export interface ShaderObject {
 }
 class Program {
   program: WebGLProgram
-  constructor(gl: WebGLRenderingContext) {
+  constructor(gl: WebGLRenderingContext, shader: ShaderObject) {
     let program: WebGLProgram = gl.createProgram();
-    let V =
-      `
-        void main () {
-          gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
-          gl_PointSize = 10.0;
-        }
-
-      `
-
-    let F =
-      `
-        void main () {
-          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        }
-      `
-    let vertexShader: WebGLShader = new Shader(gl, gl.VERTEX_SHADER, V)
-    let fragmentShader: WebGLShader = new Shader(gl, gl.FRAGMENT_SHADER, F)
+    let vertexShader: WebGLShader = new Shader(gl, gl.VERTEX_SHADER, shader.vertexShader)
+    let fragmentShader: WebGLShader = new Shader(gl, gl.FRAGMENT_SHADER, shader.fragmentShader)
     gl.attachShader(program, vertexShader)
     gl.attachShader(program, fragmentShader)
 
