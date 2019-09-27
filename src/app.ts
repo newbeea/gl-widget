@@ -7,3 +7,4 @@ const renderer: Renderer = new Renderer({}, {
     depth: false
 })
  renderer.render()
+ document.body.appendChild(renderer.canvas)

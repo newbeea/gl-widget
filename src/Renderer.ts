@@ -1,6 +1,9 @@
+import { Shader } from './Shader'
+import { Program } from './Program';
+
 export interface rendererOptions {
   canvas?: HTMLCanvasElement
-  context?: CanvasRenderingContext2D | WebGLRenderingContext
+  gl?: WebGLRenderingContext
 }
 export interface contextAttributes {
   alpha?: boolean,
@@ -12,7 +15,7 @@ export interface contextAttributes {
 }
 class Renderer {
   canvas: HTMLCanvasElement;
-  context: any;
+  gl: WebGLRenderingContext
   constructor(options: rendererOptions={}, attributes: contextAttributes={}) {
     this.canvas = options.canvas 
       || <HTMLCanvasElement> document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas')
@@ -25,12 +28,19 @@ class Renderer {
       preserveDrawingBuffer: false
     }
     attributes = Object.assign(defaultAttributes, attributes)
-    this.context = options.context 
-      || this.canvas.getContext('webgl', attributes)
-      || this.canvas.getContext('experimental-webgl', attributes)
+    this.gl = options.gl 
+    || <WebGLRenderingContext> this.canvas.getContext('webgl', attributes)
+    || <WebGLRenderingContext> this.canvas.getContext('experimental-webgl', attributes)
   }
   render() {
-    console.log('rendering')
+    let gl = this.gl
+    gl.clearColor(0, 0, 0, 0);
+    // Clear <canvas>
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    new Program(gl)
+    gl.drawArrays(gl.POINTS, 0, 1)
+
+
   }
 }
 export {

@@ -1,4 +1,3 @@
-/// <reference types="node" />
 /**
  * Array.prototype.includes 不兼容ie 11,详见mdn文档
  * https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
@@ -15,4 +14,4 @@ declare const set1: Set<number>;
  * https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/WeakMap
  */
 declare var o1: {}, o2: () => void;
-declare let weakmap: WeakMap<any, any>;
+declare let weakmap: WeakMap<object, any>;
