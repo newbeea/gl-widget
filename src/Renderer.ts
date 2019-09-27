@@ -3,6 +3,7 @@ import { Program, ShaderObject } from './Program';
 import { Clock } from './Clock'
 import { BufferManager } from './BufferManager';
 import { BackgroundGeometry } from './BackgroundGeometry';
+import { Background } from './Background';
 export interface rendererOptions {
   canvas?: HTMLCanvasElement
   gl?: WebGLRenderingContext
@@ -40,38 +41,22 @@ class Renderer {
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     
-    let shader: ShaderObject = {
-      
-      vertexShader: `
-        attribute vec4 a_Position;
-        void main () {
-          gl_Position = a_Position;
-        }
-
-      `,
-      fragmentShader: `
-       precision mediump float;
-       uniform vec2 resolution;
-       uniform float     time; 
-        void main () {
-          vec2 uv = gl_FragCoord.xy/resolution.xy;   
-          vec3 col = 0.5 + 0.5*cos(time+uv.xyx+vec3(0,2,4));
-          gl_FragColor = vec4(col,1.0);
-        }
-      `
-    }
-    let program: Program = new Program(gl, shader)
-    let geometry = new BackgroundGeometry()
-    //setup buffer and attribute
-    let bufferManager = new BufferManager()
-    bufferManager.initBuffer(gl, program.program, geometry)
-    //setup uniform
-    var r = gl.getUniformLocation(program.program, 'resolution')
-    gl.uniform2f(r, 300, 150);
+    var fragmentShader = `
+      precision mediump float;
+      uniform vec2 resolution;
+      uniform float     time; 
+      void main () {
+        vec2 uv = gl_FragCoord.xy/resolution.xy;   
+        vec3 col = 0.5 + 0.5*cos(time+uv.xyx+vec3(0,2,4));
+        gl_FragColor = vec4(col,1.0);
+      }
+    `
+    let background: Background = new Background(gl, 300, 150, fragmentShader)
+    let program = background.getProgram()
 
     let clock = new Clock()
     function animate() {
-      var time = gl.getUniformLocation(program.program, 'time');
+      var time = gl.getUniformLocation(program, 'time');
       gl.uniform1f(time, clock.getElapsedTime())
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6)
       requestAnimationFrame(animate)
