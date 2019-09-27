@@ -6,26 +6,26 @@ export interface ShaderObject {
 class Program {
   program: WebGLProgram
   constructor(gl: WebGLRenderingContext, shader: ShaderObject) {
-    let program: WebGLProgram = gl.createProgram();
+    this.program = gl.createProgram();
+    
     let vertexShader: WebGLShader = new Shader(gl, gl.VERTEX_SHADER, shader.vertexShader)
     let fragmentShader: WebGLShader = new Shader(gl, gl.FRAGMENT_SHADER, shader.fragmentShader)
-    gl.attachShader(program, vertexShader)
-    gl.attachShader(program, fragmentShader)
 
-    gl.linkProgram(program)
+    gl.attachShader(this.program, vertexShader)
+    gl.attachShader(this.program, fragmentShader)
 
-    let programLog = gl.getProgramInfoLog(program).trim()
+    gl.linkProgram(this.program)
 
-    if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
+    let programLog = gl.getProgramInfoLog(this.program).trim()
 
-      console.error('THREE.WebGLProgram: shader error: ', gl.getError(), 'gl.VALIDATE_STATUS', gl.getProgramParameter(program, gl.VALIDATE_STATUS), 'gl.getProgramInfoLog', programLog);
-
+    if (gl.getProgramParameter(this.program, gl.LINK_STATUS) === false) {
+      console.error('THREE.WebGLProgram: shader error: ', gl.getError(), 'gl.VALIDATE_STATUS', gl.getProgramParameter(this.program, gl.VALIDATE_STATUS), 'gl.getProgramInfoLog', programLog);
     } else if (programLog !== '') {
-
       console.warn('THREE.WebGLProgram: gl.getProgramInfoLog()', programLog)
-
     }
-    gl.useProgram(program)
+    gl.useProgram(this.program)
+    gl.deleteShader( vertexShader );
+	  gl.deleteShader( fragmentShader );
     return this
   }
 }

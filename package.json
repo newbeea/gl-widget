@@ -20,6 +20,8 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.6.2",
+    "core-js": "^3.2.1",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.1"

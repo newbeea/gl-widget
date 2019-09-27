@@ -1,5 +1,5 @@
 // import "@babel/polyfill";
-import './feature';
+// import './feature';
 
 import { Renderer } from './Renderer';
  
