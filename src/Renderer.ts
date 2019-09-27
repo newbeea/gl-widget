@@ -36,21 +36,12 @@ class Renderer {
     || <WebGLRenderingContext> this.canvas.getContext('experimental-webgl', attributes)
   }
   
-  render() {
+  render(backgroundShader: string = '') {
     let gl = this.gl
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     
-    var fragmentShader = `
-      precision mediump float;
-      uniform vec2 resolution;
-      uniform float     time; 
-      void main () {
-        vec2 uv = gl_FragCoord.xy/resolution.xy;   
-        vec3 col = 0.5 + 0.5*cos(time+uv.xyx+vec3(0,2,4));
-        gl_FragColor = vec4(col,1.0);
-      }
-    `
+    var fragmentShader = backgroundShader || 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}'
     let background: Background = new Background(gl, 300, 150, fragmentShader)
     let program = background.getProgram()
 
