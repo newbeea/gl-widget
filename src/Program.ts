@@ -26,7 +26,6 @@ class Program {
     gl.useProgram(this.program)
     gl.deleteShader( vertexShader );
 	  gl.deleteShader( fragmentShader );
-    return this
   }
 }
 export {
