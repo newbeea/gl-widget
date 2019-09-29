@@ -8,7 +8,7 @@ import * as exampleShader from '../examples'
 const renderer: Renderer = new Renderer({}, {
   depth: false
 });
-let backgroundShader = exampleShader.fireShader
+let backgroundShader = exampleShader.gradientShader
 
 let background: Background = new Background(backgroundShader);
 
