@@ -26,11 +26,15 @@ module.exports = {
         test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/
+      },
+      {
+        test: /\.glsl$/,
+        loader: 'raw-loader'
       }
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.glsl']
   },
   plugins:[
     new HtmlWebpackPlugin()
