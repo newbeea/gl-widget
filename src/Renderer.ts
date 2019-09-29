@@ -84,9 +84,9 @@ class Renderer {
   render(background?: Background) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);
-    // gl.enable(gl.DEPTH_TEST);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+
     let extensions = new Extensions(gl)
     if(background) {
       background.setup(gl, this.canvas.width, this.canvas.height)
@@ -106,8 +106,8 @@ class Renderer {
         }       
       });
       //draw
-      
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6)
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
+      gl.drawArrays(gl.TRIANGLES, 0, 6)
       requestAnimationFrame(animate)
 
     }

@@ -4,8 +4,8 @@ class BufferManager {
   constructor() {
   }
   initBuffer(gl: WebGLRenderingContext, program: WebGLProgram, geometry: Geometry) {
-    for(let name of geometry.attributes.values()) {
-      var array = name.array
+    for(let attribute of geometry.attributes.values()) {
+      var array = attribute.array
       var buffer = gl.createBuffer();
       if (!buffer) {
         console.log('Failed to create the buffer object');
@@ -19,7 +19,7 @@ class BufferManager {
         console.log('Failed to get the storage location of ' + name);
         return -1;
       }
-      gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
+      gl.vertexAttribPointer(location, attribute.itemSize, gl.FLOAT, false, 0, 0);
       gl.enableVertexAttribArray(location);
     }
   }
