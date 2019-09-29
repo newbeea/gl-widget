@@ -2,10 +2,15 @@ import fluidShader from './fluid.glsl'
 import fireShader from './fire.glsl'
 import gradientShader from './gradient.glsl'
 import loveShader from './love.glsl'
-
+import hackerShader from './hacker.glsl'
+import creatureShader from './creature.glsl'
+import starShader from './star.glsl'
 export {
   fluidShader,
   fireShader,
   gradientShader,
-  loveShader
+  loveShader,
+  hackerShader,
+  creatureShader,
+  starShader
 }

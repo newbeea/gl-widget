@@ -47,7 +47,7 @@ class Renderer {
   }
   render(background?: Background) {
     let gl = this.gl
-    gl.clearColor(0, 0, 0, 0);
+    gl.clearColor(1, 1, 1, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     
     let extensions = new Extensions(gl)
@@ -56,16 +56,48 @@ class Renderer {
       let program = background.getProgram()
       this.programs.set(background, program)
     }
-  
+    
+
+    this.programs.forEach(element => {
+      var location = gl.getUniformLocation(element, 'mouse');
+      if (location !== null) {
+        gl.uniform2f(location, 0, 1)   
+      }
+    });
+
+
+    let mouseOver = {
+      x: 0,
+      y: 0
+    }
+    let mouseOut = {
+      x: 0,
+      y: 0
+    }
+    let mouseCurrent = {
+      x: 0,
+      y: 0
+    }
     let onMouseMove = (event: MouseEvent) => {
+      mouseCurrent.x = event.clientX - mouseOver.x + mouseOut.x
+      mouseCurrent.y = event.clientY - mouseOver.y + mouseOut.y
       this.programs.forEach(element => {
         var location = gl.getUniformLocation(element, 'mouse');
         if (location !== null) {
-          gl.uniform2f(location, event.clientX / this.canvas.width, 1 - event.clientY / this.canvas.height)   
+          gl.uniform2f(location, mouseCurrent.x / this.canvas.width, 1 - mouseCurrent.y / this.canvas.width)   
         }
       });
+
     }    
     this.canvas.addEventListener( 'mousemove', onMouseMove, false );
+    this.canvas.addEventListener( 'mouseover', (event: MouseEvent) => {
+      mouseOver.x = event.clientX
+      mouseOver.y = event.clientY
+    }, false );
+    this.canvas.addEventListener( 'mouseout', (event: MouseEvent) => {
+      mouseOut.x = mouseCurrent.x
+      mouseOut.y = mouseCurrent.y
+    }, false );
 
     let clock = new Clock()
     let animate = () => {
@@ -83,6 +115,7 @@ class Renderer {
       requestAnimationFrame(animate)
 
     }
+    // setTimeout(animate, 100)
     animate()
 
   }
