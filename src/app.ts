@@ -1,8 +1,9 @@
 // import "@babel/polyfill";
 // import './feature';
 
-import { Renderer } from './Renderer';
- 
+import { Renderer, Background } from './Renderer';
+import { Clock } from './Clock';
+
 const renderer: Renderer = new Renderer({}, {
   depth: false
 })
@@ -16,5 +17,16 @@ let backgroundShader = `
   gl_FragColor = vec4(col,1.0);
   }
 `
-renderer.render(backgroundShader)
+let fragmentShader = backgroundShader || 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}'
+let background: Background = new Background(fragmentShader)
+
+renderer.render(background)
+let clock = new Clock()
+function animate() {
+  // var time = gl.getUniformLocation(program, 'time');
+  // gl.uniform1f(time, clock.getElapsedTime())
+  // renderer.setUniform(background, 'time', clock.getElapsedTime())
+  requestAnimationFrame(animate)
+}
+animate()
 document.body.appendChild(renderer.canvas)

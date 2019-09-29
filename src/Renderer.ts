@@ -19,6 +19,7 @@ export interface contextAttributes {
 class Renderer {
   canvas: HTMLCanvasElement;
   gl: WebGLRenderingContext
+  programs: Map<object, WebGLProgram>
   constructor(options: rendererOptions={}, attributes: contextAttributes={}) {
     this.canvas = options.canvas 
       || <HTMLCanvasElement> document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas')
@@ -34,21 +35,35 @@ class Renderer {
     this.gl = options.gl 
     || <WebGLRenderingContext> this.canvas.getContext('webgl', attributes)
     || <WebGLRenderingContext> this.canvas.getContext('experimental-webgl', attributes)
+    this.programs = new Map()
   }
-  
-  render(backgroundShader: string = '') {
+  setUniform(key, uniform, value) {
+    let program = this.programs.get(key)
+    var location = this.gl.getUniformLocation(program, uniform);
+    this.gl.uniform1f(location, value)
+  }
+  render(background?: Background) {
     let gl = this.gl
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     
-    var fragmentShader = backgroundShader || 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}'
-    let background: Background = new Background(gl, 300, 150, fragmentShader)
-    let program = background.getProgram()
+    if(background) {
+      background.setup(gl, 300, 150)
+      let program = background.getProgram()
+      this.programs.set(background, program)
+    }
 
     let clock = new Clock()
-    function animate() {
-      var time = gl.getUniformLocation(program, 'time');
-      gl.uniform1f(time, clock.getElapsedTime())
+    let animate = () => {
+      //setup time uniform
+      this.programs.forEach(element => {
+        var time = gl.getUniformLocation(element, 'time');
+        if (time !== null) {
+          gl.uniform1f(time, clock.getElapsedTime())   
+        }
+        
+      });
+      //draw
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6)
       requestAnimationFrame(animate)
     }
@@ -57,5 +72,7 @@ class Renderer {
   }
 }
 export {
-  Renderer
+  Renderer,
+  Background,
+  Clock
 } 
