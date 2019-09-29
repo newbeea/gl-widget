@@ -1,9 +1,5 @@
-import { Shader } from './Shader'
-import { Program, ShaderObject } from './Program';
-import { Clock } from './Clock'
-import { BufferManager } from './BufferManager';
-import { BackgroundGeometry } from './BackgroundGeometry';
 import { Background } from './Background';
+import { Clock } from './Clock';
 import { Extensions } from './Extensions';
 export interface rendererOptions {
   canvas?: HTMLCanvasElement
@@ -45,6 +41,46 @@ class Renderer {
     var location = this.gl.getUniformLocation(program, uniform);
     this.gl.uniform1f(location, value)
   }
+  setupMouse(){
+    let gl = this.gl
+    let mouseEnter = {
+      x: 0,
+      y: 0
+    }
+    let mouseOld = {
+      x: 0,
+      y: 0
+    }
+    let mouseOffset = {
+      x: 0,
+      y: 0
+    }
+
+    let setMouseUniform = (x, y) => {
+      this.programs.forEach(element => {
+        var location = gl.getUniformLocation(element, 'mouse');
+        if (location !== null) {
+          gl.uniform2f(location, x, y)   
+        }
+      });
+    }
+    setMouseUniform(0, 1)
+
+    let onMouseMove = (event: MouseEvent) => {
+      mouseOffset.x = event.clientX - mouseEnter.x + mouseOld.x
+      mouseOffset.y = event.clientY - mouseEnter.y + mouseOld.y
+      setMouseUniform(mouseOffset.x / this.canvas.width, 1 - mouseOffset.y / this.canvas.height)
+    }    
+    this.canvas.addEventListener( 'mousemove', onMouseMove, false );
+    this.canvas.addEventListener( 'mouseover', (event: MouseEvent) => {
+      mouseEnter.x = event.clientX
+      mouseEnter.y = event.clientY
+    }, false );
+    this.canvas.addEventListener( 'mouseout', (event: MouseEvent) => {
+      mouseOld.x = mouseOffset.x
+      mouseOld.y = mouseOffset.y
+    }, false );
+  }
   render(background?: Background) {
     let gl = this.gl
     gl.clearColor(1, 1, 1, 0);
@@ -57,51 +93,10 @@ class Renderer {
       this.programs.set(background, program)
     }
     
-
-    this.programs.forEach(element => {
-      var location = gl.getUniformLocation(element, 'mouse');
-      if (location !== null) {
-        gl.uniform2f(location, 0, 1)   
-      }
-    });
-
-
-    let mouseOver = {
-      x: 0,
-      y: 0
-    }
-    let mouseOut = {
-      x: 0,
-      y: 0
-    }
-    let mouseCurrent = {
-      x: 0,
-      y: 0
-    }
-    let onMouseMove = (event: MouseEvent) => {
-      mouseCurrent.x = event.clientX - mouseOver.x + mouseOut.x
-      mouseCurrent.y = event.clientY - mouseOver.y + mouseOut.y
-      this.programs.forEach(element => {
-        var location = gl.getUniformLocation(element, 'mouse');
-        if (location !== null) {
-          gl.uniform2f(location, mouseCurrent.x / this.canvas.width, 1 - mouseCurrent.y / this.canvas.width)   
-        }
-      });
-
-    }    
-    this.canvas.addEventListener( 'mousemove', onMouseMove, false );
-    this.canvas.addEventListener( 'mouseover', (event: MouseEvent) => {
-      mouseOver.x = event.clientX
-      mouseOver.y = event.clientY
-    }, false );
-    this.canvas.addEventListener( 'mouseout', (event: MouseEvent) => {
-      mouseOut.x = mouseCurrent.x
-      mouseOut.y = mouseCurrent.y
-    }, false );
+    this.setupMouse()
 
     let clock = new Clock()
     let animate = () => {
-
       //setup time uniform
       this.programs.forEach(element => {
         var location = gl.getUniformLocation(element, 'time');
@@ -109,7 +104,6 @@ class Renderer {
           gl.uniform1f(location, clock.getElapsedTime())   
         }       
       });
-
       //draw
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6)
       requestAnimationFrame(animate)
@@ -120,8 +114,4 @@ class Renderer {
 
   }
 }
-export {
-  Renderer,
-  Background,
-  Clock
-} 
+export { Renderer, Background, Clock };
