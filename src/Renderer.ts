@@ -4,6 +4,7 @@ import { Clock } from './Clock'
 import { BufferManager } from './BufferManager';
 import { BackgroundGeometry } from './BackgroundGeometry';
 import { Background } from './Background';
+import { Extensions } from './Extensions';
 export interface rendererOptions {
   canvas?: HTMLCanvasElement
   gl?: WebGLRenderingContext
@@ -47,8 +48,9 @@ class Renderer {
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     
+    let extensions = new Extensions(gl)
     if(background) {
-      background.setup(gl, 300, 150)
+      background.setup(gl, this.canvas.width, this.canvas.height)
       let program = background.getProgram()
       this.programs.set(background, program)
     }
