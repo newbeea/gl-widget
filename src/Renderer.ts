@@ -24,6 +24,8 @@ class Renderer {
   constructor(options: rendererOptions={}, attributes: contextAttributes={}) {
     this.canvas = options.canvas 
       || <HTMLCanvasElement> document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas')
+    this.canvas.width = 800
+    this.canvas.height = 480
     let defaultAttributes: contextAttributes = {
       alpha: false,
       depth: true,
@@ -54,20 +56,32 @@ class Renderer {
       let program = background.getProgram()
       this.programs.set(background, program)
     }
+  
+    let onMouseMove = (event: MouseEvent) => {
+      this.programs.forEach(element => {
+        var location = gl.getUniformLocation(element, 'mouse');
+        if (location !== null) {
+          gl.uniform2f(location, event.clientX / this.canvas.width, 1 - event.clientY / this.canvas.height)   
+        }
+      });
+    }    
+    this.canvas.addEventListener( 'mousemove', onMouseMove, false );
 
     let clock = new Clock()
     let animate = () => {
+
       //setup time uniform
       this.programs.forEach(element => {
-        var time = gl.getUniformLocation(element, 'time');
-        if (time !== null) {
-          gl.uniform1f(time, clock.getElapsedTime())   
-        }
-        
+        var location = gl.getUniformLocation(element, 'time');
+        if (location !== null) {
+          gl.uniform1f(location, clock.getElapsedTime())   
+        }       
       });
+
       //draw
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6)
       requestAnimationFrame(animate)
+
     }
     animate()
 
