@@ -9,7 +9,7 @@ module.exports = {
     index: "./src/app.ts"
   },
   output: {
-    publicPath: __dirname + "/dist/", // 打包后资源文件的引用会基于此路径
+    publicPath: "/", // 打包后资源文件的引用会基于此路径
     path: path.resolve(__dirname, "dist"), // 打包后的输出目录
     filename: "app.bundle.js"
   },
@@ -39,7 +39,7 @@ module.exports = {
   plugins:[
     new HtmlWebpackPlugin({
       title: 'Hello World app',
-      template: './src/index.html'
+      template: 'index.html'
     })
 ]
 }

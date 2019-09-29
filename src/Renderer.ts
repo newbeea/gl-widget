@@ -2,7 +2,8 @@ import { Background } from './Background';
 import { Clock } from './Clock';
 import { Extensions } from './Extensions';
 export interface rendererOptions {
-  canvas?: HTMLCanvasElement
+  // canvas?: HTMLCanvasElement
+  element: HTMLElement | HTMLCanvasElement | string
   gl?: WebGLRenderingContext
 }
 export interface contextAttributes {
@@ -17,11 +18,30 @@ class Renderer {
   canvas: HTMLCanvasElement;
   gl: WebGLRenderingContext
   programs: Map<object, WebGLProgram>
-  constructor(options: rendererOptions={}, attributes: contextAttributes={}) {
-    this.canvas = options.canvas 
-      || <HTMLCanvasElement> document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas')
-    this.canvas.width = 800
-    this.canvas.height = 480
+  constructor(options: rendererOptions, attributes: contextAttributes={}) {
+    if (options.element instanceof HTMLCanvasElement) {
+      this.canvas = options.element
+    } else {
+      let element: HTMLElement
+      this.canvas = <HTMLCanvasElement> document.createElement('canvas')
+        
+      if (options.element instanceof HTMLElement){
+        element = options.element
+      } else {
+        element = document.getElementById(options.element)
+        if(!element) {
+          console.error(options.element + ' not found!')
+        }
+      }
+      // this.canvas.style.position = 'absolute'
+      // this.canvas.style.top = '0'
+      // this.canvas.style.left = '0'
+      this.canvas.width = element.clientWidth
+      this.canvas.height = element.clientHeight
+      // element.appendChild(this.canvas)
+      element.insertBefore(this.canvas, element.firstChild)
+    }
+    
     let defaultAttributes: contextAttributes = {
       alpha: true,
       depth: true,

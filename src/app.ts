@@ -1,11 +1,10 @@
-// import "@babel/polyfill";
-// import './feature';
-
 import { Renderer, Background } from './Renderer';
 import { Clock } from './Clock';
 import * as exampleShader from '../examples'
 
-const renderer: Renderer = new Renderer({}, {});
+const renderer: Renderer = new Renderer({
+    element: 'awesome-bg'
+}, {});
 let backgroundShader = exampleShader.hackerShader
 
 let background: Background = new Background(backgroundShader);
@@ -20,4 +19,4 @@ renderer.render(background);
 //   requestAnimationFrame(animate)
 // }
 // animate()
-document.body.appendChild(renderer.canvas);
+// document.body.appendChild(renderer.canvas);
