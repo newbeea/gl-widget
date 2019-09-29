@@ -37,6 +37,9 @@ module.exports = {
     extensions: ['.ts', '.js', '.glsl']
   },
   plugins:[
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin({
+      title: 'Hello World app',
+      template: './src/index.html'
+    })
 ]
 }

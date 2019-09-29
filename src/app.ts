@@ -8,7 +8,7 @@ import * as exampleShader from '../examples'
 const renderer: Renderer = new Renderer({}, {
   depth: false
 });
-let backgroundShader = exampleShader.starShader
+let backgroundShader = exampleShader.hackerShader
 
 let background: Background = new Background(backgroundShader);
 

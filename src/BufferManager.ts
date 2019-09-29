@@ -19,7 +19,7 @@ class BufferManager {
         console.log('Failed to get the storage location of ' + name);
         return -1;
       }
-      gl.vertexAttribPointer(location, 2, gl.FLOAT, false, 0, 0);
+      gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
       gl.enableVertexAttribArray(location);
     }
   }

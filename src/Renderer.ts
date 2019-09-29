@@ -23,7 +23,7 @@ class Renderer {
     this.canvas.width = 800
     this.canvas.height = 480
     let defaultAttributes: contextAttributes = {
-      alpha: false,
+      alpha: true,
       depth: true,
       stencil: true,
       antialias: false,
@@ -83,9 +83,10 @@ class Renderer {
   }
   render(background?: Background) {
     let gl = this.gl
-    gl.clearColor(1, 1, 1, 0);
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    // gl.enable(gl.DEPTH_TEST);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    
+    // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
     let extensions = new Extensions(gl)
     if(background) {
       background.setup(gl, this.canvas.width, this.canvas.height)
@@ -105,6 +106,7 @@ class Renderer {
         }       
       });
       //draw
+      
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6)
       requestAnimationFrame(animate)
 

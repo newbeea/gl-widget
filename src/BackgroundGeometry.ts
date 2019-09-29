@@ -6,9 +6,9 @@ class BackgroundGeometry extends Geometry {
   constructor() {
     super()
     this.addAttribute('position', new Attribute([
-      -1.0, 1.0,  -1.0, -1.0,  1.0, 1.0,  
-      1.0, 1.0,  -1.0, -1.0,  1.0, -1.0
-    ], 2))
+      -1.0, 1.0, -1.0,  -1.0, -1.0, -1.0,  1.0, 1.0, -1.0,  
+      1.0, 1.0, -1.0,  -1.0, -1.0, -1.0,  1.0, -1.0, -1.0
+    ], 3))
   }
 }
 export {
