@@ -44,6 +44,11 @@ class Shape extends RenderedObject {
     // let bufferManager = new BufferManager()
     this.vertexNum = bufferManager.initBuffer(gl, this.program, geometry)
     this.geometry = geometry
+    this.setSize(width, height)
+  }
+  setSize(width: number, height: number) {
+    var r = this.gl.getUniformLocation(this.program, 'resolution')
+    this.gl.uniform2f(r, width, height);
   }
   getProgram(): WebGLProgram {
     return this.program
