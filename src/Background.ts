@@ -1,16 +1,21 @@
-import { Attribute } from "./Attribute";
-import { Geometry } from "./Geometry";
+
 import { ShaderObject, Program } from "./Program";
 import { BackgroundGeometry } from "./BackgroundGeometry";
 import { BufferManager } from "./BufferManager";
-class Background {
+import { Geometry } from "./Geometry";
+import { RenderedObject } from "./RenderedObject";
+
+class Background extends RenderedObject {
   program: WebGLProgram
   gl: WebGLRenderingContext
+  vertexNum: number
   fragmentShader: string
+  geometry: Geometry
   constructor(fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
+    super()
     this.fragmentShader = fragmentShader
   }
-  setup(gl: WebGLRenderingContext, width: number, height: number) {
+  setup(gl: WebGLRenderingContext, bufferManager: BufferManager, width: number, height: number) {
     this.gl = gl
     let shader: ShaderObject = {
       
@@ -25,11 +30,11 @@ class Background {
     }
     let program: Program = new Program(gl, shader)
     this.program = program.program
-    let geometry = new BackgroundGeometry()
+    this.geometry = new BackgroundGeometry()
     
     //setup buffer and attribute
-    let bufferManager = new BufferManager()
-    bufferManager.initBuffer(gl, this.program, geometry)
+    // let bufferManager = new BufferManager()
+    this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
     this.setSize(width, height)
   }
   setSize(width: number, height: number) {

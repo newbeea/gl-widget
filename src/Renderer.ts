@@ -1,6 +1,10 @@
 import { Background } from './Background';
 import { Clock } from './Clock';
 import { Extensions } from './Extensions';
+import { Shape } from './extras/plugins/Shape';
+import { BufferManager } from './BufferManager';
+import { RenderedObject } from './RenderedObject';
+import * as exampleShader from '../examples'
 export interface rendererOptions {
   // canvas?: HTMLCanvasElement
   element: HTMLElement | HTMLCanvasElement | string
@@ -18,7 +22,9 @@ class Renderer {
   canvas: HTMLCanvasElement;
   gl: WebGLRenderingContext
   programs: Map<object, WebGLProgram>
+  renderList: Array<RenderedObject>
   constructor(options: rendererOptions, attributes: contextAttributes={}) {
+    this.renderList = []
     if (options.element instanceof HTMLCanvasElement) {
       this.canvas = options.element
     } else {
@@ -77,11 +83,13 @@ class Renderer {
     }
 
     let setMouseUniform = (x, y) => {
-      this.programs.forEach(element => {
-        var location = gl.getUniformLocation(element, 'mouse');
-        if (location !== null) {
+      this.renderList.forEach(element => {
+        gl.useProgram(element.program)
+        var location = gl.getUniformLocation(element.program, 'mouse');
+        if (location != null) {
           gl.uniform2f(location, x, y)   
         }
+        
       });
     }
     setMouseUniform(0, 1)
@@ -101,39 +109,49 @@ class Renderer {
       mouseOld.y = mouseOffset.y
     }, false );
   }
-  render(background?: Background) {
+  render(background?: RenderedObject, shape?: RenderedObject) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);
-    gl.enable(gl.DEPTH_TEST);
+    // gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
-
+    let bufferManager = new BufferManager()
     let extensions = new Extensions(gl)
-    if(background) {
-      background.setup(gl, this.canvas.width, this.canvas.height)
-      let program = background.getProgram()
-      this.programs.set(background, program)
+    
+    if (background) {
+      this.renderList.push(background)
+      background.setup(gl, bufferManager, this.canvas.width, this.canvas.height)
     }
     
-    this.setupMouse()
+    if (shape) {
+      this.renderList.push(shape)
+      shape.setup(gl, bufferManager, this.canvas.width, this.canvas.height)
+    }
+    
+    
+    
+
+    
 
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
-      this.programs.forEach(element => {
-        var location = gl.getUniformLocation(element, 'time');
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
+      this.renderList.forEach((element: RenderedObject) => {
+        bufferManager.updateBuffer(gl, element.program, element.geometry)
+        gl.useProgram(element.program)
+        var location = gl.getUniformLocation(element.program, 'time');
         if (location !== null) {
           gl.uniform1f(location, clock.getElapsedTime())   
-        }       
+        }    
+        gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_BYTE, 0)
       });
-      //draw
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
-      gl.drawArrays(gl.TRIANGLES, 0, 6)
+      //draw    
       requestAnimationFrame(animate)
 
     }
     // setTimeout(animate, 100)
     animate()
-
+    this.setupMouse()
   }
 }
 export { Renderer, Background, Clock };

@@ -1,15 +1,17 @@
 import { Renderer, Background } from './Renderer';
+
 import { Clock } from './Clock';
 import * as exampleShader from '../examples'
+import { Shape } from './extras/plugins/Shape';
 
 const renderer: Renderer = new Renderer({
     element: 'awesome-bg'
 }, {});
-let backgroundShader = exampleShader.hackerShader
 
-let background: Background = new Background(backgroundShader);
 
-renderer.render(background);
+let background: Background = new Background(exampleShader.fluidShader);
+let shape: Shape = new Shape(exampleShader.gradientShader)
+renderer.render(background, shape);
 
 
 // test custom uniforms by users
