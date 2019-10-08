@@ -5,6 +5,7 @@ import { ShaderObject, Program } from "../../../Program";
 import { ShapeUtils } from "./ShapeUtils";
 import { BufferManager } from "../../../BufferManager";
 import { RenderedObject } from "../../../RenderedObject";
+import { Matrix3 } from "../../../math/Matrix3"
 class Shape extends RenderedObject {
   program: WebGLProgram
   gl: WebGLRenderingContext
@@ -23,9 +24,10 @@ class Shape extends RenderedObject {
         attribute vec4 position;
         attribute vec2 uv;
         varying vec2 vUv;
+        uniform mat3 uvTransform;
         void main () {
           gl_Position = position;
-          vUv = uv;
+          vUv = ( uvTransform * vec3( uv, 1 ) ).xy;;
         }
 
       `,
@@ -36,11 +38,17 @@ class Shape extends RenderedObject {
 
 
     let verties = [
-      -0.5, -0.5,  0.5, -0.5,  0.5, 0.5, -0.5, 0.5
+      -0.5, -0.5,  0.5, -0.5,  0.5, 0.5,  -0.5, 0.5
     ]
     let uvs = [
-      0, 0,  1, 0,  1, 1, 0, 1
+      -0.5, -0.5,  0.5, -0.5,  0.5, 0.5,  -0.5, 0.5
     ]
+    let uvTransform = new Matrix3()
+    uvTransform.setUvTransform(0.5, 0.5, 1, 1, 0, 0, 0)
+    var location = gl.getUniformLocation(this.program, 'uvTransform');
+    gl.uniformMatrix3fv(location, false, uvTransform.elements)
+
+
     let geometry = new Geometry()
     let shape = ShapeUtils.triangulateShape(verties, [])
 
