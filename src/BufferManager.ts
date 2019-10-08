@@ -8,17 +8,16 @@ class BufferManager {
   }
   initBuffer(gl: WebGLRenderingContext, program: WebGLProgram, geometry: Geometry) {
     
-    for(let attribute of geometry.attributes.values()) {
+    for(let [name, attribute] of geometry.attributes.entries()) {
       let array = attribute.array
       let buffer = gl.createBuffer();
       if (!buffer) {
         console.log('Failed to create the buffer object');
         return -1;
       }
-    
       gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
       gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
-      let location = gl.getAttribLocation(program, 'a_Position');
+      let location = gl.getAttribLocation(program, name);
       if (location < 0) {
         console.log('Failed to get the storage location of ' + name);
         return -1;
@@ -46,9 +45,9 @@ class BufferManager {
   updateBuffer(gl: WebGLRenderingContext, program: WebGLProgram, geometry: Geometry) {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.buffers.get(geometry.index))
     
-    for(let attribute of geometry.attributes.values()) {
+    for(let [name, attribute] of geometry.attributes.entries()) {
       gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.get(attribute));
-      let location = gl.getAttribLocation(program, 'a_Position');
+      let location = gl.getAttribLocation(program, name);
       if (location < 0) {
         console.log('Failed to get the storage location of ' + name);
         return -1;

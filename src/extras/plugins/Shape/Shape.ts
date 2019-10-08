@@ -20,9 +20,12 @@ class Shape extends RenderedObject {
     let shader: ShaderObject = {
       
       vertexShader: `
-        attribute vec4 a_Position;
+        attribute vec4 position;
+        attribute vec2 uv;
+        varying vec2 vUv;
         void main () {
-          gl_Position = a_Position;
+          gl_Position = position;
+          vUv = uv;
         }
 
       `,
@@ -33,12 +36,16 @@ class Shape extends RenderedObject {
 
 
     let verties = [
-      -0.5, 0.5,  -0.5, -0.5,  0.5, -0.5,  0.5, 0.5
+      -0.5, -0.5,  0.5, -0.5,  0.5, 0.5, -0.5, 0.5
+    ]
+    let uvs = [
+      0, 0,  1, 0,  1, 1, 0, 1
     ]
     let geometry = new Geometry()
     let shape = ShapeUtils.triangulateShape(verties, [])
 
-    geometry.addAttribute('positon', new Float32Attribute(verties, 2))
+    geometry.addAttribute('position', new Float32Attribute(verties, 2))
+    geometry.addAttribute('uv', new Float32Attribute(uvs, 2))
     geometry.addAttribute('index', new Uint8Attribute(shape, 1))
     //setup buffer and attribute
     // let bufferManager = new BufferManager()

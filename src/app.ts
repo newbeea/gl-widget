@@ -10,7 +10,7 @@ const renderer: Renderer = new Renderer({
 
 
 let background: Background = new Background(exampleShader.fluidShader);
-let shape: Shape = new Shape(exampleShader.gradientShader)
+let shape: Shape = new Shape(exampleShader.loveShader)
 renderer.render(background, shape);
 
 

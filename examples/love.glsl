@@ -1,7 +1,7 @@
 #ifdef GL_ES
 precision mediump float;
 #endif
-
+varying vec2 vUv;
 uniform float time;
 uniform vec2 resolution;
 uniform vec2 mouse;
@@ -50,7 +50,7 @@ vec2 getPos(in float t, in vec4 x, in vec4 y)
 }
 	
 void main( void ){
-	vec2 position = gl_FragCoord.xy/resolution.xy -vec2(.5, .5+sin(time*2.+(gl_FragCoord.xy/resolution.xy).x*4.)/15.);
+	vec2 position = vUv -vec2(.5, .5+sin(time*2.+(vUv).x*4.)/15.);
 	float c=10., x=-.4;
 	
 	if(false); // assuming graphics is drawn a certain way, might depend on graphics card and/or driver ?
