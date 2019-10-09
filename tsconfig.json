@@ -10,8 +10,8 @@
   },
   "include": [
     "./src/*",
-    "./examples/*",
-    "./typings/*.d.ts"
+    "./examples/**/*",
+    "./typings/*.d.ts", "src/extras/plugins"
   ],
   "exclude": [
     "./node_modules"

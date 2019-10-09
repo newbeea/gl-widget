@@ -12,9 +12,22 @@ class Shape extends RenderedObject {
   vertexNum: number
   fragmentShader: string
   geometry: Geometry
-  constructor(fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
+  uvTransform: Matrix3
+  constructor(verties: Array<number>, fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
     super()
     this.fragmentShader = fragmentShader
+
+    let uvs = verties
+    this.uvTransform = new Matrix3()
+    this.uvTransform.setUvTransform(0.5, 0.5, 2, 2, 0, 0, 0)
+
+    let geometry = new Geometry()
+    let shape = ShapeUtils.triangulateShape(verties, [])
+
+    geometry.addAttribute('position', new Float32Attribute(verties, 2))
+    geometry.addAttribute('uv', new Float32Attribute(uvs, 2))
+    geometry.addAttribute('index', new Uint8Attribute(shape, 1))
+    this.geometry = geometry
   }
   setup(gl: WebGLRenderingContext, bufferManager: BufferManager, width: number, height: number) {
     this.gl = gl
@@ -36,29 +49,13 @@ class Shape extends RenderedObject {
     let program: Program = new Program(gl, shader)
     this.program = program.program
 
-
-    let verties = [
-      -0.5, -0.5,  0.5, -0.5,  0.5, 0.5,  -0.5, 0.5
-    ]
-    let uvs = [
-      -0.5, -0.5,  0.5, -0.5,  0.5, 0.5,  -0.5, 0.5
-    ]
-    let uvTransform = new Matrix3()
-    uvTransform.setUvTransform(0.5, 0.5, 1, 1, 0, 0, 0)
+    
     var location = gl.getUniformLocation(this.program, 'uvTransform');
-    gl.uniformMatrix3fv(location, false, uvTransform.elements)
-
-
-    let geometry = new Geometry()
-    let shape = ShapeUtils.triangulateShape(verties, [])
-
-    geometry.addAttribute('position', new Float32Attribute(verties, 2))
-    geometry.addAttribute('uv', new Float32Attribute(uvs, 2))
-    geometry.addAttribute('index', new Uint8Attribute(shape, 1))
+    gl.uniformMatrix3fv(location, false, this.uvTransform.elements)
+    
     //setup buffer and attribute
     // let bufferManager = new BufferManager()
-    this.vertexNum = bufferManager.initBuffer(gl, this.program, geometry)
-    this.geometry = geometry
+    this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
     this.setSize(width, height)
   }
   setSize(width: number, height: number) {

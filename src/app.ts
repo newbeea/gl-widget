@@ -1,7 +1,8 @@
 import { Renderer, Background } from './Renderer';
 
 import { Clock } from './Clock';
-import * as exampleShader from '../examples'
+import * as backgroundShader from '../examples/background'
+import * as shapeShader from '../examples/shape'
 import { Shape } from './extras/plugins/Shape';
 
 const renderer: Renderer = new Renderer({
@@ -9,8 +10,10 @@ const renderer: Renderer = new Renderer({
 }, {});
 
 
-let background: Background = new Background(exampleShader.fluidShader);
-let shape: Shape = new Shape(exampleShader.loveShader)
+let background: Background = new Background(backgroundShader.fluidShader);
+let shape: Shape = new Shape([
+  -0.5, -0.5,  0.5, -0.5,  0.5, 0.5,  -0.5, 0.5
+], shapeShader.gradientShader)
 renderer.render(background, shape);
 
 

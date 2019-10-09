@@ -11,9 +11,10 @@ class Background extends RenderedObject {
   vertexNum: number
   fragmentShader: string
   geometry: Geometry
-  constructor(fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
+  constructor(fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}', geometry?: Geometry) {
     super()
     this.fragmentShader = fragmentShader
+    this.geometry = geometry || new BackgroundGeometry()
   }
   setup(gl: WebGLRenderingContext, bufferManager: BufferManager, width: number, height: number) {
     this.gl = gl
@@ -30,7 +31,7 @@ class Background extends RenderedObject {
     }
     let program: Program = new Program(gl, shader)
     this.program = program.program
-    this.geometry = new BackgroundGeometry()
+    
     
     //setup buffer and attribute
     // let bufferManager = new BufferManager()
