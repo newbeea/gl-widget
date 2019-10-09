@@ -29,15 +29,15 @@ var ShapeUtils = {
 
 	},
 
-	triangulateShape: function ( list, holes ) {
+	triangulateShape: function ( contour, holes ) {
     
-    var contour = []
-    for(var i = 0; i < list.length; i += 2) {
-      contour.push({
-        x: list[i],
-        y: list[i+1]
-      })
-    }
+    // var contour = []
+    // for(var i = 0; i < list.length; i += 2) {
+    //   contour.push({
+    //     x: list[i],
+    //     y: list[i+1]
+    //   })
+    // }
 
 		var vertices = []; // flat array of vertices like [ x0,y0, x1,y1, x2,y2, ... ]
 		var holeIndices = []; // array of hole indices

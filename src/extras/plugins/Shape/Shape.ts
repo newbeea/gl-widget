@@ -6,6 +6,7 @@ import { ShapeUtils } from "./ShapeUtils";
 import { BufferManager } from "../../../BufferManager";
 import { RenderedObject } from "../../../RenderedObject";
 import { Matrix3 } from "../../../math/Matrix3"
+import { Vector2 } from "../../../math/Vector2"
 class Shape extends RenderedObject {
   program: WebGLProgram
   gl: WebGLRenderingContext
@@ -13,20 +14,31 @@ class Shape extends RenderedObject {
   fragmentShader: string
   geometry: Geometry
   uvTransform: Matrix3
-  constructor(verties: Array<number>, fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
+  constructor(shape, fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
     super()
     this.fragmentShader = fragmentShader
+    let verties = []
+    let contour = shape.contour
+    for ( var i = 0; i < contour.length; i ++ ) {
 
+      verties.push( contour[ i ].x );
+      verties.push( contour[ i ].y );
+  
+    }
     let uvs = verties
     this.uvTransform = new Matrix3()
     this.uvTransform.setUvTransform(0.5, 0.5, 2, 2, 0, 0, 0)
 
     let geometry = new Geometry()
-    let shape = ShapeUtils.triangulateShape(verties, [])
+    let s = []
+    for(let i = 0; i < verties.length; i+= 2) {
+      s.push(new Vector2(verties[i], verties[i+1]))
+    }
+    let index = ShapeUtils.triangulateShape(s, [])
 
     geometry.addAttribute('position', new Float32Attribute(verties, 2))
     geometry.addAttribute('uv', new Float32Attribute(uvs, 2))
-    geometry.addAttribute('index', new Uint8Attribute(shape, 1))
+    geometry.addAttribute('index', new Uint8Attribute(index, 1))
     this.geometry = geometry
   }
   setup(gl: WebGLRenderingContext, bufferManager: BufferManager, width: number, height: number) {
@@ -35,7 +47,7 @@ class Shape extends RenderedObject {
       
       vertexShader: `
         attribute vec4 position;
-        attribute vec2 uv;
+        attribute vec2 uv                                                                                                                                                                                                                                                                                                                       ;
         varying vec2 vUv;
         uniform mat3 uvTransform;
         void main () {
@@ -54,7 +66,6 @@ class Shape extends RenderedObject {
     gl.uniformMatrix3fv(location, false, this.uvTransform.elements)
     
     //setup buffer and attribute
-    // let bufferManager = new BufferManager()
     this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
     this.setSize(width, height)
   }

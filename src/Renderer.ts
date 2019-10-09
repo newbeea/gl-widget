@@ -4,7 +4,7 @@ import { Extensions } from './Extensions';
 import { Shape } from './extras/plugins/Shape';
 import { BufferManager } from './BufferManager';
 import { RenderedObject } from './RenderedObject';
-import * as exampleShader from '../examples'
+
 export interface rendererOptions {
   // canvas?: HTMLCanvasElement
   element: HTMLElement | HTMLCanvasElement | string

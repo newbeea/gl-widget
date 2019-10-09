@@ -9,9 +9,10 @@
     ]
   },
   "include": [
-    "./src/*",
-    "./examples/**/*",
-    "./typings/*.d.ts", "src/extras/plugins"
+    "./src/*.ts",
+    "./examples/**/*.ts",
+    "./typings/*.d.ts", 
+    "./src/extras/plugins/**/*.ts"
   ],
   "exclude": [
     "./node_modules"
