@@ -1,7 +1,7 @@
 
 
 class Attribute {
-  array: Uint8Array | Float32Array
+  array: Uint32Array | Float32Array
   itemSize: number
   normalized: boolean
   constructor(array: Array<number>, itemSize: number, normalized: boolean = false) {

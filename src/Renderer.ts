@@ -52,9 +52,9 @@ class Renderer {
       alpha: true,
       depth: true,
       stencil: true,
-      antialias: false,
+      antialias: true,
       premultipliedAlpha: true,
-      preserveDrawingBuffer: false
+      preserveDrawingBuffer: true
     }
     attributes = Object.assign(defaultAttributes, attributes)
     this.gl = options.gl 
@@ -143,7 +143,8 @@ class Renderer {
         if (location !== null) {
           gl.uniform1f(location, clock.getElapsedTime())   
         }    
-        gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_BYTE, 0)
+        // console.log(element.vertexNum)
+        gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
       });
       //draw    
       requestAnimationFrame(animate)

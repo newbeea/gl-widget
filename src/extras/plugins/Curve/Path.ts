@@ -2,10 +2,9 @@ import { Curve } from './Curve';
 import { Vector2 } from '../../../math/Vector2'
 // import * as Curves from '../curves/Curves.js';
 import { LineCurve } from './LineCurve';
-
-import { QuadraticBezierCurve } from './QuadraticBezierCurve'
 import { CubicBezierCurve } from './CubicBezierCurve'
-// console.log(CubicBezierCurve)
+import { QuadraticBezierCurve } from './QuadraticBezierCurve'
+
 function Path(points?) {
 
 	Curve.call( this );
