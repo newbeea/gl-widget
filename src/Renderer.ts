@@ -5,6 +5,7 @@ import { Shape } from './extras/plugins/Shape';
 import { BufferManager } from './BufferManager';
 import { RenderedObject } from './RenderedObject';
 import { PerspectiveCamera } from './cameras/PerspectiveCamera'
+import { OrthographicCamera } from './cameras/OrthographicCamera'
 import { Matrix4 } from './math/Matrix4';
 export interface rendererOptions {
   // canvas?: HTMLCanvasElement
@@ -141,8 +142,11 @@ class Renderer {
     
     
     
-    let camera = new PerspectiveCamera(100, this.canvas.width / this.canvas.height, 0.1, 100)
-
+    
+    let frustumSize = 3
+    let aspect = this.canvas.width / this.canvas.height
+    // let camera = new PerspectiveCamera(100, aspect, 0.1, 100)
+    let camera = new OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, -1000, 1000)
     let mvpMatrix = new Matrix4()
     mvpMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
     let scale = new Matrix4()

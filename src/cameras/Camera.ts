@@ -4,6 +4,7 @@ class Camera {
   projectionMatrix: Matrix4
   matrixWorldInverse: Matrix4
   matrixWorld: Matrix4
+  copy: any
   constructor() {
     this.projectionMatrix = new Matrix4()
     this.matrixWorldInverse = new Matrix4()

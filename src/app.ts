@@ -52,12 +52,12 @@ let index = ShapeUtils.triangulateShape(vertices, holes)
 let position = []
 let uv = []
 vertices.forEach(element => {
-  position.push(element.x, element.y, 0.1)  
+  position.push(element.x, element.y, 0)  
   uv.push(element.x, element.y)
 });
 let hole = holes.flat()
 hole.forEach(element => {
-  position.push(element.x, element.y, 0.1)  
+  position.push(element.x, element.y, 0)  
   uv.push(element.x, element.y)
 });
 
