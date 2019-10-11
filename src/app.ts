@@ -7,7 +7,7 @@ import * as shapeShader from '../examples/shape'
 import { Shape } from './extras/plugins/Shape';
 import * as font from '../examples/font/averia.json';
 import { Font } from './extras/plugins/Font'
-import { Vector2 } from './math/Vector2';
+
 
 import { ShapeUtils } from "./extras/plugins/Shape/ShapeUtils";
 
@@ -16,10 +16,10 @@ const renderer: Renderer = new Renderer({
 }, {});
 
 let f = new Font(font)
-let shapes = f.generateShapes('P', 0.5 , 8)
+let shapes = f.generateShapes('P', 0.9 , 8)
 
 let shapePoints = shapes[0].extractPoints(12)
-shapePoints.shape.pop()
+
 
 var h,hl,ahole
 
@@ -50,16 +50,19 @@ if ( reverse ) {
 
 let index = ShapeUtils.triangulateShape(vertices, holes)
 let position = []
+let uv = []
 vertices.forEach(element => {
-  position.push(element.x, element.y)  
+  position.push(element.x, element.y, 0.1)  
+  uv.push(element.x, element.y)
 });
 let hole = holes.flat()
 hole.forEach(element => {
-  position.push(element.x, element.y)  
+  position.push(element.x, element.y, 0.1)  
+  uv.push(element.x, element.y)
 });
 
 let background: Background = new Background(backgroundShader.fluidShader);
-let shape: Shape = new Shape(index, position, shapeShader.gradientShader)
+let shape: Shape = new Shape(index, position, uv, shapeShader.gradientShader)
 renderer.render(background, shape);
 
 

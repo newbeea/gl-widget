@@ -4,13 +4,14 @@ import { Extensions } from './Extensions';
 import { Shape } from './extras/plugins/Shape';
 import { BufferManager } from './BufferManager';
 import { RenderedObject } from './RenderedObject';
-
+import { PerspectiveCamera } from './cameras/PerspectiveCamera'
+import { Matrix4 } from './math/Matrix4';
 export interface rendererOptions {
   // canvas?: HTMLCanvasElement
   element: HTMLElement | HTMLCanvasElement | string
   gl?: WebGLRenderingContext
 }
-export interface contextAttributes {
+export interface ContextAttributes {
   alpha?: boolean,
   depth?: boolean,
   stencil?: boolean,
@@ -23,7 +24,8 @@ class Renderer {
   gl: WebGLRenderingContext
   programs: Map<object, WebGLProgram>
   renderList: Array<RenderedObject>
-  constructor(options: rendererOptions, attributes: contextAttributes={}) {
+  contextAttributes: ContextAttributes
+  constructor(options: rendererOptions, attributes: ContextAttributes={}) {
     this.renderList = []
     if (options.element instanceof HTMLCanvasElement) {
       this.canvas = options.element
@@ -48,7 +50,7 @@ class Renderer {
       element.insertBefore(this.canvas, element.firstChild)
     }
     
-    let defaultAttributes: contextAttributes = {
+    let defaultAttributes: ContextAttributes = {
       alpha: true,
       depth: true,
       stencil: true,
@@ -56,16 +58,27 @@ class Renderer {
       premultipliedAlpha: true,
       preserveDrawingBuffer: true
     }
-    attributes = Object.assign(defaultAttributes, attributes)
+    this.contextAttributes = Object.assign(defaultAttributes, attributes)
     this.gl = options.gl 
-    || <WebGLRenderingContext> this.canvas.getContext('webgl', attributes)
-    || <WebGLRenderingContext> this.canvas.getContext('experimental-webgl', attributes)
+    || <WebGLRenderingContext> this.canvas.getContext('webgl', this.contextAttributes)
+    || <WebGLRenderingContext> this.canvas.getContext('experimental-webgl', this.contextAttributes)
+    if (this.contextAttributes.depth) {
+      this.gl.enable(this.gl.DEPTH_TEST);
+    }
     this.programs = new Map()
   }
-  setUniform(key, uniform, value) {
-    let program = this.programs.get(key)
-    var location = this.gl.getUniformLocation(program, uniform);
-    this.gl.uniform1f(location, value)
+  setMatrixUniform(uniform, value) {
+
+    this.renderList.forEach(element => {
+      this.gl.useProgram(element.program)
+      var location = this.gl.getUniformLocation(element.program, uniform);
+      if (location != null) {
+        console.log(value)
+        this.gl.uniformMatrix4fv(location, false, value.elements)
+      }
+      console.log(uniform, 111)
+      
+    });
   }
   setupMouse(){
     let gl = this.gl
@@ -111,8 +124,7 @@ class Renderer {
   }
   render(background?: RenderedObject, shape?: RenderedObject) {
     let gl = this.gl
-    gl.clearColor(0.0, 0.0, 0.0, 0.0);
-    // gl.enable(gl.DEPTH_TEST);
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);   
     gl.enable(gl.CULL_FACE);
     let bufferManager = new BufferManager()
     let extensions = new Extensions(gl)
@@ -129,9 +141,14 @@ class Renderer {
     
     
     
+    let camera = new PerspectiveCamera(100, this.canvas.width / this.canvas.height, 0.1, 100)
 
-    
-
+    let mvpMatrix = new Matrix4()
+    mvpMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
+    let scale = new Matrix4()
+    scale.makeScale(1, 1, 1)
+    mvpMatrix.multiply(scale)
+    this.setMatrixUniform('mvpMatrix', mvpMatrix)
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
@@ -144,6 +161,11 @@ class Renderer {
           gl.uniform1f(location, clock.getElapsedTime())   
         }    
         // console.log(element.vertexNum)
+        if(element instanceof Background) {
+          gl.disable(gl.DEPTH_TEST);
+        } else if (this.contextAttributes.depth) {
+          gl.enable(gl.DEPTH_TEST);
+        }
         gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
       });
       //draw    

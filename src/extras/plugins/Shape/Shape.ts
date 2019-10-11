@@ -13,18 +13,9 @@ class Shape extends RenderedObject {
   fragmentShader: string
   geometry: Geometry
   uvTransform: Matrix3
-  constructor(index, position, fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
+  constructor(index, position, uv, fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}') {
     super()
     this.fragmentShader = fragmentShader
-    // let verties = []
-    // let contour = shape.contour
-    // for ( var i = 0; i < contour.length; i ++ ) {
-
-    //   verties.push( contour[ i ].x );
-    //   verties.push( contour[ i ].y );
-  
-    // }
-    let uvs = position
     this.uvTransform = new Matrix3()
     this.uvTransform.setUvTransform(0.5, 0.5, 2, 2, 0, 0, 0)
 
@@ -32,8 +23,8 @@ class Shape extends RenderedObject {
 
     
 
-    geometry.addAttribute('position', new Float32Attribute(position, 2))
-    geometry.addAttribute('uv', new Float32Attribute(uvs, 2))
+    geometry.addAttribute('position', new Float32Attribute(position, 3))
+    geometry.addAttribute('uv', new Float32Attribute(uv, 2))
     geometry.addAttribute('index', new Uint32Attribute(index, 1))
     this.geometry = geometry
   }
@@ -46,9 +37,9 @@ class Shape extends RenderedObject {
         attribute vec2 uv                                                                                                                                                                                                                                                                                                                       ;
         varying vec2 vUv;
         uniform mat3 uvTransform;
+        uniform mat4 mvpMatrix;
         void main () {
-          gl_Position = position;
-          gl_PointSize = 3.;
+          gl_Position = mvpMatrix*position;
           vUv = ( uvTransform * vec3( uv, 1 ) ).xy;;
         }
 
