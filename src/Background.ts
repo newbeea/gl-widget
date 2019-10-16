@@ -3,47 +3,18 @@ import { ShaderObject, Program } from "./Program";
 import { BackgroundGeometry } from "./BackgroundGeometry";
 import { BufferManager } from "./BufferManager";
 import { Geometry } from "./Geometry";
-import { RenderedObject } from "./RenderedObject";
+import { RenderedElement } from "./RenderedElement";
 
-class Background extends RenderedObject {
+class Background extends RenderedElement {
   program: WebGLProgram
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string
   geometry: Geometry
   constructor(fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}', geometry?: Geometry) {
-    super()
-    this.fragmentShader = fragmentShader
-    this.geometry = geometry || new BackgroundGeometry()
-  }
-  setup(gl: WebGLRenderingContext, bufferManager: BufferManager, width: number, height: number) {
-    this.gl = gl
-    let shader: ShaderObject = {
-      
-      vertexShader: `
-        attribute vec4 position;
-        void main () {
-          gl_Position = position;
-        }
-
-      `,
-      fragmentShader: this.fragmentShader
-    }
-    let program: Program = new Program(gl, shader)
-    this.program = program.program
-    
-    
-    //setup buffer and attribute
-    // let bufferManager = new BufferManager()
-    this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
-    this.setSize(width, height)
-  }
-  setSize(width: number, height: number) {
-    var r = this.gl.getUniformLocation(this.program, 'resolution')
-    this.gl.uniform2f(r, width, height);
-  }
-  getProgram(): WebGLProgram {
-    return this.program
+    super({
+      fragmentShader: fragmentShader
+    }, geometry || new BackgroundGeometry())   
   }
 }
 export {

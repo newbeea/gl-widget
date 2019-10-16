@@ -4,66 +4,19 @@ import { Clock } from './Clock';
 import * as backgroundShader from '../examples/background'
 import * as shapeShader from '../examples/shape'
 
-import { Shape } from './extras/plugins/Shape';
 import * as font from '../examples/font/averia.json';
-import { Font } from './extras/plugins/Font'
-
-
-import { ShapeUtils } from "./extras/plugins/Shape/ShapeUtils";
+import { FontElement } from './extras/plugins/Font'
 
 const renderer: Renderer = new Renderer({
     element: 'awesome-bg'
 }, {});
 
-let f = new Font(font)
-let shapes = f.generateShapes('P', 0.9 , 8)
-
-let shapePoints = shapes[0].extractPoints(12)
-
-
-var h,hl,ahole
-
-var vertices = shapePoints.shape;
-var holes = shapePoints.holes;
-
-var reverse = ! ShapeUtils.isClockWise( vertices );
-
-if ( reverse ) {
-
-  vertices = vertices.reverse();
-
-  // Maybe we should also check if holes are in the opposite direction, just to be safe ...
-
-  for ( h = 0, hl = holes.length; h < hl; h ++ ) {
-
-    ahole = holes[ h ];
-
-    if ( ShapeUtils.isClockWise( ahole ) ) {
-
-      holes[ h ] = ahole.reverse();
-
-    }
-
-  }
-
-}
-
-let index = ShapeUtils.triangulateShape(vertices, holes)
-let position = []
-let uv = []
-vertices.forEach(element => {
-  position.push(element.x, element.y, 0)  
-  uv.push(element.x, element.y)
-});
-let hole = holes.flat()
-hole.forEach(element => {
-  position.push(element.x, element.y, 0)  
-  uv.push(element.x, element.y)
-});
-
 let background: Background = new Background(backgroundShader.fluidShader);
-let shape: Shape = new Shape(index, position, uv, shapeShader.gradientShader)
-renderer.render(background, shape);
+let element = new FontElement('a', font, {
+  size: 1
+}, shapeShader.gradientShader)
+
+renderer.render(background, element);
 
 
 // test custom uniforms by users

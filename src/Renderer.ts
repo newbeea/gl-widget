@@ -1,7 +1,7 @@
 import { Background } from './Background';
 import { Clock } from './Clock';
 import { Extensions } from './Extensions';
-import { Shape } from './extras/plugins/Shape';
+
 import { BufferManager } from './BufferManager';
 import { RenderedObject } from './RenderedObject';
 import { PerspectiveCamera } from './cameras/PerspectiveCamera'
@@ -74,10 +74,8 @@ class Renderer {
       this.gl.useProgram(element.program)
       var location = this.gl.getUniformLocation(element.program, uniform);
       if (location != null) {
-        console.log(value)
         this.gl.uniformMatrix4fv(location, false, value.elements)
       }
-      console.log(uniform, 111)
       
     });
   }

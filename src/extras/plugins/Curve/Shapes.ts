@@ -1,7 +1,7 @@
 
 import { Path } from './Path';
 import { Shape } from './Shape';
-import { ShapeUtils } from '../Shape/ShapeUtils';
+import { ShapeUtils } from '../Triangulate/ShapeUtils';
 
 function Shapes() {
 
