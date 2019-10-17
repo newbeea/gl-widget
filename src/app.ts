@@ -15,6 +15,9 @@ let background: Background = new Background(backgroundShader.fluidShader);
 let element = new FontElement('ab', font, {
   size: 1
 }, shapeShader.gradientShader)
+element.position.x = -1
+element.position.y = -0.4
+element.scale.x = 0.5
 
 renderer.render(background, element);
 

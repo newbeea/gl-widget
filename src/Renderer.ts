@@ -145,12 +145,11 @@ class Renderer {
     let aspect = this.canvas.width / this.canvas.height
     // let camera = new PerspectiveCamera(100, aspect, 0.1, 100)
     let camera = new OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, -1000, 1000)
-    let mvpMatrix = new Matrix4()
-    mvpMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
-    let scale = new Matrix4()
-    scale.makeScale(1, 1, 1)
-    mvpMatrix.multiply(scale)
-    this.setMatrixUniform('mvpMatrix', mvpMatrix)
+    
+    // let scale = new Matrix4()
+    // scale.makeScale(1, 1, 1)
+    // mvpMatrix.multiply(scale)
+    // this.setMatrixUniform('mvpMatrix', mvpMatrix)
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
@@ -158,10 +157,21 @@ class Renderer {
       this.renderList.forEach((element: RenderableElement) => {
         bufferManager.updateBuffer(gl, element.program, element.geometry)
         gl.useProgram(element.program)
+
+
         var location = gl.getUniformLocation(element.program, 'time');
         if (location !== null) {
           gl.uniform1f(location, clock.getElapsedTime())   
         }    
+        element.updateMatrixWorld(true)
+        let mvpMatrix = new Matrix4()
+        mvpMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
+        mvpMatrix.multiply(element.matrix)
+        var location = this.gl.getUniformLocation(element.program, 'mvpMatrix');
+        if (location != null) {
+          this.gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
+        }
+
         // console.log(element.vertexNum)
         if(element instanceof Background) {
           gl.disable(gl.DEPTH_TEST);
