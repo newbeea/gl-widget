@@ -8,29 +8,47 @@ class Object3D {
   parent: Object3D;
   children: Array<Object3D>;
   matrixWorld: any;
-  position: Vector3;
-  quaternion: any;
-  scale: Vector3;
+  readonly position: Vector3;
+  readonly quaternion: any;
+  readonly scale: Vector3;
+  changed: boolean;
   constructor () {
+    this.changed = false
     this.matrix = new Matrix4()
     this.matrixWorld = new Matrix4()
-    this.position = new Vector3()
-    this.quaternion = new Quaternion()
-    this.scale = new Vector3(1, 1, 1)
+
+    this.position = new Proxy(new Vector3(), {
+      set: (target, key, value, receiver) => {
+        let v = Reflect.set(target, key, value, receiver)
+        this.updateMatrixWorld(true)
+        return v
+      }
+    })
+    this.quaternion = new Proxy(new Quaternion(), {
+      set: (target, key, value, receiver) => {
+        let v = Reflect.set(target, key, value, receiver)
+        this.updateMatrixWorld(true)
+        return v
+      }
+    })
+    this.scale = new Proxy(new Vector3(1, 1, 1), {
+      set: (target, key, value, receiver) => {
+        let v = Reflect.set(target, key, value, receiver)
+        this.updateMatrixWorld(true)
+        return v
+      }
+    })
     this.parent = null
     this.children = []
     this.matrixAutoUpdate = true
   }
   applyMatrix ( matrix ) {
-
 		this.matrix.multiplyMatrices( matrix, this.matrix );
-
 		this.matrix.decompose( this.position, this.quaternion, this.scale );
-
   }
   
   updateMatrix () {
-
+    this.changed = true
 		this.matrix.compose( this.position, this.quaternion, this.scale );
 		this.matrixWorldNeedsUpdate = true;
 

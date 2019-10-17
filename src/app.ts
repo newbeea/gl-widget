@@ -1,5 +1,5 @@
 import { Renderer, Background } from './Renderer';
-
+import { Vector3 } from './math/Vector3';
 import { Clock } from './Clock';
 import * as backgroundShader from '../examples/background'
 import * as shapeShader from '../examples/shape'
@@ -16,7 +16,7 @@ let element = new FontElement('ab', font, {
   size: 1
 }, shapeShader.gradientShader)
 element.position.x = -1
-element.position.y = -0.4
+// element.position = new Vector3(-2, 0, 0)
 element.scale.x = 0.5
 
 element.rotateY(0.5)

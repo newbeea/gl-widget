@@ -150,6 +150,9 @@ class Renderer {
     // scale.makeScale(1, 1, 1)
     // mvpMatrix.multiply(scale)
     // this.setMatrixUniform('mvpMatrix', mvpMatrix)
+
+    let pvMatrix = new Matrix4()
+    pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
@@ -163,10 +166,11 @@ class Renderer {
         if (location !== null) {
           gl.uniform1f(location, clock.getElapsedTime())   
         }    
-        element.updateMatrixWorld(true)
-        let mvpMatrix = new Matrix4()
-        mvpMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
-        mvpMatrix.multiply(element.matrix)
+        // element.updateMatrixWorld(true)
+        let mvpMatrix = pvMatrix.clone()
+        mvpMatrix.multiply(element.matrixWorld)
+        
+
         var location = this.gl.getUniformLocation(element.program, 'mvpMatrix');
         if (location != null) {
           this.gl.uniformMatrix4fv(location, false, mvpMatrix.elements)

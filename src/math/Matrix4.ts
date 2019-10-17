@@ -254,6 +254,7 @@ class Matrix4 {
 	decompose( position, quaternion, scale ) {
     var vector = new Vector3();
     var matrix = new Matrix4();
+
     var te = this.elements;
 
     var sx = vector.set( te[ 0 ], te[ 1 ], te[ 2 ] ).length();
@@ -343,6 +344,22 @@ class Matrix4 {
 			)
 
 		);
+
+  }
+  clone () {
+
+		return new Matrix4().fromArray( this.elements );
+
+  }
+  fromArray ( array, offset = 0) {
+
+		for ( var i = 0; i < 16; i ++ ) {
+
+			this.elements[ i ] = array[ i + offset ];
+
+		}
+
+		return this;
 
 	}
 }
