@@ -7,7 +7,7 @@ import { Vector3 } from './Vector3';
  * @author bhouston / http://clara.io
  */
 
-function Quaternion( x = 0, y = 0, z = 0, w  = 0) {
+function Quaternion( x = 0, y = 0, z = 0, w  = 1) {
 
 	this._x = x
 	this._y = y

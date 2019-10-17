@@ -21,10 +21,17 @@ class Object3D {
     this.children = []
     this.matrixAutoUpdate = true
   }
+  applyMatrix ( matrix ) {
+
+		this.matrix.multiplyMatrices( matrix, this.matrix );
+
+		this.matrix.decompose( this.position, this.quaternion, this.scale );
+
+  }
+  
   updateMatrix () {
 
 		this.matrix.compose( this.position, this.quaternion, this.scale );
-    console.log(this.matrix)
 		this.matrixWorldNeedsUpdate = true;
 
 	}
@@ -61,7 +68,45 @@ class Object3D {
 
 		}
 
-	}
+  }
+  
+  rotateOnAxis ( axis, angle ) {
+    var q1 = new Quaternion();
+    q1.setFromAxisAngle( axis, angle );
+
+    this.quaternion.multiply( q1 );
+
+    return this;
+
+  }
+
+	rotateOnWorldAxis ( axis, angle ) {
+    var q1 = new Quaternion();
+    q1.setFromAxisAngle( axis, angle );
+
+    this.quaternion.premultiply( q1 );
+
+    return this;
+
+  }
+
+	rotateX( angle ) {
+    var v1 = new Vector3( 1, 0, 0 );
+    return this.rotateOnAxis( v1, angle );
+
+  }
+
+	rotateY( angle ) {
+    var v1 = new Vector3( 0, 1, 0 )
+    return this.rotateOnAxis( v1, angle );
+
+  }
+
+	rotateZ( angle ) {
+    var v1 = new Vector3( 0, 0, 1 )
+    return this.rotateOnAxis( v1, angle );
+
+  }
 }
 export {
   Object3D

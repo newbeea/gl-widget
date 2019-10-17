@@ -19,6 +19,9 @@ element.position.x = -1
 element.position.y = -0.4
 element.scale.x = 0.5
 
+element.rotateY(0.5)
+element.rotateX(0.5)
+
 renderer.render(background, element);
 
 
