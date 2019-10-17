@@ -1,6 +1,6 @@
-import { RenderedElement } from '../../../RenderedElement'
+import { RenderableElement } from '../../../RenderableElement'
 import { FontGeometry } from './FontGeometry'
-class FontElement extends RenderedElement {
+class FontElement extends RenderableElement {
 	data: any;
 	constructor(text, font, options, fragmentShader) {
     let material = {

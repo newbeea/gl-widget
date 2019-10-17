@@ -1,12 +1,11 @@
 
 import { ShaderObject, Program } from "./Program";
-import { BackgroundGeometry } from "./BackgroundGeometry";
 import { BufferManager } from "./BufferManager";
 import { Geometry } from "./Geometry";
-import { RenderedObject } from "./RenderedObject";
+import { Object3D } from "./Object3D";
 import { Matrix3 } from "./math/Matrix3";
 
-class RenderedElement extends RenderedObject {
+class RenderableElement extends Object3D {
   program: WebGLProgram
   gl: WebGLRenderingContext
   vertexNum: number
@@ -58,5 +57,5 @@ class RenderedElement extends RenderedObject {
   }
 }
 export {
-  RenderedElement
+  RenderableElement
 } 

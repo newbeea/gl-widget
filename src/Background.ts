@@ -3,9 +3,9 @@ import { ShaderObject, Program } from "./Program";
 import { BackgroundGeometry } from "./BackgroundGeometry";
 import { BufferManager } from "./BufferManager";
 import { Geometry } from "./Geometry";
-import { RenderedElement } from "./RenderedElement";
+import { RenderableElement } from "./RenderableElement";
 
-class Background extends RenderedElement {
+class Background extends RenderableElement {
   program: WebGLProgram
   gl: WebGLRenderingContext
   vertexNum: number

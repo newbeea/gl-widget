@@ -1,99 +1,22 @@
-/**
- * @author zz85 / http://www.lab4games.net/zz85/blog
- * @author mrdoob / http://mrdoob.com/
- */
 
 import { Shapes } from '../Curve/Shapes';
-import { ShapeUtils } from '../Triangulate/ShapeUtils';
-import { Geometry } from '../../../Geometry'
-import { Float32Attribute } from '../../../Float32Attribute'
-import { Uint32Attribute } from '../../../Uint32Attribute'
-interface FontOptions {
-  size ?: number
-  divisions ?: number
-}
-class FontGeometry extends Geometry {
-  text: string;
-  data: object;
-  options: FontOptions;
-	constructor(text, font, options: FontOptions = {}) {
-    super();
-    this.text = text
-    this.data = font
-    this.options = Object.assign({
-      size: 1,
-      divisions: 4
-    }, options)
-    this.generateGeometry()
-  }
-  generateGeometry () {
-    let shapes = this.generateShapes(this.text, this.options.size, this.options.divisions)
-
-    let shapePoints = shapes[0].extractPoints(12)
+import { ShapeGeometry } from '../ShapeGeometry'
 
 
-    var h,hl,ahole
+function generateShapes ( text, data, size, divisions) {
 
-    var vertices = shapePoints.shape;
-    var holes = shapePoints.holes;
+  var shapes = [];
+  var paths = createPaths( text, size, divisions, data );
 
-    var reverse = ! ShapeUtils.isClockWise( vertices );
+  for ( var p = 0, pl = paths.length; p < pl; p ++ ) {
 
-    if ( reverse ) {
-
-      vertices = vertices.reverse();
-
-      // Maybe we should also check if holes are in the opposite direction, just to be safe ...
-
-      for ( h = 0, hl = holes.length; h < hl; h ++ ) {
-
-        ahole = holes[ h ];
-
-        if ( ShapeUtils.isClockWise( ahole ) ) {
-
-          holes[ h ] = ahole.reverse();
-
-        }
-
-      }
-
-    }
-
-    let index = ShapeUtils.triangulateShape(vertices, holes)
-    let position = []
-    let uv = []
-    vertices.forEach(element => {
-      position.push(element.x, element.y, 0)  
-      uv.push(element.x, element.y)
-    });
-    let hole = holes.flat()
-    hole.forEach(element => {
-      position.push(element.x, element.y, 0)  
-      uv.push(element.x, element.y)
-    });
-
-    this.addAttribute('position', new Float32Attribute(position, 3))
-    this.addAttribute('uv', new Float32Attribute(uv, 2))
-    this.addAttribute('index', new Uint32Attribute(index, 1))
+    Array.prototype.push.apply( shapes, paths[ p ].toShapes() );
 
   }
-  generateShapes ( text, size, divisions) {
 
-		var shapes = [];
-		var paths = createPaths( text, size, divisions, this.data );
+  return shapes;
 
-		for ( var p = 0, pl = paths.length; p < pl; p ++ ) {
-
-			Array.prototype.push.apply( shapes, paths[ p ].toShapes() );
-
-		}
-
-		return shapes;
-
-	}
 }
-
-
 function createPaths( text, size, divisions, data ) {
 
 	var chars = Array.from ? Array.from( text ) : String( text ).split( '' ); // see #13988
@@ -198,5 +121,29 @@ function createPath( char, divisions, scale, offsetX, offsetY, data ) {
 	return { offsetX: glyph.ha * scale, path: path };
 
 }
+
+interface FontOptions {
+  size ?: number
+  divisions ?: number
+}
+
+class FontGeometry extends ShapeGeometry {
+  text: string;
+  data: object;
+  options: FontOptions;
+  indices: any[];
+  uvs: any[];
+  positions: any[];
+	constructor(text, font, options: FontOptions = {}) {
+    options = Object.assign({
+      size: 1,
+      divisions: 4
+    }, options)
+    let shapes = generateShapes(text, font, options.size, options.divisions)
+    super(shapes);
+  }
+  
+}
+
 
 export { FontGeometry };

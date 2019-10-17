@@ -3,10 +3,10 @@ import { Clock } from './Clock';
 import { Extensions } from './Extensions';
 
 import { BufferManager } from './BufferManager';
-import { RenderedObject } from './RenderedObject';
 import { PerspectiveCamera } from './cameras/PerspectiveCamera'
 import { OrthographicCamera } from './cameras/OrthographicCamera'
 import { Matrix4 } from './math/Matrix4';
+import { RenderableElement } from './RenderableElement';
 export interface rendererOptions {
   // canvas?: HTMLCanvasElement
   element: HTMLElement | HTMLCanvasElement | string
@@ -24,7 +24,7 @@ class Renderer {
   canvas: HTMLCanvasElement;
   gl: WebGLRenderingContext
   programs: Map<object, WebGLProgram>
-  renderList: Array<RenderedObject>
+  renderList: Array<RenderableElement>
   contextAttributes: ContextAttributes
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
     this.renderList = []
@@ -121,7 +121,7 @@ class Renderer {
       mouseOld.y = mouseOffset.y
     }, false );
   }
-  render(background?: RenderedObject, shape?: RenderedObject) {
+  render(background?: RenderableElement, shape?: RenderableElement) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);   
     gl.enable(gl.CULL_FACE);
@@ -155,7 +155,7 @@ class Renderer {
     let animate = () => {
       //setup time uniform
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
-      this.renderList.forEach((element: RenderedObject) => {
+      this.renderList.forEach((element: RenderableElement) => {
         bufferManager.updateBuffer(gl, element.program, element.geometry)
         gl.useProgram(element.program)
         var location = gl.getUniformLocation(element.program, 'time');

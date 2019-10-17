@@ -12,7 +12,7 @@ const renderer: Renderer = new Renderer({
 }, {});
 
 let background: Background = new Background(backgroundShader.fluidShader);
-let element = new FontElement('a', font, {
+let element = new FontElement('ab', font, {
   size: 1
 }, shapeShader.gradientShader)
 
