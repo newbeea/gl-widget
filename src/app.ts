@@ -1,6 +1,6 @@
-import { Renderer, Background } from './Renderer';
+import { Renderer, Background, Clock, CAMERA } from './Renderer';
 import { Vector3 } from './math/Vector3';
-import { Clock } from './Clock';
+// import { Clock } from './Clock';
 import * as backgroundShader from '../examples/background'
 import * as shapeShader from '../examples/shape'
 
@@ -8,7 +8,8 @@ import * as font from '../examples/font/averia.json';
 import { FontElement } from './extras/plugins/Font'
 
 const renderer: Renderer = new Renderer({
-    element: 'awesome-bg'
+  cameraMode: CAMERA.ORTHOGRAPHIC,
+  element: 'awesome-bg'
 }, {});
 
 let background: Background = new Background(backgroundShader.fluidShader);
@@ -17,10 +18,10 @@ let element = new FontElement('ab', font, {
 }, shapeShader.gradientShader)
 element.position.x = -1
 // element.position = new Vector3(-2, 0, 0)
-element.scale.x = 0.5
+// element.scale.x = 0.5
 
-element.rotateY(0.5)
-element.rotateX(0.5)
+// element.rotateY(0.5)
+// element.rotateX(0.5)
 
 renderer.render(background, element);
 

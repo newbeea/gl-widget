@@ -7,10 +7,17 @@ import { PerspectiveCamera } from './cameras/PerspectiveCamera'
 import { OrthographicCamera } from './cameras/OrthographicCamera'
 import { Matrix4 } from './math/Matrix4';
 import { RenderableElement } from './RenderableElement';
+
+export enum CAMERA {
+  PERSPECTIVE,
+  ORTHOGRAPHIC
+}
 export interface rendererOptions {
   // canvas?: HTMLCanvasElement
   element: HTMLElement | HTMLCanvasElement | string
   gl?: WebGLRenderingContext
+  cameraMode?: CAMERA
+  
 }
 export interface ContextAttributes {
   alpha?: boolean,
@@ -26,6 +33,7 @@ class Renderer {
   programs: Map<object, WebGLProgram>
   renderList: Array<RenderableElement>
   contextAttributes: ContextAttributes
+  cameraMode: CAMERA
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
     this.renderList = []
     if (options.element instanceof HTMLCanvasElement) {
@@ -48,6 +56,7 @@ class Renderer {
       this.canvas.width = element.clientWidth
       this.canvas.height = element.clientHeight
       // element.appendChild(this.canvas)
+      this.cameraMode = options.cameraMode || CAMERA.PERSPECTIVE
       element.insertBefore(this.canvas, element.firstChild)
     }
     
@@ -143,8 +152,15 @@ class Renderer {
     
     let frustumSize = 3
     let aspect = this.canvas.width / this.canvas.height
-    // let camera = new PerspectiveCamera(100, aspect, 0.1, 100)
-    let camera = new OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, -1000, 1000)
+    let camera = this.cameraMode == CAMERA.PERSPECTIVE 
+      ? new PerspectiveCamera(100, aspect, 0.1, 100) 
+      : new OrthographicCamera(
+        frustumSize * aspect / -2, 
+        frustumSize * aspect / 2, 
+        frustumSize / 2, 
+        frustumSize / -2, 
+        -1000, 
+        1000)
     
     // let scale = new Matrix4()
     // scale.makeScale(1, 1, 1)
