@@ -15,7 +15,7 @@ const renderer: Renderer = new Renderer({
 let background: Background = new Background(backgroundShader.fluidShader);
 let element = new FontElement('ab', font, {
   size: 1,
-  alignment: Alignment.LEFTTOP
+  alignment: Alignment.CENTERMIDDLE
 }, shapeShader.gradientShader)
 // element.position.x = -1
 // element.position = new Vector3(-2, 0, 0)
