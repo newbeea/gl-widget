@@ -142,7 +142,8 @@ class FontGeometry extends ShapeGeometry {
 			alignment: Alignment.CENTERMIDDLE
     }, options)
     let shapes = generateShapes(text, font, options.size, options.divisions)
-    super(shapes, options.alignment);
+	console.log(shapes)
+	super(shapes, options.alignment);
   }
   
 }

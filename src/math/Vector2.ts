@@ -33,6 +33,9 @@ class Vector2 {
   dot(v: Vector2) {
     return this.x * v.x + this.y * v.y;
   }
+  length() {
+		return Math.sqrt( this.x * this.x + this.y * this.y );
+	}
   clone() {
     return new Vector2(this.x, this.y);
   }

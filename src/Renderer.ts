@@ -133,7 +133,7 @@ class Renderer {
   render(background?: RenderableElement, shape?: RenderableElement) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);   
-    gl.enable(gl.CULL_FACE);
+    // gl.enable(gl.CULL_FACE);
     let bufferManager = new BufferManager()
     let extensions = new Extensions(gl)
     
