@@ -187,9 +187,9 @@ class Renderer {
         mvpMatrix.multiply(element.matrixWorld)
         
 
-        var location = this.gl.getUniformLocation(element.program, 'mvpMatrix');
+        var location = gl.getUniformLocation(element.program, 'mvpMatrix');
         if (location != null) {
-          this.gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
+          gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
         }
 
         // console.log(element.vertexNum)

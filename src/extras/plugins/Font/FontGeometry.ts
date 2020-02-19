@@ -1,6 +1,6 @@
 
 import { Shapes } from '../Curve/Shapes';
-import { ShapeGeometry } from '../ShapeGeometry'
+import { ShapeGeometry, Alignment } from '../ShapeGeometry'
 
 
 function generateShapes ( text, data, size, divisions) {
@@ -124,7 +124,8 @@ function createPath( char, divisions, scale, offsetX, offsetY, data ) {
 
 interface FontOptions {
   size ?: number
-  divisions ?: number
+	divisions ?: number
+	alignment ?: Alignment
 }
 
 class FontGeometry extends ShapeGeometry {
@@ -137,10 +138,11 @@ class FontGeometry extends ShapeGeometry {
 	constructor(text, font, options: FontOptions = {}) {
     options = Object.assign({
       size: 1,
-      divisions: 4
+			divisions: 4,
+			alignment: Alignment.CENTERMIDDLE
     }, options)
     let shapes = generateShapes(text, font, options.size, options.divisions)
-    super(shapes);
+    super(shapes, options.alignment);
   }
   
 }

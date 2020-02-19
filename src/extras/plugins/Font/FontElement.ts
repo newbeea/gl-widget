@@ -18,7 +18,7 @@ class FontElement extends RenderableElement {
       fragmentShader: fragmentShader
     }
 		super(material, new FontGeometry(text, font, options));
-	}
+  }
 }
 export {
   FontElement

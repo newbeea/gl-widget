@@ -1,4 +1,4 @@
 
 import { FontElement } from './FontElement';
-
-export { FontElement };
+import { Alignment } from './../ShapeGeometry';
+export { FontElement, Alignment };
