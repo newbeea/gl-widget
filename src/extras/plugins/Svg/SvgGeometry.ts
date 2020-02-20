@@ -377,7 +377,7 @@ class SvgGeometry extends ShapeGeometry {
     options = Object.assign({
       size: 1,
       alignment: Alignment.CENTERMIDDLE,
-      flip: Flip.TOPBOTTOM
+      flip: Flip.TOPBOTTOM // svg to webgl: y' = -y
     }, options)
     let shapes = generateShapes(node, options.size)
     super(shapes, options.alignment, options.flip);

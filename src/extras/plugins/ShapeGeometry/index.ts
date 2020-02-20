@@ -116,6 +116,22 @@ class ShapeGeometry extends Geometry {
       } else if (flip === Flip.LEFTRIGHT) {
         this.positions[i] = - this.positions[i]
         this.uvs[j] = - this.uvs[j]
+      } else if (flip === Flip.LEFTTOP) {
+        let tmp = this.positions[i]
+        this.positions[i] = this.positions[i + 1]
+        this.positions[i + 1] = tmp
+
+        tmp = this.uvs[j]
+        this.uvs[j] = this.uvs[j]
+        this.uvs[j] = tmp
+      } else if (flip === Flip.RIGHTTOP) {
+        let tmp = this.positions[i]
+        this.positions[i] = -this.positions[i + 1]
+        this.positions[i + 1] = -tmp
+        
+        tmp = this.uvs[j]
+        this.uvs[j] = -this.uvs[j]
+        this.uvs[j] = -tmp
       }
       
     }
