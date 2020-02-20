@@ -7,6 +7,7 @@ import { PerspectiveCamera } from './cameras/PerspectiveCamera'
 import { OrthographicCamera } from './cameras/OrthographicCamera'
 import { Matrix4 } from './math/Matrix4';
 import { RenderableElement } from './RenderableElement';
+import { Object3D } from './Object3D';
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -130,7 +131,7 @@ class Renderer {
       mouseOld.y = mouseOffset.y
     }, false );
   }
-  render(background?: RenderableElement, shape?: RenderableElement) {
+  render(background?: RenderableElement, scene?: Object3D) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);   
     // gl.enable(gl.CULL_FACE);
@@ -142,9 +143,13 @@ class Renderer {
       background.setup(gl, bufferManager, this.canvas.width, this.canvas.height)
     }
     
-    if (shape) {
-      this.renderList.push(shape)
-      shape.setup(gl, bufferManager, this.canvas.width, this.canvas.height)
+    if (scene) {
+      scene.traverse((shape) => {
+        if (shape instanceof RenderableElement){
+          this.renderList.push(shape)
+          shape.setup(gl, bufferManager, this.canvas.width, this.canvas.height)
+        }  
+      })
     }
     
     
@@ -209,4 +214,4 @@ class Renderer {
     this.setupMouse()
   }
 }
-export { Renderer, Background, Clock };
+export { Renderer, Background, Clock, Object3D };

@@ -1,6 +1,7 @@
 import { Matrix4 } from "./math/Matrix4"
 import { Vector3 } from "./math/Vector3";
 import { Quaternion } from "./math/Quaternion";
+import { RenderableElement } from "./RenderableElement";
 class Object3D {
   matrix: Matrix4
   matrixWorldNeedsUpdate: boolean;
@@ -125,6 +126,41 @@ class Object3D {
     return this.rotateOnAxis( v1, angle );
 
   }
+
+  add ( object: Object3D ) {
+
+
+		if ( object ) {
+
+			// if ( object.parent !== null ) {
+
+			// 	object.parent.remove( object );
+
+			// }
+
+			object.parent = this;
+			// object.dispatchEvent( { type: 'added' } );
+
+			this.children.push( object );
+
+		}
+
+		return this;
+
+	}
+  traverse ( callback: Function ) {
+
+		callback( this );
+
+		var children = this.children;
+
+		for ( var i = 0, l = children.length; i < l; i ++ ) {
+
+			children[ i ].traverse( callback );
+
+		}
+
+	}
 }
 export {
   Object3D
