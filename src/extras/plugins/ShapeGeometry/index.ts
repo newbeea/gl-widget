@@ -25,12 +25,12 @@ class ShapeGeometry extends Geometry {
   uvs: any[];
   positions: any[];
   
-	constructor(shapes, alignment: Alignment=Alignment.CENTERMIDDLE, flip?: Flip) {
+	constructor() {
     super();
     this.indices = []
     this.uvs = []
     this.positions = []
-    this.generateGeometry(shapes, alignment, flip)
+    // this.generateGeometry(shapes, alignment, flip)
     
   }
   addShape (shape) {
@@ -85,7 +85,7 @@ class ShapeGeometry extends Geometry {
       this.uvs.push(element.x, element.y)
     });
   }
-  layout (alignment: Alignment, flip: Flip) {
+  layout (alignment?: Alignment, flip?: Flip) {
     let x = this.boundingBox.max.x - this.boundingBox.min.x
     let y = this.boundingBox.max.y - this.boundingBox.min.y
     let offsetX: number = 0
@@ -143,10 +143,11 @@ class ShapeGeometry extends Geometry {
     }
 
   }
-  generateGeometry (shapes, alignment: Alignment, flip: Flip) {
+  generateGeometry (shapes, alignment: Alignment, flip?: Flip) {
     shapes.forEach(shape => {
       this.addShape(shape)
     });
+
     this.layout(alignment, flip)
     this.addAttribute('position', new Float32Attribute(this.positions, 3))
     this.addAttribute('uv', new Float32Attribute(this.uvs, 2))

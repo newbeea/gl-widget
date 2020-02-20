@@ -138,12 +138,14 @@ class FontGeometry extends ShapeGeometry {
 	constructor(text, font, options: FontOptions = {}) {
     options = Object.assign({
       size: 1,
-			divisions: 4,
-			alignment: Alignment.CENTERMIDDLE
+		divisions: 4,
+		alignment: Alignment.CENTERMIDDLE
     }, options)
-    let shapes = generateShapes(text, font, options.size, options.divisions)
-	console.log(shapes)
-	super(shapes, options.alignment);
+    
+	super();
+
+	let shapes = generateShapes(text, font, options.size, options.divisions)
+	this.generateGeometry(shapes, options.alignment)
   }
   
 }

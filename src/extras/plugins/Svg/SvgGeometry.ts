@@ -469,11 +469,12 @@ class SvgGeometry extends ShapeGeometry {
     options = Object.assign({
       size: 1,
       isCCW: false,
-      // alignment: Alignment.CENTERMIDDLE,
+      alignment: Alignment.CENTERMIDDLE,
       flip: Flip.TOPBOTTOM // svg to webgl: y' = -y
     }, options)
+    super()
     let shapes = generateShapes(node, options.size, options.isCCW)
-    super(shapes, options.alignment, options.flip);
+    this.generateGeometry(shapes, options.alignment, options.flip)
   }
 
 }
