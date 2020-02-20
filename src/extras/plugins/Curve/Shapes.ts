@@ -149,7 +149,8 @@ Object.assign( Shapes.prototype, {
 			return shapes;
 
 		}
-		isCCW = !isClockWise( subPaths[ 0 ].getPoints() )
+		// isCCW = false
+		// isCCW = !isClockWise( subPaths[ 1 ].getPoints() )
 		var holesFirst = ! isClockWise( subPaths[ 0 ].getPoints() );
 		holesFirst = isCCW ? ! holesFirst : holesFirst;
 		

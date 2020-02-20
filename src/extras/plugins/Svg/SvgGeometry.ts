@@ -85,7 +85,7 @@ function traverseNodes(child, obj, attributes = {}) {
     }
   }
 }
-function transformSVGPath(path, scale) {
+function transformSVGPath(path, scale, isCCW) {
   var pathStr = path.d;
   var path = new Shapes();
   var idx = 1,
@@ -332,14 +332,14 @@ function transformSVGPath(path, scale) {
     activeCmd = pathStr[idx++];
   }
 
-  return path.toShapes();
+  return path.toShapes(isCCW);
 }
-function addPaths(paths: Array<any>, transform: Function, scale): Array<any> {
+function addPaths(paths: Array<any>, transform: Function, scale, isCCW?: Boolean): Array<any> {
   var len = paths.length;
   let shapes = []
   for (var i = 0; i < len; ++i) {
     // console.log(paths[i]);
-    var path = transform(paths[i], scale);
+    var path = transform(paths[i], scale, isCCW);
     // if (path == false) {
     //   // console.log('none path', path);
     //   return shapes;
@@ -434,7 +434,7 @@ function transformSVGPolygon(polygon, scale) {
   };
   return path.toShapes();
 }
-function generateShapes(node, size) {
+function generateShapes(node, size, isCCW) {
   let obj: any = {};
   obj.paths = [];
   obj.polygons = [];
@@ -449,7 +449,7 @@ function generateShapes(node, size) {
   
   traverseNodes(node, obj)
   console.log(obj)
-  let shapes: Array<any> = addPaths(obj.paths, transformSVGPath, scale) 
+  let shapes: Array<any> = addPaths(obj.paths, transformSVGPath, scale, isCCW) 
   shapes.push(...addPaths(obj.ellipses, transformSVGEllipse, scale) )
   shapes.push(...addPaths(obj.circles, transformSVGCircle, scale) )
   shapes.push(...addPaths(obj.rects, transformSVGRect, scale) )
@@ -461,16 +461,18 @@ interface SvgOptions {
   size?: number
   alignment?: Alignment
   flip?: Flip
+  isCCW?: Boolean
 }
 
 class SvgGeometry extends ShapeGeometry {
   constructor(node, options: SvgOptions = {}) {
     options = Object.assign({
       size: 1,
+      isCCW: false,
       // alignment: Alignment.CENTERMIDDLE,
       flip: Flip.TOPBOTTOM // svg to webgl: y' = -y
     }, options)
-    let shapes = generateShapes(node, options.size)
+    let shapes = generateShapes(node, options.size, options.isCCW)
     super(shapes, options.alignment, options.flip);
   }
 

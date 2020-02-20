@@ -1,8 +1,7 @@
 import { Renderer, Background, Clock, CAMERA } from './Renderer';
 import { Vector3 } from './math/Vector3';
-// import { Clock } from './Clock';
-import backgroundShader from '../examples/background'
-import shapeShader from '../examples/shape'
+import backgroundShader from '../examples/background/index'
+import shapeShader from '../examples/shape/index'
 
 
 
@@ -23,11 +22,12 @@ let element = new FontElement('ab', font, {
 
 import { SvgElement } from './extras/plugins/Svg'
 import parseXML from 'xml-parse-from-string'
-import svgString from '../examples/svg/heart.svg';
+import svgString from '../examples/svg/good.svg';
 let doc = parseXML(svgString)
 let svgNode = doc.querySelector('svg');
 let svg = new SvgElement(svgNode, {
-  size: 2,                                                                
+  size: 2,
+  // isCCW: true                                                   
   // alignment: Alignment.CENTERMIDDLE
 }, shapeShader.gradientShader)
 // element.position.x = -1
