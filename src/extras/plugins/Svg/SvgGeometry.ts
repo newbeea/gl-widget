@@ -1,6 +1,6 @@
 
 import { Shapes } from '../Curve/Shapes';
-import { ShapeGeometry, Alignment } from '../ShapeGeometry'
+import { ShapeGeometry, Alignment, Flip } from '../ShapeGeometry'
 import { Vector2 } from '../../../math/Vector2';
 const DEGS_TO_RADS = Math.PI / 180,
   UNIT_SIZE = 100;
@@ -84,7 +84,7 @@ function traverseNodes(child, obj, attributes = {}) {
     }
   }
 }
-function transformSVGPath(path) {
+function transformSVGPath(path, scale) {
   var pathStr = path.d;
   var path = new Shapes();
   var idx = 1,
@@ -132,12 +132,12 @@ function transformSVGPath(path) {
       s = pathStr.substring(sidx, idx);
       // console.log(parseFloat(s));
       let num = isFloat ? parseFloat(s) : parseInt(s);
-      return num / 100
+      return num * scale
     }
     s = pathStr.substring(sidx);
     // console.log(parseFloat(s));
     let num = isFloat ? parseFloat(s) : parseInt(s);
-    return num / 1000
+    return num * scale
   }
 
   function nextIsNum() {
@@ -329,12 +329,12 @@ function transformSVGPath(path) {
   }
   return path;
 }
-function addPaths(paths: Array<any>) {
+function addPaths(paths: Array<any>, scale) {
   var len = paths.length;
   let shapes = []
   for (var i = 0; i < len; ++i) {
     // console.log(paths[i]);
-    var path = transformSVGPath(paths[i]);
+    var path = transformSVGPath(paths[i], scale);
     if (path == false) {
       // console.log('none path', path);
       return false;
@@ -346,7 +346,7 @@ function addPaths(paths: Array<any>) {
   }
   return shapes;
 }
-function generateShapes(node) {
+function generateShapes(node, size) {
   let obj: any = {};
   obj.paths = [];
   obj.polygons = [];
@@ -355,35 +355,32 @@ function generateShapes(node) {
   obj.ellipses = [];
   obj.rects = [];
   obj.lines = [];
-  let viewBox = node.getAttribute('viewBox')
+  let viewBox: string = node.getAttribute('viewBox')
   console.log(viewBox)
+
+  let height = parseInt(viewBox.split(' ')[3])
+  let scale = size / height
   traverseNodes(node, obj)
-  let shapes = addPaths(obj.paths) 
+  let shapes = addPaths(obj.paths, scale) 
   console.log(shapes)
   return shapes
 }
 
 interface SvgOptions {
   size?: number
-  divisions?: number
   alignment?: Alignment
+  flip?: Flip
 }
 
 class SvgGeometry extends ShapeGeometry {
-  text: string;
-  data: object;
-  options: SvgOptions;
-  indices: any[];
-  uvs: any[];
-  positions: any[];
   constructor(node, options: SvgOptions = {}) {
     options = Object.assign({
       size: 1,
-      divisions: 4,
-      alignment: Alignment.CENTERMIDDLE
+      alignment: Alignment.CENTERMIDDLE,
+      flip: Flip.TOPBOTTOM
     }, options)
-    let shapes = generateShapes(node)
-    super(shapes, options.alignment);
+    let shapes = generateShapes(node, options.size)
+    super(shapes, options.alignment, options.flip);
   }
 
 }

@@ -18,7 +18,7 @@ class SvgElement extends RenderableElement {
       fragmentShader: fragmentShader
     }
     super(material, new SvgGeometry(node, options));
-    this.scale.y = -1
+    // this.scale.y = -1
   }
 }
 export {

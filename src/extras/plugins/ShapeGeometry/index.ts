@@ -13,17 +13,23 @@ enum Alignment {
   LEFTTOP,
   LEFTMIDDEL
 }
+enum Flip {
+  TOPBOTTOM,
+  LEFTRIGHT,
+  LEFTTOP,
+  RIGHTTOP
+}
 class ShapeGeometry extends Geometry {
   indices: any[];
   uvs: any[];
   positions: any[];
   
-	constructor(shapes, alignment: Alignment = Alignment.CENTERMIDDLE) {
+	constructor(shapes, alignment: Alignment = Alignment.CENTERMIDDLE, flip?: Flip) {
     super();
     this.indices = []
     this.uvs = []
     this.positions = []
-    this.generateGeometry(shapes, alignment)
+    this.generateGeometry(shapes, alignment, flip)
     
   }
   addShape (shape) {
@@ -78,7 +84,7 @@ class ShapeGeometry extends Geometry {
       this.uvs.push(element.x, element.y)
     });
   }
-  setPivot (alignment: Alignment) {
+  layout (alignment: Alignment, flip: Flip) {
     let x = this.boundingBox.max.x - this.boundingBox.min.x
     let y = this.boundingBox.max.y - this.boundingBox.min.y
     let offsetX: number = 0
@@ -97,20 +103,29 @@ class ShapeGeometry extends Geometry {
         offsetY = - y
         break
     }
-    for(let i = 0; i < this.positions.length; i += 3) {
-      this.positions[i] += offsetX
-      this.positions[i + 1] += offsetY
+    for(let i = 0, j = 0; i < this.positions.length; i += 3, j += 2) {
+      this.positions[i] += offsetX - this.boundingBox.min.x
+      this.positions[i + 1] += offsetY - this.boundingBox.min.y
+
+      this.uvs[j] += offsetX - this.boundingBox.min.x
+      this.uvs[j + 1] += offsetY - this.boundingBox.min.y
+
+      if (flip === Flip.TOPBOTTOM) {
+        this.positions[i + 1] = - this.positions[i + 1]
+        this.uvs[j + 1] = - this.uvs[j + 1]
+      } else if (flip === Flip.LEFTRIGHT) {
+        this.positions[i] = - this.positions[i]
+        this.uvs[j] = - this.uvs[j]
+      }
+      
     }
-    for(let i = 0; i < this.uvs.length; i += 2) {
-      this.uvs[i] += offsetX
-      this.uvs[i + 1] += offsetY
-    }
+
   }
-  generateGeometry (shapes, alignment: Alignment) {
+  generateGeometry (shapes, alignment: Alignment, flip: Flip) {
     shapes.forEach(shape => {
       this.addShape(shape)
     });
-    this.setPivot(alignment)
+    this.layout(alignment, flip)
     this.addAttribute('position', new Float32Attribute(this.positions, 3))
     this.addAttribute('uv', new Float32Attribute(this.uvs, 2))
     this.addAttribute('index', new Uint32Attribute(this.indices, 1))
@@ -120,4 +135,4 @@ class ShapeGeometry extends Geometry {
 }
 
 
-export { ShapeGeometry, Alignment };
+export { ShapeGeometry, Alignment, Flip };
