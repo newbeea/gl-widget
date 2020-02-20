@@ -8,6 +8,7 @@ interface FontOptions {
   divisions ?: number
 }
 enum Alignment {
+  NONE,
   CENTERMIDDLE,
   LEFTBOTTOM,
   LEFTTOP,
@@ -24,7 +25,7 @@ class ShapeGeometry extends Geometry {
   uvs: any[];
   positions: any[];
   
-	constructor(shapes, alignment: Alignment = Alignment.CENTERMIDDLE, flip?: Flip) {
+	constructor(shapes, alignment: Alignment=Alignment.CENTERMIDDLE, flip?: Flip) {
     super();
     this.indices = []
     this.uvs = []
@@ -89,26 +90,31 @@ class ShapeGeometry extends Geometry {
     let y = this.boundingBox.max.y - this.boundingBox.min.y
     let offsetX: number = 0
     let offsetY: number = 0
+
     switch (alignment) {
       case Alignment.CENTERMIDDLE:
-        offsetX = - x / 2
-        offsetY = - y / 2
+        offsetX = - x / 2 - this.boundingBox.min.x
+        offsetY = - y / 2 - this.boundingBox.min.y
         break
       case Alignment.LEFTMIDDEL:
-        offsetX = 0
-        offsetY = - y / 2
+        offsetX = 0 - this.boundingBox.min.x
+        offsetY = - y / 2 - this.boundingBox.min.y
         break
       case Alignment.LEFTTOP:
-        offsetX = 0
-        offsetY = - y
+        offsetX = 0 - this.boundingBox.min.x
+        offsetY = - y - this.boundingBox.min.y
+        break
+      case Alignment.LEFTBOTTOM:
+        offsetX = - this.boundingBox.min.x
+        offsetY = - this.boundingBox.min.y
         break
     }
     for(let i = 0, j = 0; i < this.positions.length; i += 3, j += 2) {
-      this.positions[i] += offsetX - this.boundingBox.min.x
-      this.positions[i + 1] += offsetY - this.boundingBox.min.y
+      this.positions[i] += offsetX
+      this.positions[i + 1] += offsetY
 
-      this.uvs[j] += offsetX - this.boundingBox.min.x
-      this.uvs[j + 1] += offsetY - this.boundingBox.min.y
+      this.uvs[j] += offsetX
+      this.uvs[j + 1] += offsetY
 
       if (flip === Flip.TOPBOTTOM) {
         this.positions[i + 1] = - this.positions[i + 1]

@@ -30,11 +30,15 @@ module.exports = {
       {
         test: /\.glsl$/,
         loader: 'raw-loader'
+      },
+      {
+        test: /\.svg$/,
+        loader: 'raw-loader'
       }
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js', '.glsl']
+    extensions: ['.ts', '.js', '.glsl', '.svg']
   },
   plugins:[
     new HtmlWebpackPlugin({

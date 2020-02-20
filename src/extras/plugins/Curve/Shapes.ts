@@ -40,7 +40,11 @@ Object.assign( Shapes.prototype, {
 		this.currentPath.bezierCurveTo( aCP1x, aCP1y, aCP2x, aCP2y, aX, aY );
 
 	},
+	absarc: function ( aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise ) {
 
+		this.currentPath.absellipse( aX, aY, aRadius, aRadius, aStartAngle, aEndAngle, aClockwise );
+
+	},
 	splineThru: function ( pts ) {
 
 		this.currentPath.splineThru( pts );
@@ -48,7 +52,6 @@ Object.assign( Shapes.prototype, {
 	},
 
 	toShapes: function ( isCCW, noHoles ) {
-
 		function toShapesNoHoles( inSubpaths ) {
 
 			var shapes = [];
@@ -146,10 +149,10 @@ Object.assign( Shapes.prototype, {
 			return shapes;
 
 		}
-
+		isCCW = !isClockWise( subPaths[ 0 ].getPoints() )
 		var holesFirst = ! isClockWise( subPaths[ 0 ].getPoints() );
 		holesFirst = isCCW ? ! holesFirst : holesFirst;
-
+		
 		// console.log("Holes first", holesFirst);
 
 		var betterShapeHoles = [];
@@ -166,6 +169,7 @@ Object.assign( Shapes.prototype, {
 			tmpPath = subPaths[ i ];
 			tmpPoints = tmpPath.getPoints();
 			solid = isClockWise( tmpPoints );
+
 			solid = isCCW ? ! solid : solid;
 
 			if ( solid ) {
@@ -268,7 +272,6 @@ Object.assign( Shapes.prototype, {
 
 		}
 
-		//console.log("shape", shapes);
 
 		return shapes;
 

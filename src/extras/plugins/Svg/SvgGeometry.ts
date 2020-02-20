@@ -2,6 +2,7 @@
 import { Shapes } from '../Curve/Shapes';
 import { ShapeGeometry, Alignment, Flip } from '../ShapeGeometry'
 import { Vector2 } from '../../../math/Vector2';
+import { Shape } from '../Curve/Shape';
 const DEGS_TO_RADS = Math.PI / 180,
   UNIT_SIZE = 100;
 const DIGIT_0 = 48,
@@ -132,12 +133,12 @@ function transformSVGPath(path, scale) {
       s = pathStr.substring(sidx, idx);
       // console.log(parseFloat(s));
       let num = isFloat ? parseFloat(s) : parseInt(s);
-      return num * scale
+      return num
     }
     s = pathStr.substring(sidx);
     // console.log(parseFloat(s));
     let num = isFloat ? parseFloat(s) : parseInt(s);
-    return num * scale
+    return num
   }
 
   function nextIsNum() {
@@ -160,8 +161,8 @@ function transformSVGPath(path, scale) {
     switch (activeCmd) {
       // moveto commands, become lineto's if repeated
       case 'M':
-        x = eatNum();
-        y = eatNum();
+        x = eatNum() * scale;
+        y = eatNum() * scale;
         // if (viewBox && ((x < viewBox.x1 || x > viewBox.x2) || (y < viewBox.y1 || y > viewBox.y2))) return -1;
         path.moveTo(x, y);
         activeCmd = 'L';
@@ -169,8 +170,8 @@ function transformSVGPath(path, scale) {
         firstY = y;
         break;
       case 'm':
-        x += eatNum();
-        y += eatNum();
+        x += eatNum() * scale;
+        y += eatNum() * scale;
         path.moveTo(x, y);
         activeCmd = 'l';
         firstX = x;
@@ -185,8 +186,8 @@ function transformSVGPath(path, scale) {
       case 'L':
       case 'H':
       case 'V':
-        nx = (activeCmd === 'V') ? x : eatNum();
-        ny = (activeCmd === 'H') ? y : eatNum();
+        nx = (activeCmd === 'V') ? x : eatNum() * scale;
+        ny = (activeCmd === 'H') ? y : eatNum() * scale;
         path.lineTo(nx, ny);
         x = nx;
         y = ny;
@@ -194,94 +195,94 @@ function transformSVGPath(path, scale) {
       case 'l':
       case 'h':
       case 'v':
-        nx = (activeCmd === 'v') ? x : (x + eatNum());
-        ny = (activeCmd === 'h') ? y : (y + eatNum());
+        nx = (activeCmd === 'v') ? x : (x + eatNum() * scale);
+        ny = (activeCmd === 'h') ? y : (y + eatNum() * scale);
         path.lineTo(nx, ny);
         x = nx;
         y = ny;
         break;
       // - cubic bezier
       case 'C':
-        x1 = eatNum();
-        y1 = eatNum();
+        x1 = eatNum() * scale;
+        y1 = eatNum() * scale;
       case 'S':
         if (activeCmd === 'S') {
           x1 = 2 * x - x2;
           y1 = 2 * y - y2;
         }
-        x2 = eatNum();
-        y2 = eatNum();
-        nx = eatNum();
-        ny = eatNum();
+        x2 = eatNum() * scale;
+        y2 = eatNum() * scale;
+        nx = eatNum() * scale;
+        ny = eatNum() * scale;
         path.bezierCurveTo(x1, y1, x2, y2, nx, ny);
         x = nx;
         y = ny;
         break;
       case 'c':
-        x1 = x + eatNum();
-        y1 = y + eatNum();
+        x1 = x + eatNum() * scale;
+        y1 = y + eatNum() * scale;
       case 's':
         if (activeCmd === 's') {
           x1 = 2 * x - x2;
           y1 = 2 * y - y2;
         }
-        x2 = x + eatNum();
-        y2 = y + eatNum();
-        nx = x + eatNum();
-        ny = y + eatNum();
+        x2 = x + eatNum() * scale;
+        y2 = y + eatNum() * scale;
+        nx = x + eatNum() * scale;
+        ny = y + eatNum() * scale;
         path.bezierCurveTo(x1, y1, x2, y2, nx, ny);
         x = nx;
         y = ny;
         break;
       // - quadratic bezier
       case 'Q':
-        x1 = eatNum();
-        y1 = eatNum();
+        x1 = eatNum() * scale;
+        y1 = eatNum() * scale;
       case 'T':
         if (activeCmd === 'T') {
           x1 = 2 * x - x1;
           y1 = 2 * y - y1;
         }
-        nx = eatNum();
-        ny = eatNum();
+        nx = eatNum() * scale;
+        ny = eatNum() * scale;
         path.quadraticCurveTo(x1, y1, nx, ny);
         x = nx;
         y = ny;
         break;
       case 'q':
-        x1 = x + eatNum();
-        y1 = y + eatNum();
+        x1 = x + eatNum() * scale;
+        y1 = y + eatNum() * scale;
       case 't':
         if (activeCmd === 't') {
           x1 = 2 * x - x1;
           y1 = 2 * y - y1;
         }
-        nx = x + eatNum();
-        ny = y + eatNum();
+        nx = x + eatNum() * scale;
+        ny = y + eatNum() * scale;
         path.quadraticCurveTo(x1, y1, nx, ny);
         x = nx;
         y = ny;
         break;
       // - elliptical arc
       case 'a':
-        rx = eatNum();
-        ry = eatNum();
+        rx = eatNum() * scale;
+        ry = eatNum() * scale;
         xar = eatNum() * DEGS_TO_RADS;
         laf = eatNum();
         sf = eatNum();
-        nx = x + eatNum();
-        ny = y + eatNum();
+        nx = x + eatNum() * scale;
+        ny = y + eatNum() * scale;
         // console.log(nx, ny);
         relative = true;
       case 'A':
         if (!relative) {
-          rx = eatNum();
-          ry = eatNum();
+          rx = eatNum() * scale;
+          ry = eatNum() * scale;
           xar = eatNum() * DEGS_TO_RADS;
           laf = eatNum();
           sf = eatNum();
-          nx = eatNum();
-          ny = eatNum();
+          nx = eatNum() * scale;
+          ny = eatNum() * scale;
           // console.log(nx, ny);
         }
         if (rx !== ry) {
@@ -309,11 +310,14 @@ function transformSVGPath(path, scale) {
         u.x = (-x1 - x2) / rx;
         u.y = (-y1 - y2) / ry;
         var deltaAng = Math.acos(v.dot(u) / v.length() / u.length());
+        let cw = sf == 1 ? true: false
         // This normalization ends up making our curves fail to triangulate...
         if (v.x * u.y - v.y * u.x < 0) deltaAng = -deltaAng;
-        if (!sf && deltaAng > 0) deltaAng -= Math.PI * 2;
-        if (sf && deltaAng < 0) deltaAng += Math.PI * 2;
-        path.absarc(cx, cy, rx, startAng, startAng + deltaAng, sf);
+
+        if (!cw && deltaAng > 0) deltaAng -= Math.PI * 2;
+        if (cw && deltaAng < 0) deltaAng += Math.PI * 2;
+ 
+        path.absarc(cx, cy, rx, startAng, startAng + deltaAng, cw);
         x = nx;
         y = ny;
         break;
@@ -327,24 +331,108 @@ function transformSVGPath(path, scale) {
     if (canRepeat && nextIsNum()) continue;
     activeCmd = pathStr[idx++];
   }
-  return path;
+
+  return path.toShapes();
 }
-function addPaths(paths: Array<any>, scale) {
+function addPaths(paths: Array<any>, transform: Function, scale): Array<any> {
   var len = paths.length;
   let shapes = []
   for (var i = 0; i < len; ++i) {
     // console.log(paths[i]);
-    var path = transformSVGPath(paths[i], scale);
-    if (path == false) {
-      // console.log('none path', path);
-      return false;
+    var path = transform(paths[i], scale);
+    // if (path == false) {
+    //   // console.log('none path', path);
+    //   return shapes;
+    // }
+    // if (path == -1) continue;
+    // var simpleShapes = path.toShapes(true);
+    if (path instanceof(Array)) {
+      shapes.push(...path)
+    } else {
+      shapes.push(path)
     }
-    if (path == -1) continue;
-    var simpleShapes = path.toShapes(true);
-    shapes.push(...simpleShapes)
+    
 
   }
   return shapes;
+}
+
+function transformSVGCircle(circle, scale) {
+  var path = new Shape();
+  var x = parseFloat(circle.cx) * scale;
+  var y = parseFloat(circle.cy) * scale;
+  var r = parseFloat(circle.r) * scale;
+  path.moveTo(x + r, y);
+  path.absarc(x, y, r, 0, Math.PI * 2, false);
+  return path;
+}
+function transformSVGEllipse(ellipse, scale) {
+  var path = new Shape();
+  var x = parseFloat(ellipse.cx) * scale;
+  var y = parseFloat(ellipse.cy) * scale;
+  var rx = parseFloat(ellipse.rx) * scale;
+  var ry = parseFloat(ellipse.ry) * scale;
+  path.moveTo(x + rx, y);
+  path.absellipse(x, y, rx, ry, 0, Math.PI * 2, false);
+  return path;
+}
+function applyMatrix(x, y, m ) {
+  var v = {
+    x: 0,
+    y: 0
+  }
+  if (m) {
+      v.x = m[0]*x + m[2]*y + m[4]
+      v.y = m[1]*x + m[3]*y + m[5]
+  } else {
+      v.x = x
+      v.y = y
+  }
+  return v;
+}
+function transformSVGRect(rect, scale) {
+  var path = new Shape();
+  var x = parseFloat(rect.x) * scale;
+  var y = parseFloat(rect.y) * scale;
+  var width = parseFloat(rect.width) * scale;
+  var height = parseFloat(rect.height) * scale;
+
+  var v;
+  // var m = [0.9214, 0.3885, -0.3885, 0.9214, 39.3114, -44.4205]
+  // m = [1, 0, 0, 1, 30, 30]
+  v = applyMatrix(x, y, rect.matrix)
+  path.moveTo(v.x, v.y);
+  v = applyMatrix(x + width, y, rect.matrix)
+  path.lineTo(v.x, v.y);
+  v = applyMatrix(x + width, y + height, rect.matrix)
+  path.lineTo(v.x, v.y);
+  v = applyMatrix(x, y + height, rect.matrix)
+  path.lineTo(v.x, v.y);
+  return path;
+}
+function transformSVGPolygon(polygon, scale) {
+  var polygonStr = polygon.points;
+  String.prototype.trim = function() {　　
+      return this.replace(/(^\s*)|(\s*$)/g, "");　　
+  }
+  var path = new Shapes();
+  var points = polygonStr.split(' ');
+
+  var index = 0;
+  for (var i in points) {
+      var p = points[i].trim();
+      if (!p) continue;
+      var point = p.split(',');
+      var x = parseFloat(point[0]) * scale;
+      var y = parseFloat(point[1]) * scale;
+      if (index == 0) {
+          path.moveTo(x, y);
+      } else {
+          path.lineTo(x, y);
+      }
+      index++;
+  };
+  return path.toShapes();
 }
 function generateShapes(node, size) {
   let obj: any = {};
@@ -356,13 +444,16 @@ function generateShapes(node, size) {
   obj.rects = [];
   obj.lines = [];
   let viewBox: string = node.getAttribute('viewBox')
-  console.log(viewBox)
-
   let height = parseInt(viewBox.split(' ')[3])
   let scale = size / height
+  
   traverseNodes(node, obj)
-  let shapes = addPaths(obj.paths, scale) 
-  console.log(shapes)
+  console.log(obj)
+  let shapes: Array<any> = addPaths(obj.paths, transformSVGPath, scale) 
+  shapes.push(...addPaths(obj.ellipses, transformSVGEllipse, scale) )
+  shapes.push(...addPaths(obj.circles, transformSVGCircle, scale) )
+  shapes.push(...addPaths(obj.rects, transformSVGRect, scale) )
+  shapes.push(...addPaths(obj.polygons, transformSVGPolygon, scale) )
   return shapes
 }
 
@@ -376,7 +467,7 @@ class SvgGeometry extends ShapeGeometry {
   constructor(node, options: SvgOptions = {}) {
     options = Object.assign({
       size: 1,
-      alignment: Alignment.CENTERMIDDLE,
+      // alignment: Alignment.CENTERMIDDLE,
       flip: Flip.TOPBOTTOM // svg to webgl: y' = -y
     }, options)
     let shapes = generateShapes(node, options.size)

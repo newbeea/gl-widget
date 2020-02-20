@@ -4,6 +4,7 @@ import { Vector2 } from '../../../math/Vector2'
 import { LineCurve } from './LineCurve';
 import { CubicBezierCurve } from './CubicBezierCurve'
 import { QuadraticBezierCurve } from './QuadraticBezierCurve'
+import { EllipseCurve } from './EllipseCurve';
 
 function Path(points?) {
 
@@ -99,6 +100,36 @@ Path.prototype = Object.assign( Object.create( Curve.prototype ), {
 		this.curves.push( curve );
 
 		this.currentPoint.set( aX, aY );
+
+	},
+
+	absellipse: function ( aX, aY, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation ) {
+
+		var curve = new EllipseCurve( aX, aY, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation );
+
+		if ( this.curves.length > 0 ) {
+
+			// if a previous curve is present, attempt to join
+			var firstPoint = curve.getPoint( 0 );
+
+			if ( ! firstPoint.equals( this.currentPoint ) ) {
+
+				this.lineTo( firstPoint.x, firstPoint.y );
+
+			}
+
+		}
+
+		this.curves.push( curve );
+
+		var lastPoint = curve.getPoint( 1 );
+		this.currentPoint.copy( lastPoint );
+
+	},
+
+	absarc: function ( aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise ) {
+
+		this.absellipse( aX, aY, aRadius, aRadius, aStartAngle, aEndAngle, aClockwise );
 
 	},
 	// To get accurate point with reference to

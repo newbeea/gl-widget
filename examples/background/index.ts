@@ -6,7 +6,7 @@ import hackerShader from './hacker.glsl'
 import creatureShader from './creature.glsl'
 import starShader from './star.glsl'
 import curveShader from './curve.glsl'
-export {
+export default {
   fluidShader,
   fireShader,
   gradientShader,

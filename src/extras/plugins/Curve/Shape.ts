@@ -1,4 +1,5 @@
 import { Path } from './Path';
+import { EllipseCurve } from './EllipseCurve';
 
 
 function Shape( points? ) {
@@ -41,7 +42,7 @@ Shape.prototype = Object.assign( Object.create( Path.prototype ), {
 		};
 
 	},
-
+	
 	copy: function ( source ) {
 
 		Path.prototype.copy.call( this, source );

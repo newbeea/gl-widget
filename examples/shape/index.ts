@@ -1,6 +1,6 @@
 import gradientShader from './gradient.glsl'
 import loveShader from './love.glsl'
-export {
+export default {
   gradientShader,
   loveShader
 }
