@@ -2,7 +2,7 @@ import { RenderableElement } from '../../../RenderableElement'
 import { FontGeometry } from './FontGeometry'
 class FontElement extends RenderableElement {
 	data: any;
-	constructor(text, font, options, material) {
+	constructor(material, text, options) {
     material = Object.assign({
       vertexShader: `
         attribute vec4 position;
@@ -16,7 +16,7 @@ class FontElement extends RenderableElement {
         }
       `
     }, material)
-		super(material, new FontGeometry(text, font, options));
+		super(material, new FontGeometry(text, options));
   }
 }
 export {

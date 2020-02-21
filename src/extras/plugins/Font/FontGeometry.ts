@@ -123,6 +123,7 @@ function createPath( char, divisions, scale, offsetX, offsetY, data ) {
 }
 
 interface FontOptions {
+	font: any
   size ?: number
 	divisions ?: number
 	alignment ?: Alignment
@@ -135,7 +136,8 @@ class FontGeometry extends ShapeGeometry {
   indices: any[];
   uvs: any[];
   positions: any[];
-	constructor(text, font, options: FontOptions = {}) {
+	constructor(text, options: FontOptions) {
+		let font = options.font
     options = Object.assign({
       size: 1,
 		divisions: 4,

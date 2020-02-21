@@ -21,13 +21,14 @@ let background: Background = new Background({
 
 import font from '../examples/font/averia.json';
 import { FontElement, Alignment } from './extras/plugins/Font'
-let element = new FontElement('ab', font, {
-  size: 0.5,
-  alignment: Alignment.CENTERMIDDLE
-}, {
+let element = new FontElement({
   fragmentShader: shapeShader.gradientShader,
   uniforms: uniforms
-})
+}, 'Phil', {
+  font: font,
+  size: 0.5,
+  alignment: Alignment.CENTERMIDDLE
+}, )
 element.position.y = -1
 // element.position = new Vector3(-2, 0, 0) // raise
 // element.scale.x = 0.5
@@ -41,13 +42,13 @@ import parseXML from 'xml-parse-from-string'
 import svgString from '../examples/svg/good.svg';
 let doc = parseXML(svgString)
 let svgNode = doc.querySelector('svg');
-let svg = new SvgElement(svgNode, {
+let svg = new SvgElement({
+  fragmentShader: shapeShader.gradientShader,
+  uniforms: uniforms
+}, svgNode, {
   size: 1,
   // isCCW: true                                                   
   // alignment: Alignment.CENTERMIDDLE
-}, {
-  fragmentShader: shapeShader.gradientShader,
-  uniforms: uniforms
 })
 scene.add(svg)
 

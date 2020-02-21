@@ -2,7 +2,7 @@ import { RenderableElement } from '../../../RenderableElement'
 import { SvgGeometry } from './SvgGeometry'
 class SvgElement extends RenderableElement {
 	data: any;
-	constructor(node, options, material) {
+	constructor(material, node, options) {
     material = Object.assign({
       vertexShader: `
         attribute vec4 position;
