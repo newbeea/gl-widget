@@ -186,10 +186,9 @@ class Renderer {
         element.updateBuffer()
         
 
-        element.updateUniforms({
-          time: {value: clock.getElapsedTime()}
-        })  
+        element.updateUniforms()  
 
+        
         // element.updateMatrixWorld(true)
         let mvpMatrix = pvMatrix.clone()
         mvpMatrix.multiply(element.matrixWorld)

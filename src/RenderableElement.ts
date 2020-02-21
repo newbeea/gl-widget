@@ -72,8 +72,8 @@ class RenderableElement extends Object3D {
   updateBuffer() {
     this.bufferManager.updateBuffer(this.gl, this.program, this.geometry)
   }
-  updateUniforms(uniforms) {
-    this.uniformManager.updateUniforms(uniforms)
+  updateUniforms() {
+    this.uniformManager.updateUniforms(this.uniforms)
   }
 }
 export {

@@ -9,14 +9,25 @@ const renderer: Renderer = new Renderer({
 }, {});
 
 let scene: Object3D = new Object3D()
-let background: Background = new Background(backgroundShader.fluidShader);
+let uniforms = {
+  time: {
+    value: 0
+  }
+}
+let background: Background = new Background({
+  fragmentShader: backgroundShader.fluidShader, 
+  uniforms: uniforms
+});
 
 import font from '../examples/font/averia.json';
 import { FontElement, Alignment } from './extras/plugins/Font'
 let element = new FontElement('ab', font, {
   size: 0.5,
   alignment: Alignment.CENTERMIDDLE
-}, shapeShader.gradientShader)
+}, {
+  fragmentShader: shapeShader.gradientShader,
+  uniforms: uniforms
+})
 element.position.y = -1
 // element.position = new Vector3(-2, 0, 0) // raise
 // element.scale.x = 0.5
@@ -34,7 +45,10 @@ let svg = new SvgElement(svgNode, {
   size: 1,
   // isCCW: true                                                   
   // alignment: Alignment.CENTERMIDDLE
-}, shapeShader.gradientShader)
+}, {
+  fragmentShader: shapeShader.gradientShader,
+  uniforms: uniforms
+})
 scene.add(svg)
 
 // scene.position.x =-1
@@ -45,10 +59,14 @@ renderer.render(background, scene);
 
 
 // test custom uniforms by users
-// let clock = new Clock()
-// function animate() {
-//   renderer.setUniform(background, 'time', clock.getElapsedTime())
-//   requestAnimationFrame(animate)
-// }
-// animate()
+let clock = new Clock()
+function animate() {
+  background.uniforms['time'].value = clock.getElapsedTime()
+  svg.uniforms['time'].value = clock.getElapsedTime()
+  requestAnimationFrame(animate)
+}
+animate()
+
+
+
 // document.body.appendChild(renderer.canvas);

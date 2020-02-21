@@ -1,7 +1,6 @@
 
-import { ShaderObject, Program } from "./Program";
+
 import { BackgroundGeometry } from "./BackgroundGeometry";
-import { BufferManager } from "./BufferManager";
 import { Geometry } from "./Geometry";
 import { RenderableElement } from "./RenderableElement";
 
@@ -11,10 +10,12 @@ class Background extends RenderableElement {
   vertexNum: number
   fragmentShader: string
   geometry: Geometry
-  constructor(fragmentShader: string = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}', geometry?: Geometry) {
-    super({
-      fragmentShader: fragmentShader
-    }, geometry || new BackgroundGeometry())   
+  constructor(material={}, geometry?: Geometry) {
+    material = Object.assign({
+      fragmentShader: 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}',
+      uniforms: {}
+    }, material)
+    super(material, geometry || new BackgroundGeometry())   
   }
 }
 export {
