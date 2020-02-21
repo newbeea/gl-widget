@@ -4,6 +4,7 @@ import { BufferManager } from "./BufferManager";
 import { Geometry } from "./Geometry";
 import { Object3D } from "./Object3D";
 import { Matrix3 } from "./math/Matrix3";
+import { UniformManager } from "./UniformManager";
 
 class RenderableElement extends Object3D {
   program: WebGLProgram
@@ -11,7 +12,10 @@ class RenderableElement extends Object3D {
   vertexNum: number
   fragmentShader: string
   vertexShader: string
+  uniforms: any
   geometry: Geometry
+  bufferManager: BufferManager
+  uniformManager: UniformManager
   constructor(material?: any, geometry?: Geometry) {
     super()
     this.vertexShader = `
@@ -26,9 +30,14 @@ class RenderableElement extends Object3D {
     if (material.vertexShader) {
       this.vertexShader = material.vertexShader
     }
+    if (material.uniforms) {
+      this.uniforms = material.uniforms
+    }
     this.geometry = geometry
+    
   }
   setup(gl: WebGLRenderingContext, bufferManager: BufferManager, width: number, height: number) {
+    this.bufferManager = bufferManager
     this.gl = gl
     let shader: ShaderObject = {
       vertexShader: this.vertexShader,
@@ -40,10 +49,15 @@ class RenderableElement extends Object3D {
     
     this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
     this.setSize(width, height)
-    let uvTransform = new Matrix3()
-    uvTransform.setUvTransform(0.5, 0.5, 2, 2, 0, 0, 0)
-    var location = gl.getUniformLocation(this.program, 'uvTransform');
-    gl.uniformMatrix3fv(location, false, uvTransform.elements)
+
+    this.uniformManager = new UniformManager(gl, this.program)
+    // this.updateUniforms({
+    //   time: {value: 200}
+    // })
+    // let uvTransform = new Matrix3()
+    // // uvTransform.setUvTransform(0.5, 0.5, 2, 2, 0, 0, 0)
+    // var location = gl.getUniformLocation(this.program, 'uvTransform');
+    // gl.uniformMatrix3fv(location, false, uvTransform.elements)
   }
   setSize(width: number, height: number) {
     var r = this.gl.getUniformLocation(this.program, 'resolution')
@@ -54,6 +68,12 @@ class RenderableElement extends Object3D {
   }
   getProgram(): WebGLProgram {
     return this.program
+  }
+  updateBuffer() {
+    this.bufferManager.updateBuffer(this.gl, this.program, this.geometry)
+  }
+  updateUniforms(uniforms) {
+    this.uniformManager.updateUniforms(uniforms)
   }
 }
 export {

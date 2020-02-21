@@ -78,17 +78,17 @@ class Renderer {
     }
     this.programs = new Map()
   }
-  setMatrixUniform(uniform, value) {
+  // setMatrixUniform(uniform, value) {
 
-    this.renderList.forEach(element => {
-      this.gl.useProgram(element.program)
-      var location = this.gl.getUniformLocation(element.program, uniform);
-      if (location != null) {
-        this.gl.uniformMatrix4fv(location, false, value.elements)
-      }
+  //   this.renderList.forEach(element => {
+  //     this.gl.useProgram(element.program)
+  //     var location = this.gl.getUniformLocation(element.program, uniform);
+  //     if (location != null) {
+  //       this.gl.uniformMatrix4fv(location, false, value.elements)
+  //     }
       
-    });
-  }
+  //   });
+  // }
   setupMouse(){
     let gl = this.gl
     let mouseEnter = {
@@ -179,19 +179,20 @@ class Renderer {
       //setup time uniform
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
       this.renderList.forEach((element: RenderableElement) => {
-        bufferManager.updateBuffer(gl, element.program, element.geometry)
+        
+        
+
         gl.useProgram(element.program)
+        element.updateBuffer()
+        
 
+        element.updateUniforms({
+          time: {value: clock.getElapsedTime()}
+        })  
 
-        var location = gl.getUniformLocation(element.program, 'time');
-        if (location !== null) {
-          gl.uniform1f(location, clock.getElapsedTime())   
-        }    
         // element.updateMatrixWorld(true)
         let mvpMatrix = pvMatrix.clone()
         mvpMatrix.multiply(element.matrixWorld)
-        
-
         var location = gl.getUniformLocation(element.program, 'mvpMatrix');
         if (location != null) {
           gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
