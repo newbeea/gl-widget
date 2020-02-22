@@ -10,21 +10,26 @@ const renderer: Renderer = new Renderer({
 
 let scene: Object3D = new Object3D()
 
-let backgroundUniforms = {
-  time: {
-    value: 0
-  }
-}
+// Background
 let background: Background = new Background({
-  fragmentShader: backgroundShader.fluidShader, 
-  uniforms: backgroundUniforms
+  fragmentShader: backgroundShader.fluidShader,
+  uniforms: {
+    time: {
+      value: 0
+    }
+  }
 });
 
-
+// Text
 import fontJson from '../examples/font/averia.json';
 import { FontElement, Alignment } from './extras/plugins/Font'
 let text = new FontElement({
-  fragmentShader: shapeShader.gradientShader
+  fragmentShader: shapeShader.gradientShader,
+  uniforms: {
+    time: {
+      value: 0
+    }
+  }
 }, 'Phil', {
   font: fontJson,
   size: 0.5,
@@ -37,30 +42,39 @@ text.position.y = -1
 // element.rotateX(0.5)
 scene.add(text)
 
-let svgUniforms = {
-  time: {
-    value: 0
-  }
-}
+// Svg
 import { SvgElement } from './extras/plugins/Svg'
 import parseXML from 'xml-parse-from-string'
 import svgString from '../examples/svg/good.svg';
 let doc = parseXML(svgString)
 let svgNode = doc.querySelector('svg');
+
+
 let svg = new SvgElement({
   fragmentShader: shapeShader.gradientShader,
-  uniforms: svgUniforms
+  uniforms: {
+    time: {
+      value: 0
+    }
+  }
 }, svgNode, {
   size: 1,
   // isCCW: true                                                   
   // alignment: Alignment.CENTERMIDDLE
 })
 scene.add(svg)
-
 // scene.position.x =-1
 
-
-
+// Shere
+import { SphereElement } from './extras/plugins/Geometries'
+let sphere = new SphereElement({
+  
+}, {
+  radius: 0.4,
+  
+})
+scene.add(sphere)
+sphere.position.y = 1
 renderer.render(background, scene);
 
 

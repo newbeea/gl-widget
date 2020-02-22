@@ -27,15 +27,15 @@ class SphereGeometry extends Geometry {
   generateGeometry (options) {
 
     let {
-      radius=50,
-      widthSegments=8,
-      heightSegments=6,
+      radius=1,
+      widthSegments=16,
+      heightSegments=16,
       phiStart=0,
       phiLength=Math.PI * 2,
       thetaStart=0,
       thetaLength=Math.PI
     } = options
-    radius = radius || 50;
+
   
     widthSegments = Math.max( 3, Math.floor( widthSegments ) );
     heightSegments = Math.max( 2, Math.floor( heightSegments ) );
@@ -103,10 +103,12 @@ class SphereGeometry extends Geometry {
       }
   
     }
-    this.addAttribute('position', new Float32Attribute(this.positions, 3))
-    this.addAttribute('normal', new Float32Attribute(this.normals, 3))
-    this.addAttribute('uv', new Float32Attribute(this.uvs, 2))
-    this.addAttribute('index', new Uint32Attribute(this.indices, 1))
+    console.log(positions, normals, uvs, indices)
+    this.addAttribute( 'position', positions );
+    this.addAttribute( 'normal', normals );
+    this.addAttribute( 'uv', uvs );
+
+    this.addAttribute('index', new Uint32Attribute(indices, 1))
 
   }
 
