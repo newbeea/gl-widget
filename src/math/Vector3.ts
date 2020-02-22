@@ -68,6 +68,16 @@ class Vector3 {
 
 		return this;
 
+  }
+  divideScalar ( scalar ) {
+
+		return this.multiplyScalar( 1 / scalar );
+
+	}
+  normalize () {
+
+		return this.divideScalar( this.length() );
+
 	}
 }
 export { Vector3 }

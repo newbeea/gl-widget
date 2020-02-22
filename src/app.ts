@@ -9,34 +9,39 @@ const renderer: Renderer = new Renderer({
 }, {});
 
 let scene: Object3D = new Object3D()
-let uniforms = {
+
+let backgroundUniforms = {
   time: {
     value: 0
   }
 }
 let background: Background = new Background({
   fragmentShader: backgroundShader.fluidShader, 
-  uniforms: uniforms
+  uniforms: backgroundUniforms
 });
 
-import font from '../examples/font/averia.json';
+
+import fontJson from '../examples/font/averia.json';
 import { FontElement, Alignment } from './extras/plugins/Font'
-let element = new FontElement({
-  fragmentShader: shapeShader.gradientShader,
-  uniforms: uniforms
+let text = new FontElement({
+  fragmentShader: shapeShader.gradientShader
 }, 'Phil', {
-  font: font,
+  font: fontJson,
   size: 0.5,
   alignment: Alignment.CENTERMIDDLE
 }, )
-element.position.y = -1
+text.position.y = -1
 // element.position = new Vector3(-2, 0, 0) // raise
 // element.scale.x = 0.5
-
 // element.rotateY(0.5)
 // element.rotateX(0.5)
-scene.add(element)
+scene.add(text)
 
+let svgUniforms = {
+  time: {
+    value: 0
+  }
+}
 import { SvgElement } from './extras/plugins/Svg'
 import parseXML from 'xml-parse-from-string'
 import svgString from '../examples/svg/good.svg';
@@ -44,7 +49,7 @@ let doc = parseXML(svgString)
 let svgNode = doc.querySelector('svg');
 let svg = new SvgElement({
   fragmentShader: shapeShader.gradientShader,
-  uniforms: uniforms
+  uniforms: svgUniforms
 }, svgNode, {
   size: 1,
   // isCCW: true                                                   
