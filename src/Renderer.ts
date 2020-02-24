@@ -158,7 +158,7 @@ class Renderer {
     let frustumSize = 3
     let aspect = this.canvas.width / this.canvas.height
     let camera = this.cameraMode == CAMERA.PERSPECTIVE 
-      ? new PerspectiveCamera(100, aspect, 0.1, 100) 
+      ? new PerspectiveCamera(20, aspect, 0.1, 100) 
       : new OrthographicCamera(
         frustumSize * aspect / -2, 
         frustumSize * aspect / 2, 

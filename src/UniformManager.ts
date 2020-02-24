@@ -354,6 +354,7 @@ class UniformManager {
       var u = seq[ i ], v = uniforms[ u.id ];
   
       if ( v.needsUpdate !== false ) {
+        // console.log(u.id)
         u.setValue( this.gl, v.value );
   
       }

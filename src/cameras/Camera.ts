@@ -9,7 +9,7 @@ class Camera {
     this.projectionMatrix = new Matrix4()
     this.matrixWorldInverse = new Matrix4()
     this.matrixWorld = new Matrix4()
-    this.matrixWorld.makeTranslation(0, 0, 1)
+    this.matrixWorld.makeTranslation(0, 0, 10)
 
     this.updateMatrixWorld(true)
   }
