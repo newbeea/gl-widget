@@ -11,6 +11,7 @@ const renderer: Renderer = new Renderer({
 let scene: Object3D = new Object3D()
 let image = new Image()
 image.src = require('../examples/image/MatCap.jpg').default
+
 // Background
 let background: Background = new Background({
   fragmentShader: `
