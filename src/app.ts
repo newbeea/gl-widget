@@ -2,18 +2,38 @@ import { Renderer, Background, Clock, CAMERA, Object3D } from './Renderer';
 import { Vector3 } from './math/Vector3';
 import backgroundShader from '../examples/background/index'
 import shapeShader from '../examples/shape/index'
-
+import Texture from './Texture'
 const renderer: Renderer = new Renderer({
   // cameraMode: CAMERA.ORTHOGRAPHIC,
   element: 'awesome-bg'
 }, {});
 
 let scene: Object3D = new Object3D()
-
+let image = new Image()
+image.src = require('../examples/image/MatCap.jpg').default
 // Background
 let background: Background = new Background({
-  fragmentShader: backgroundShader.fluidShader,
+  fragmentShader: `
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+
+  uniform float time;
+  uniform vec2 resolution;
+  uniform sampler2D map;
+
+  void main()
+  {
+    vec2 uv = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+  
+    gl_FragColor = texture2D(map, uv);
+  }
+  `,
   uniforms: {
+    map: {
+      value: new Texture(image, 1, 1)
+      
+    },
     time: {
       value: 0
     }
@@ -68,6 +88,7 @@ scene.add(svg)
 // Shere
 import { SphereElement } from './extras/plugins/Geometries'
 import { BlinnPhongMaterial, PhongMaterial } from './extras/plugins/Materials';
+
 let sphere = new SphereElement(new PhongMaterial, {
   radius: 0.4, 
 })

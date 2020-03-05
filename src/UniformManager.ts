@@ -1,3 +1,5 @@
+import { TextureManager } from "./TextureManager";
+
 // --- Setters ---
 
 // Note: Defining these methods externally, because they come in a bunch
@@ -57,13 +59,13 @@ function setValue4fm( gl, v ) {
 
 // Single texture (2D / Cube)
 
-// function setValueT1( gl, v, renderer ) {
+function setValueT1( gl, v, textureManager ) {
 
-// 	var unit = renderer.allocTextureUnit();
-// 	gl.uniform1i( this.addr, unit );
-// 	renderer.setTexture2D( v || emptyTexture, unit );
+	
+	gl.uniform1i( this.addr, textureManager.unit );
+	textureManager.setTexture2D( v, textureManager.unit );
 
-// }
+}
 
 // function setValueT6( gl, v, renderer ) {
 
@@ -93,7 +95,7 @@ function getSingularSetter( type ) {
 		case 0x8b5b: return setValue3fm; // _MAT3
 		case 0x8b5c: return setValue4fm; // _MAT4
 
-		// case 0x8b5e: return setValueT1; // SAMPLER_2D
+		case 0x8b5e: return setValueT1; // SAMPLER_2D
 		// case 0x8b60: return setValueT6; // SAMPLER_CUBE
 
 		case 0x1404: case 0x8b56: return setValue1i; // INT, BOOL
@@ -275,8 +277,10 @@ function PureArrayUniform( id, activeInfo, addr ) {
 class UniformManager {
   map: any
   seq: any[]
-  gl: any
-  constructor(gl, program) {
+	gl: any
+	textureManager: TextureManager
+  constructor(gl, program, textureManager: TextureManager) {
+		this.textureManager = textureManager
     this.gl = gl
     this.map = {}
     this.seq = []
@@ -355,7 +359,7 @@ class UniformManager {
   
       if ( v.needsUpdate !== false ) {
         // console.log(u.id)
-        u.setValue( this.gl, v.value );
+        u.setValue( this.gl, v.value, this.textureManager);
   
       }
   

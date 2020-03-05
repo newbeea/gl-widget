@@ -5,6 +5,7 @@ import { Geometry } from "./Geometry";
 import { Object3D } from "./Object3D";
 import { Matrix3 } from "./math/Matrix3";
 import { UniformManager } from "./UniformManager";
+import { TextureManager } from "./TextureManager";
 
 class RenderableElement extends Object3D {
   program: WebGLProgram
@@ -50,7 +51,7 @@ class RenderableElement extends Object3D {
     this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
     this.setSize(width, height)
 
-    this.uniformManager = new UniformManager(gl, this.program)
+    this.uniformManager = new UniformManager(gl, this.program, new TextureManager(gl))
     // this.updateUniforms({
     //   time: {value: 200}
     // })
