@@ -17,6 +17,7 @@ class RenderableElement extends Object3D {
   geometry: Geometry
   bufferManager: BufferManager
   uniformManager: UniformManager
+  textureManager: TextureManager
   constructor(material?: any, geometry?: Geometry) {
     super()
     this.vertexShader = `
@@ -50,8 +51,8 @@ class RenderableElement extends Object3D {
     
     this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
     this.setSize(width, height)
-
-    this.uniformManager = new UniformManager(gl, this.program, new TextureManager(gl))
+    this.textureManager = new TextureManager(gl)
+    this.uniformManager = new UniformManager(gl, this.program, this.textureManager)
     // this.updateUniforms({
     //   time: {value: 200}
     // })

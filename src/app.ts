@@ -10,7 +10,7 @@ const renderer: Renderer = new Renderer({
 
 let scene: Object3D = new Object3D()
 let image = new Image()
-image.src = require('../examples/image/MatCap.jpg').default
+image.src = require('../examples/image/combine.png').default
 
 // Background
 let background: Background = new Background({

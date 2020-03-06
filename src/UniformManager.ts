@@ -63,7 +63,7 @@ function setValueT1( gl, v, textureManager ) {
 
 	
 	gl.uniform1i( this.addr, textureManager.unit );
-	textureManager.setTexture2D( v, textureManager.unit );
+	textureManager.setTexture2D( v );
 
 }
 
@@ -352,6 +352,7 @@ class UniformManager {
   
   }
   updateUniforms(uniforms = {}) {
+		this.textureManager.unit = 0
     let seq = this.filterUniforms(Object.keys(uniforms))
     for ( var i = 0, n = seq.length; i !== n; ++ i ) {
   
