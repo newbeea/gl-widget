@@ -11,30 +11,16 @@ const renderer: Renderer = new Renderer({
 let scene: Object3D = new Object3D()
 let image = new Image()
 image.src = require('../examples/image/combine.png').default
-
+let images = []
+for (let i = 0; i < 6; i++) {
+  let image = new Image()
+  image.src = require('../examples/image/MatCap.jpg').default
+  images.push(image)
+}
 // Background
 let background: Background = new Background({
-  fragmentShader: `
-  #ifdef GL_ES
-  precision mediump float;
-  #endif
-
-  uniform float time;
-  uniform vec2 resolution;
-  uniform sampler2D map;
-
-  void main()
-  {
-    vec2 uv = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
-  
-    gl_FragColor = texture2D(map, uv);
-  }
-  `,
+  fragmentShader: backgroundShader.curveShader,
   uniforms: {
-    map: {
-      value: new Texture(image, 1, 1)
-      
-    },
     time: {
       value: 0
     }
@@ -89,14 +75,33 @@ scene.add(svg)
 // Shere
 import { SphereElement } from './extras/plugins/Geometries'
 import { BlinnPhongMaterial, PhongMaterial } from './extras/plugins/Materials';
-
 let sphere = new SphereElement(new PhongMaterial, {
   radius: 0.4, 
 })
 scene.add(sphere)
 sphere.position.y = 1
-renderer.render(background, scene);
 
+
+
+// Box
+import { SkyBox } from './SkyBox'
+let sky = new SkyBox({
+  uniforms: {
+    cube: {
+      value: new Texture(images, 1, 1)
+    }
+  }
+})
+sky.scale.x = 10
+sky.scale.y = 10
+sky.scale.z = 10
+console.log(sky)
+scene.add(sky)
+
+
+
+
+renderer.render(background, scene);
 
 // test custom uniforms by users
 let clock = new Clock()

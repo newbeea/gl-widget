@@ -135,6 +135,7 @@ class Renderer {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);   
     // gl.enable(gl.CULL_FACE);
+    // gl.frontFace(gl.CCW);
     let bufferManager = new BufferManager()
     let extensions = new Extensions(gl)
     
