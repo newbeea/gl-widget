@@ -448,7 +448,7 @@ function generateShapes(node, size, isCCW) {
   let scale = size / height
   
   traverseNodes(node, obj)
-  console.log(obj)
+  // console.log(obj)
   let shapes: Array<any> = addPaths(obj.paths, transformSVGPath, scale, isCCW) 
   shapes.push(...addPaths(obj.ellipses, transformSVGEllipse, scale) )
   shapes.push(...addPaths(obj.circles, transformSVGCircle, scale) )

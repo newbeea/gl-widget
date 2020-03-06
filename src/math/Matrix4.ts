@@ -361,6 +361,54 @@ class Matrix4 {
 
 		return this;
 
-	}
+  }
+  lookAt( eye, target, up ) {
+    var x = new Vector3();
+  var y = new Vector3();
+  var z = new Vector3();
+    var te = this.elements;
+
+    z.subVectors( eye, target );
+
+    if ( z.lengthSq() === 0 ) {
+
+      // eye and target are in the same position
+
+      z.z = 1;
+
+    }
+
+    z.normalize();
+    x.crossVectors( up, z );
+
+    if ( x.lengthSq() === 0 ) {
+
+      // up and z are parallel
+
+      if ( Math.abs( up.z ) === 1 ) {
+
+        z.x += 0.0001;
+
+      } else {
+
+        z.z += 0.0001;
+
+      }
+
+      z.normalize();
+      x.crossVectors( up, z );
+
+    }
+
+    x.normalize();
+    y.crossVectors( z, x );
+
+    te[ 0 ] = x.x; te[ 4 ] = y.x; te[ 8 ] = z.x;
+    te[ 1 ] = x.y; te[ 5 ] = y.y; te[ 9 ] = z.y;
+    te[ 2 ] = x.z; te[ 6 ] = y.z; te[ 10 ] = z.z;
+
+    return this;
+
+  }
 }
 export { Matrix4 }

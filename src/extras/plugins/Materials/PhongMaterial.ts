@@ -6,7 +6,7 @@ class BasicMaterial {
         attribute vec4 position;
         attribute vec4 normal;
         attribute vec2 uv                                                                                                                                                                                                                                                                                                                       ;
-        varying vec2 vUv;
+        // varying vec2 vUv;
         varying vec4 vNormal;
         varying vec4 vPosition;
         uniform mat3 uvTransform;
@@ -16,14 +16,15 @@ class BasicMaterial {
           gl_Position = mvpMatrix*position;
           vPosition = gl_Position;
           vNormal = normal;
-          vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
+          // vec2 v = uv;
+          // vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
         }
       `,
       fragmentShader: `
         precision mediump float;
         varying vec4 vPosition;
         varying vec4 vNormal; 
-        varying vec2 vUv;
+        // varying vec2 vUv;
     
         uniform vec3 globalAmbient; //入射环境光颜色
         uniform vec3 lightColor; //灯光颜色
@@ -35,7 +36,7 @@ class BasicMaterial {
         uniform vec3 Ks;          //Ks是材质的镜面反射颜色
         uniform float shininess;     //材质表面光泽度
         void main() {
-    
+  
           vec3 N = vNormal.xyz; 
           vec3 P = vPosition.xyz;
     

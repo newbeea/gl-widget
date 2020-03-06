@@ -25,6 +25,20 @@ class Vector3 {
     this.z -= v.z;
     return this;
   }
+  subVectors (a, b) {
+
+		this.x = a.x - b.x;
+		this.y = a.y - b.y;
+		this.z = a.z - b.z;
+
+		return this;
+
+  }
+  lengthSq () {
+
+		return this.x * this.x + this.y * this.y + this.z * this.z;
+
+	}
   multiply(v: Vector3) {
     this.x *= v.x;
     this.y *= v.y;

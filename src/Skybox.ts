@@ -3,15 +3,15 @@
 import { SkyboxGeometry } from "./SkyboxGeometry";
 import { Geometry } from "./Geometry";
 import { RenderableElement } from "./RenderableElement";
+import { Background } from "./Background";
 
-class SkyBox extends RenderableElement {
+class SkyBox extends Background {
   program: WebGLProgram
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string
   geometry: Geometry
   constructor(material={}, geometry?: Geometry) {
-    console.log(1, material)
     material = Object.assign({
       vertexShader: `
         uniform mat4 mvpMatrix;
@@ -33,7 +33,6 @@ class SkyBox extends RenderableElement {
         }
       `
     }, material)
-    console.log(material)
     super(material, geometry || new SkyboxGeometry())   
   }
 }

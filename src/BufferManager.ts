@@ -19,8 +19,8 @@ class BufferManager {
       gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
       let location = gl.getAttribLocation(program, name);
       if (location < 0) {
-        console.log('Failed to get the storage location of ' + name);
-        return -1;
+        // console.log('Failed to get the storage location of ' + name);
+        // return -1;
       } else {
         gl.vertexAttribPointer(location, attribute.itemSize, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(location);
@@ -49,8 +49,8 @@ class BufferManager {
       gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.get(attribute));
       let location = gl.getAttribLocation(program, name);
       if (location < 0) {
-        console.log('Failed to get the storage location of ' + name);
-        return -1;
+        // console.log('Failed to get the storage location of ' + name);
+        // return -1;
       } else {
         gl.vertexAttribPointer(location, attribute.itemSize, gl.FLOAT, false, 0, 0);
       } 

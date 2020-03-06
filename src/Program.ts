@@ -19,9 +19,9 @@ class Program {
     let programLog = gl.getProgramInfoLog(this.program).trim()
 
     if (gl.getProgramParameter(this.program, gl.LINK_STATUS) === false) {
-      console.error('THREE.WebGLProgram: shader error: ', gl.getError(), 'gl.VALIDATE_STATUS', gl.getProgramParameter(this.program, gl.VALIDATE_STATUS), 'gl.getProgramInfoLog', programLog);
+      console.error('shader error: ', gl.getError(), 'gl.VALIDATE_STATUS', gl.getProgramParameter(this.program, gl.VALIDATE_STATUS), 'gl.getProgramInfoLog', programLog);
     } else if (programLog !== '') {
-      console.warn('THREE.WebGLProgram: gl.getProgramInfoLog()', programLog)
+      console.warn('gl.getProgramInfoLog()', programLog)
     }
     gl.useProgram(this.program)
     gl.deleteShader( vertexShader );

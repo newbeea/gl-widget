@@ -8,6 +8,7 @@ import { OrthographicCamera } from './cameras/OrthographicCamera'
 import { Matrix4 } from './math/Matrix4';
 import { RenderableElement } from './RenderableElement';
 import { Object3D } from './Object3D';
+import { Vector3 } from './math/Vector3';
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -167,7 +168,10 @@ class Renderer {
         frustumSize / -2, 
         -1000, 
         1000)
-    
+    // camera.position.x = 10 
+    camera.lookAt(new Vector3())
+    // camera.rotateY(0.1)
+
     // let scale = new Matrix4()
     // scale.makeScale(1, 1, 1)
     // mvpMatrix.multiply(scale)

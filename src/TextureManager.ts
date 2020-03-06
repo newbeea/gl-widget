@@ -55,13 +55,14 @@ class TextureManager {
         // if (texture.version > 0 && cached.version !== texture.version) { 
           // cached.version = texture.version
           gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
-          gl.generateMipmap( gl.TEXTURE_CUBE_MAP )
+          
         } else {
         // if (texture.version == 0) {
           let im = new ImageData(new Uint8ClampedArray([0, 0, 0, 0]), 1, 1)
           gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im)     
         } 
     }
+    gl.generateMipmap( gl.TEXTURE_CUBE_MAP )
     
     this.unit ++
         

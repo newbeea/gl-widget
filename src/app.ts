@@ -70,6 +70,7 @@ let svg = new SvgElement({
   // alignment: Alignment.CENTERMIDDLE
 })
 scene.add(svg)
+// svg.rotateY(1)
 // scene.position.x =-1
 
 // Shere
@@ -95,13 +96,11 @@ let sky = new SkyBox({
 sky.scale.x = 10
 sky.scale.y = 10
 sky.scale.z = 10
-console.log(sky)
-scene.add(sky)
 
 
 
 
-renderer.render(background, scene);
+renderer.render(sky, scene);
 
 // test custom uniforms by users
 let clock = new Clock()

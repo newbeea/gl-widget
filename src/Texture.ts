@@ -8,7 +8,6 @@ class Texture {
   needsUpdate: boolean
   constructor (image, format, type) {
     if (image instanceof Array) {
-      console.log(image)
       this.images = image
     } else {
       this.image = image

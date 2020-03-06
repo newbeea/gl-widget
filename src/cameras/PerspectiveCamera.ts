@@ -14,7 +14,7 @@ class PerspectiveCamera extends Camera {
   filmGauge: number;
   filmOffset: number;
   constructor( fov, aspect, near, far ) {
-    console.log(fov, aspect, near, far)
+
     super();
     this.fov = fov !== undefined ? fov : 50;
     this.zoom = 1;
@@ -60,8 +60,7 @@ class PerspectiveCamera extends Camera {
 
 		var skew = this.filmOffset;
 		if ( skew !== 0 ) left += near * skew / this.getFilmWidth();
-    console.log( left, left + width, top, top - height, near, this.far )
-		this.projectionMatrix.makePerspective( left, left + width, top, top - height, near, this.far );
+    this.projectionMatrix.makePerspective( left, left + width, top, top - height, near, this.far );
   }
 }
 export { PerspectiveCamera }
