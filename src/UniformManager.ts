@@ -279,8 +279,8 @@ class UniformManager {
   seq: any[]
 	gl: any
 	textureManager: TextureManager
-  constructor(gl, program, textureManager: TextureManager) {
-		this.textureManager = textureManager
+  constructor(gl, program) {
+		this.textureManager = new TextureManager(gl)
     this.gl = gl
     this.map = {}
     this.seq = []

@@ -3,9 +3,8 @@ import { ShaderObject, Program } from "./Program";
 import { BufferManager } from "./BufferManager";
 import { Geometry } from "./Geometry";
 import { Object3D } from "./Object3D";
-import { Matrix3 } from "./math/Matrix3";
 import { UniformManager } from "./UniformManager";
-import { TextureManager } from "./TextureManager";
+
 
 class RenderableElement extends Object3D {
   program: WebGLProgram
@@ -17,7 +16,6 @@ class RenderableElement extends Object3D {
   geometry: Geometry
   bufferManager: BufferManager
   uniformManager: UniformManager
-  textureManager: TextureManager
   constructor(material?: any, geometry?: Geometry) {
     super()
     this.vertexShader = `
@@ -51,8 +49,8 @@ class RenderableElement extends Object3D {
     
     this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
     this.setSize(width, height)
-    this.textureManager = new TextureManager(gl)
-    this.uniformManager = new UniformManager(gl, this.program, this.textureManager)
+
+    this.uniformManager = new UniformManager(gl, this.program)
     // this.updateUniforms({
     //   time: {value: 200}
     // })
