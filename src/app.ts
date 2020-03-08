@@ -12,9 +12,11 @@ let scene: Object3D = new Object3D()
 let image = new Image()
 image.src = require('../examples/image/combine.png').default
 let images = []
+let imagenames = ['posx', 'negx', 'posy', 'negy', 'posz', 'negz']
+
 for (let i = 0; i < 6; i++) {
   let image = new Image()
-  image.src = require('../examples/image/MatCap.jpg').default
+  image.src = require(`../examples/image/${imagenames[i]}.jpg`).default
   images.push(image)
 }
 // Background
@@ -86,6 +88,8 @@ sphere.position.y = 1
 
 // Box
 import { SkyBox } from './SkyBox'
+import { PerspectiveCamera } from './cameras/PerspectiveCamera';
+import { OrthographicCamera } from './cameras/OrthographicCamera';
 let sky = new SkyBox({
   uniforms: {
     cube: {
@@ -98,13 +102,29 @@ sky.scale.y = 10
 sky.scale.z = 10
 
 
+let frustumSize = 3
+let aspect = renderer.canvas.width / renderer.canvas.height
+let camera: any = new OrthographicCamera(
+  frustumSize * aspect / -2, 
+  frustumSize * aspect / 2, 
+  frustumSize / 2, 
+  frustumSize / -2, 
+  -1000, 
+  1000)
 
+camera = new PerspectiveCamera(70, renderer.canvas.width/renderer.canvas.height, 1, 10000) 
 
-renderer.render(sky, scene);
+renderer.render(sky, scene, camera);
 
 // test custom uniforms by users
 let clock = new Clock()
+let phi = 0
+let r = 10
 function animate() {
+
+  camera.position.x = r * Math.sin(phi)
+  camera.position.z = r * Math.cos(phi)
+  phi += 0.01
   background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
   requestAnimationFrame(animate)

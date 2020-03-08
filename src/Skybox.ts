@@ -29,7 +29,7 @@ class SkyBox extends Background {
         uniform samplerCube cube;
         varying vec4 vTexCoords;
         void main() {
-          gl_FragColor = textureCube(cube, vTexCoords.xyz);
+          gl_FragColor = textureCube(cube, vec3( -1. * vTexCoords.x, vTexCoords.yz ));
         }
       `
     }, material)

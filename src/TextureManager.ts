@@ -48,7 +48,12 @@ class TextureManager {
     let glTexture = cached.glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, glTexture)
-    gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
+    // gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP, gl.CLAMP_TO_EDGE);
     for (let i = 0; i < 6; i++) {
       let image = texture.images[i]
       if (image.complete) {

@@ -9,6 +9,7 @@ import { Matrix4 } from './math/Matrix4';
 import { RenderableElement } from './RenderableElement';
 import { Object3D } from './Object3D';
 import { Vector3 } from './math/Vector3';
+import { Camera } from './cameras/Camera';
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -132,11 +133,11 @@ class Renderer {
       mouseOld.y = mouseOffset.y
     }, false );
   }
-  render(background?: RenderableElement, scene?: Object3D) {
+  render(background?: RenderableElement, scene?: Object3D, camera?: Camera) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);   
     // gl.enable(gl.CULL_FACE);
-    // gl.frontFace(gl.CCW);
+    // gl.frontFace(gl.CW);
     let bufferManager = new BufferManager()
     let extensions = new Extensions(gl)
     
@@ -159,29 +160,38 @@ class Renderer {
     
     let frustumSize = 3
     let aspect = this.canvas.width / this.canvas.height
-    let camera = this.cameraMode == CAMERA.PERSPECTIVE 
-      ? new PerspectiveCamera(20, aspect, 0.1, 100) 
-      : new OrthographicCamera(
-        frustumSize * aspect / -2, 
-        frustumSize * aspect / 2, 
-        frustumSize / 2, 
-        frustumSize / -2, 
-        -1000, 
-        1000)
+    // let camera = this.cameraMode == CAMERA.PERSPECTIVE 
+    //   ? new PerspectiveCamera(20, aspect, 0.1, 100) 
+    //   : new OrthographicCamera(
+    //     frustumSize * aspect / -2, 
+    //     frustumSize * aspect / 2, 
+    //     frustumSize / 2, 
+    //     frustumSize / -2, 
+    //     -1000, 
+    //     1000)
     // camera.position.x = 10 
-    camera.lookAt(new Vector3())
-    // camera.rotateY(0.1)
+
+    camera = camera || new OrthographicCamera(
+      frustumSize * aspect / -2, 
+      frustumSize * aspect / 2, 
+      frustumSize / 2, 
+      frustumSize / -2, 
+      -1000, 
+      1000)
+    
 
     // let scale = new Matrix4()
     // scale.makeScale(1, 1, 1)
     // mvpMatrix.multiply(scale)
     // this.setMatrixUniform('mvpMatrix', mvpMatrix)
 
-    let pvMatrix = new Matrix4()
-    pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
+      camera.lookAt(new Vector3())
+      let pvMatrix = new Matrix4()
+      pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
+    
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
       this.renderList.forEach((element: RenderableElement) => {
         
