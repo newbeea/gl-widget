@@ -34,6 +34,22 @@ class Vector3 {
 		return this;
 
   }
+  fromArray (array, offset) {
+
+		if ( offset === undefined ) offset = 0;
+
+		this.x = array[ offset ];
+		this.y = array[ offset + 1 ];
+		this.z = array[ offset + 2 ];
+
+		return this;
+
+	}
+  setFromMatrixColumn (m, index) {
+
+		return this.fromArray( m.elements, index * 4 );
+
+	}
   lengthSq () {
 
 		return this.x * this.x + this.y * this.y + this.z * this.z;

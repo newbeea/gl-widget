@@ -10,6 +10,7 @@ import { RenderableElement } from './RenderableElement';
 import { Object3D } from './Object3D';
 import { Vector3 } from './math/Vector3';
 import { Camera } from './cameras/Camera';
+import { SkyBox } from './SkyBox';
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -184,7 +185,7 @@ class Renderer {
     // scale.makeScale(1, 1, 1)
     // mvpMatrix.multiply(scale)
     // this.setMatrixUniform('mvpMatrix', mvpMatrix)
-
+    let skyboxCamera
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
@@ -205,8 +206,24 @@ class Renderer {
 
         
         // element.updateMatrixWorld(true)
-        let mvpMatrix = pvMatrix.clone()
-        mvpMatrix.multiply(element.matrixWorld)
+        let mvpMatrix
+
+        if (element instanceof SkyBox) {
+          if (!skyboxCamera) {
+            skyboxCamera = new PerspectiveCamera(70, aspect, 0.1, 1000)
+          }
+          skyboxCamera.projectionMatrix.copy( camera.projectionMatrix );
+
+          skyboxCamera.matrixWorld.extractRotation( camera.matrixWorld );
+          skyboxCamera.matrixWorldInverse.getInverse( skyboxCamera.matrixWorld );
+          mvpMatrix = new Matrix4()
+          mvpMatrix.multiplyMatrices(skyboxCamera.projectionMatrix, skyboxCamera.matrixWorldInverse)
+          // mvpMatrix = new Matrix4()
+          // mvpMatrix.copy(pvMatrix)
+        } else {
+          mvpMatrix = pvMatrix.clone()
+          mvpMatrix.multiply(element.matrixWorld)
+        }
         var location = gl.getUniformLocation(element.program, 'mvpMatrix');
         if (location != null) {
           gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
@@ -218,6 +235,7 @@ class Renderer {
         } else if (this.contextAttributes.depth) {
           gl.enable(gl.DEPTH_TEST);
         }
+
         gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
       });
       //draw    

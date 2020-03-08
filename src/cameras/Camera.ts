@@ -15,7 +15,7 @@ class Camera extends Object3D {
     this.matrixWorldInverse = new Matrix4()
     // this.matrixWorld = new Matrix4()
     // this.matrixWorld.makeTranslation(0, 0, 10)
-    this.position.z = 10
+    // this.position.z = 10
 
     
   }
