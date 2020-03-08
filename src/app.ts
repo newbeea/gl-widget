@@ -112,14 +112,14 @@ let camera: any = new OrthographicCamera(
   -1000, 
   1000)
 
-camera = new PerspectiveCamera(70, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
+camera = new PerspectiveCamera(50, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
 
 renderer.render(sky, scene, camera);
 
 // test custom uniforms by users
 let clock = new Clock()
 let phi = 0
-let r = 1000
+let r = 10
 function animate() {
 
   camera.position.x = r * Math.sin(phi)

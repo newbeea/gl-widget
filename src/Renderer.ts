@@ -190,40 +190,30 @@ class Renderer {
     let animate = () => {
       //setup time uniform
       camera.lookAt(new Vector3())
+      
       let pvMatrix = new Matrix4()
       pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
     
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
       this.renderList.forEach((element: RenderableElement) => {
-        
-        
-
+      
         gl.useProgram(element.program)
         element.updateBuffer()
-        
+        element.updateUniforms() 
 
-        element.updateUniforms()  
-
-        
-        // element.updateMatrixWorld(true)
         let mvpMatrix
-
         if (element instanceof SkyBox) {
-          if (!skyboxCamera) {
-            skyboxCamera = new PerspectiveCamera(70, aspect, 0.1, 1000)
-          }
-          skyboxCamera.projectionMatrix.copy( camera.projectionMatrix );
-
-          skyboxCamera.matrixWorld.extractRotation( camera.matrixWorld );
-          skyboxCamera.matrixWorldInverse.getInverse( skyboxCamera.matrixWorld );
+          let matrixWorldInverse = new Matrix4()
+          matrixWorldInverse.extractRotation( camera.matrixWorld );
+          matrixWorldInverse.getInverse( matrixWorldInverse );
           mvpMatrix = new Matrix4()
-          mvpMatrix.multiplyMatrices(skyboxCamera.projectionMatrix, skyboxCamera.matrixWorldInverse)
-          // mvpMatrix = new Matrix4()
-          // mvpMatrix.copy(pvMatrix)
+          mvpMatrix.multiplyMatrices(camera.projectionMatrix, matrixWorldInverse)
+          mvpMatrix.multiply(element.matrixWorld)
         } else {
           mvpMatrix = pvMatrix.clone()
           mvpMatrix.multiply(element.matrixWorld)
         }
+
         var location = gl.getUniformLocation(element.program, 'mvpMatrix');
         if (location != null) {
           gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
