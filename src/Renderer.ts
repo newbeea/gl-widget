@@ -11,6 +11,7 @@ import { Object3D } from './Object3D';
 import { Vector3 } from './math/Vector3';
 import { Camera } from './cameras/Camera';
 import { SkyBox } from './SkyBox';
+import { RenderSide } from './Constants';
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -137,8 +138,6 @@ class Renderer {
   render(background?: RenderableElement, scene?: Object3D, camera?: Camera) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);   
-    // gl.enable(gl.CULL_FACE);
-    // gl.frontFace(gl.CW);
     let bufferManager = new BufferManager()
     let extensions = new Extensions(gl)
     
@@ -218,8 +217,20 @@ class Renderer {
         if (location != null) {
           gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
         }
-
-        // console.log(element.vertexNum)
+     
+        switch (element.side) {
+          case RenderSide.FRONT:
+            gl.enable(gl.CULL_FACE);
+            gl.cullFace(gl.BACK)
+            break
+          case RenderSide.BACK:
+            gl.enable(gl.CULL_FACE);
+            gl.cullFace(gl.FRONT)
+            break
+          case RenderSide.DOUBLE:
+            gl.disable(gl.CULL_FACE);
+            break
+        }
         if(element instanceof Background) {
           gl.disable(gl.DEPTH_TEST);
         } else if (this.contextAttributes.depth) {

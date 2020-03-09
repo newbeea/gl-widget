@@ -1,4 +1,7 @@
 import { Renderer } from './Renderer'
-export {
-  Renderer
+import { RenderSide } from './Constants'
+
+export default {
+  Renderer,
+  RenderSide
 }

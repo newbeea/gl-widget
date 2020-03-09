@@ -4,6 +4,7 @@ import { SkyboxGeometry } from "./SkyboxGeometry";
 import { Geometry } from "./Geometry";
 import { RenderableElement } from "./RenderableElement";
 import { Background } from "./Background";
+import { RenderSide } from "./Constants";
 
 class SkyBox extends Background {
   program: WebGLProgram
@@ -29,7 +30,7 @@ class SkyBox extends Background {
         uniform samplerCube cube;
         varying vec4 vTexCoords;
         void main() {
-          gl_FragColor = textureCube(cube, vec3( -1. * vTexCoords.x, vTexCoords.yz ));
+          gl_FragColor = textureCube(cube, vec3( vTexCoords.x, vTexCoords.yz ));
         }
       `
     }, material)

@@ -16,6 +16,7 @@ class Background extends RenderableElement {
       uniforms: {}
     }, material)
     super(material, geometry || new BackgroundGeometry())   
+   
   }
 }
 export {

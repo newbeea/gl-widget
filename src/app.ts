@@ -3,6 +3,8 @@ import { Vector3 } from './math/Vector3';
 import backgroundShader from '../examples/background/index'
 import shapeShader from '../examples/shape/index'
 import Texture from './Texture'
+
+import AB from '.'
 const renderer: Renderer = new Renderer({
   // cameraMode: CAMERA.ORTHOGRAPHIC,
   element: 'awesome-bg'
@@ -38,7 +40,8 @@ let text = new FontElement({
     time: {
       value: 0
     }
-  }
+  },
+  side: AB.RenderSide.DOUBLE
 }, 'Phil', {
   font: fontJson,
   size: 0.5,
@@ -65,7 +68,8 @@ let svg = new SvgElement({
     time: {
       value: 0
     }
-  }
+  },
+  side: AB.RenderSide.DOUBLE
 }, svgNode, {
   size: 1,
   // isCCW: true                                                   
@@ -102,7 +106,7 @@ sky.scale.y = 10
 sky.scale.z = 10
 
 
-let frustumSize = 3
+let frustumSize = 8
 let aspect = renderer.canvas.width / renderer.canvas.height
 let camera: any = new OrthographicCamera(
   frustumSize * aspect / -2, 

@@ -4,6 +4,7 @@ import { BufferManager } from "./BufferManager";
 import { Geometry } from "./Geometry";
 import { Object3D } from "./Object3D";
 import { UniformManager } from "./UniformManager";
+import { RenderSide } from "./Constants";
 
 
 class RenderableElement extends Object3D {
@@ -16,6 +17,7 @@ class RenderableElement extends Object3D {
   geometry: Geometry
   bufferManager: BufferManager
   uniformManager: UniformManager
+  side: RenderSide
   constructor(material?: any, geometry?: Geometry) {
     super()
     this.vertexShader = `
@@ -33,6 +35,8 @@ class RenderableElement extends Object3D {
     if (material.uniforms) {
       this.uniforms = material.uniforms
     }
+
+    this.side = material.side || RenderSide.FRONT
     this.geometry = geometry
     
   }
