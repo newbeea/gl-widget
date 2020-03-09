@@ -63,7 +63,7 @@ let svgNode = doc.querySelector('svg');
 
 
 let svg = new SvgElement({
-  fragmentShader: shapeShader.gradientShader,
+  fragmentShader: backgroundShader.fluidShader,
   uniforms: {
     time: {
       value: 0
