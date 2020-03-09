@@ -39,6 +39,7 @@ class Renderer {
   renderList: Array<RenderableElement>
   contextAttributes: ContextAttributes
   cameraMode: CAMERA
+  defaultCamera: Camera
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
     this.renderList = []
     if (options.element instanceof HTMLCanvasElement) {
@@ -61,6 +62,8 @@ class Renderer {
       this.canvas.width = element.clientWidth
       this.canvas.height = element.clientHeight
       // element.appendChild(this.canvas)
+      let aspect = this.canvas.width / this.canvas.height
+      this.defaultCamera = new PerspectiveCamera(50, aspect, 0.1, 1000) 
       this.cameraMode = options.cameraMode || CAMERA.PERSPECTIVE
       element.insertBefore(this.canvas, element.firstChild)
     }
@@ -158,8 +161,8 @@ class Renderer {
     
     
     
-    let frustumSize = 3
-    let aspect = this.canvas.width / this.canvas.height
+    // let frustumSize = 3
+    
     // let camera = this.cameraMode == CAMERA.PERSPECTIVE 
     //   ? new PerspectiveCamera(20, aspect, 0.1, 100) 
     //   : new OrthographicCamera(
@@ -171,15 +174,9 @@ class Renderer {
     //     1000)
     // camera.position.x = 10 
 
-    camera = camera || new OrthographicCamera(
-      frustumSize * aspect / -2, 
-      frustumSize * aspect / 2, 
-      frustumSize / 2, 
-      frustumSize / -2, 
-      -1000, 
-      1000)
+    // camera = camera || new PerspectiveCamera(50, aspect, 0.1, 100) 
     
-
+    camera = camera || this.defaultCamera
     // let scale = new Matrix4()
     // scale.makeScale(1, 1, 1)
     // mvpMatrix.multiply(scale)

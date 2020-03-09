@@ -108,17 +108,17 @@ sky.scale.z = 10
 
 let frustumSize = 8
 let aspect = renderer.canvas.width / renderer.canvas.height
-let camera: any = new OrthographicCamera(
-  frustumSize * aspect / -2, 
-  frustumSize * aspect / 2, 
-  frustumSize / 2, 
-  frustumSize / -2, 
-  -1000, 
-  1000)
+// let camera: any = new OrthographicCamera(
+//   frustumSize * aspect / -2, 
+//   frustumSize * aspect / 2, 
+//   frustumSize / 2, 
+//   frustumSize / -2, 
+//   -1000, 
+//   1000)
 
-camera = new PerspectiveCamera(50, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
-
-renderer.render(sky, scene, camera);
+// camera = new PerspectiveCamera(50, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
+let camera = renderer.defaultCamera
+renderer.render(sky, scene);
 
 // test custom uniforms by users
 let clock = new Clock()
@@ -128,7 +128,7 @@ function animate() {
 
   camera.position.x = r * Math.sin(phi)
   camera.position.z = r * Math.cos(phi)
-  phi += 0.01
+  phi += 0.001
   background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
   requestAnimationFrame(animate)
