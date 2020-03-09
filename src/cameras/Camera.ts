@@ -18,10 +18,9 @@ class Camera extends Object3D {
     // this.matrixWorld.makeTranslation(0, 0, 10)
     this.target = new Vector3()
     this.position.z = 10
-
     
   }
-  lookAt( target?: Vector3 ) {
+  lookTarget( target?: Vector3 ) {
     target = target || this.target
     var m1 = new Matrix4();
     m1.lookAt( this.position, target, this.up );
@@ -31,7 +30,6 @@ class Camera extends Object3D {
   updateMatrixWorld ( force ) {
 
 		super.updateMatrixWorld( force );
-
 		this.matrixWorldInverse.getInverse( this.matrixWorld );
 
 	}

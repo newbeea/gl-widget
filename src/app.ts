@@ -129,7 +129,7 @@ function animate() {
   camera.position.x = r * Math.sin(phi)
   camera.position.z = r * Math.cos(phi)
   phi += 0.001
-
+  camera.lookTarget()
   background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
   requestAnimationFrame(animate)

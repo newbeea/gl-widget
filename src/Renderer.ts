@@ -185,7 +185,7 @@ class Renderer {
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
-      camera.lookAt()
+      
       
       let pvMatrix = new Matrix4()
       pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
