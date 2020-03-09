@@ -123,12 +123,13 @@ renderer.render(sky, scene);
 // test custom uniforms by users
 let clock = new Clock()
 let phi = 0
-let r = 10
+let r = 1
 function animate() {
 
   camera.position.x = r * Math.sin(phi)
   camera.position.z = r * Math.cos(phi)
   phi += 0.001
+
   background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
   requestAnimationFrame(animate)

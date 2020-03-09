@@ -185,12 +185,13 @@ class Renderer {
     let clock = new Clock()
     let animate = () => {
       //setup time uniform
-      camera.lookAt(new Vector3())
+      camera.lookAt()
       
       let pvMatrix = new Matrix4()
       pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
     
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
       this.renderList.forEach((element: RenderableElement) => {
       
         gl.useProgram(element.program)

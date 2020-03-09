@@ -7,6 +7,7 @@ class Camera extends Object3D {
   matrixWorldInverse: Matrix4
   // matrixWorld: Matrix4
   up: Vector3
+  target: Vector3
   copy: any
   constructor() {
     super()
@@ -15,13 +16,15 @@ class Camera extends Object3D {
     this.matrixWorldInverse = new Matrix4()
     // this.matrixWorld = new Matrix4()
     // this.matrixWorld.makeTranslation(0, 0, 10)
+    this.target = new Vector3()
     this.position.z = 10
 
     
   }
-  lookAt( vector ) {
+  lookAt( target?: Vector3 ) {
+    target = target || this.target
     var m1 = new Matrix4();
-    m1.lookAt( this.position, vector, this.up );
+    m1.lookAt( this.position, target, this.up );
     this.quaternion.setFromRotationMatrix( m1 );
 
   }
