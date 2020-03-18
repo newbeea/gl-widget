@@ -25,6 +25,27 @@ class RenderTarget  {
   }
   setupDepthTexture (framebuffer, renderTarget) {
   }
+  clone () {
+    let renderTarget = new RenderTarget(this.gl, this.width, this.height)
+		return renderTarget.copy( this );
+
+	}
+	copy ( source ) {
+
+		this.width = source.width;
+		this.height = source.height;
+
+		// this.viewport.copy( source.viewport );
+
+		this.texture = source.texture.clone();
+
+		// this.depthBuffer = source.depthBuffer;
+		// this.stencilBuffer = source.stencilBuffer;
+		// this.depthTexture = source.depthTexture;
+
+		return this;
+
+	}
 }
 export {
   RenderTarget

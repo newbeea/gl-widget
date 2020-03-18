@@ -14,6 +14,7 @@ import { SkyBox } from './SkyBox';
 import { RenderSide } from './Constants';
 import { ShaderObject } from './Program';
 import { RenderTarget } from './RenderTarget';
+import { Vector2 } from './math/Vector2';
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -35,6 +36,7 @@ export interface ContextAttributes {
   preserveDrawingBuffer?: boolean
 }
 class Renderer {
+  renderTarget: RenderTarget;
   canvas: HTMLCanvasElement;
   gl: WebGLRenderingContext
   programs: Map<object, WebGLProgram>
@@ -44,6 +46,7 @@ class Renderer {
   defaultCamera: Camera
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
     this.renderList = []
+    this.renderTarget = null
     if (options.element instanceof HTMLCanvasElement) {
       this.canvas = options.element
     } else {
@@ -133,8 +136,10 @@ class Renderer {
   setRenderTarget (renderTarget: RenderTarget) {
     if (!renderTarget) {
       this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+      this.renderTarget = null
     } else {
       this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, renderTarget.frameBuffer);
+      this.renderTarget = renderTarget
     }  
   }
   renderElement(element: RenderableElement, camera:Camera, shader?:ShaderObject) {
@@ -189,13 +194,22 @@ class Renderer {
     gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
   
   }
+  getRenderTarget(): RenderTarget {
+    return this.renderTarget
+  }
+  getPixelRatio(): number {
+    return 1
+  } 
+  getSize(): Vector2 {
+    return new Vector2(this.canvas.width, this.canvas.height)
+  }
   render(background?: RenderableElement, scene?: Object3D, camera?: Camera, once: boolean = false) {
-
-
+    let gl = this.gl
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);  
+    let extensions = new Extensions(gl)
     let renderFrame = () => {
    
-      let gl = this.gl
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);   
+       
       // let extensions = new Extensions(gl)
       
       this.renderList = []

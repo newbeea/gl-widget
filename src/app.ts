@@ -113,6 +113,10 @@ sky.scale.z = 10
 
 import { PlaneGeometry } from './extras/plugins/Geometries/PlaneGeometry';
 import { RenderableElement } from './RenderableElement';
+import { RenderFlow } from './RenderFlow';
+import { RenderPass } from './extras/plugins/Pass/RenderPass';
+import { Shader } from './Shader';
+import { ShaderPass } from './extras/plugins/Pass/ShaderPass';
 
 let planeGeometry = new PlaneGeometry()
 let copyShader = new CopyShader()
@@ -132,8 +136,16 @@ scene.add(plane)
 
 // camera = new PerspectiveCamera(50, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
 let camera = renderer.defaultCamera
-renderer.render(sky, scene, undefined);
+// renderer.render(sky, scene, camera, true);
 
+// render flow
+let renderFlow = new RenderFlow(renderer)
+let renderPass = new RenderPass(sky, scene, camera)
+let copyShader2 = new CopyShader()
+let copyPass = new ShaderPass(copyShader2)
+renderFlow.addPass(renderPass)
+// renderFlow.addPass(copyPass)
+renderFlow.render()
 // test custom uniforms by users
 let clock = new Clock()
 let phi = 0
@@ -146,6 +158,8 @@ function animate() {
   camera.lookTarget()
   background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
+  // renderer.render(sky, scene, camera, true);
+  // renderFlow.render()
   requestAnimationFrame(animate)
 }
 animate()

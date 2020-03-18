@@ -29,6 +29,49 @@ class Texture {
   update () {
     this.version ++
   }
+  clone () {
+
+		return new Texture(undefined).copy( this );
+
+	}
+
+	copy ( source ) {
+
+		// this.name = source.name;
+
+		this.image = source.image;
+		// this.mipmaps = source.mipmaps.slice( 0 );
+
+		// this.mapping = source.mapping;
+
+		// this.wrapS = source.wrapS;
+		// this.wrapT = source.wrapT;
+
+		// this.magFilter = source.magFilter;
+		// this.minFilter = source.minFilter;
+
+		// this.anisotropy = source.anisotropy;
+
+		this.format = source.format;
+		this.type = source.type;
+
+		// this.offset.copy( source.offset );
+		// this.repeat.copy( source.repeat );
+		// this.center.copy( source.center );
+		// this.rotation = source.rotation;
+
+		// this.matrixAutoUpdate = source.matrixAutoUpdate;
+		// this.matrix.copy( source.matrix );
+
+		// this.generateMipmaps = source.generateMipmaps;
+		// this.premultiplyAlpha = source.premultiplyAlpha;
+		// this.flipY = source.flipY;
+		// this.unpackAlignment = source.unpackAlignment;
+		// this.encoding = source.encoding;
+
+		return this;
+
+	}
 }
 
 export default Texture
