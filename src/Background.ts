@@ -5,7 +5,6 @@ import { Geometry } from "./Geometry";
 import { RenderableElement } from "./RenderableElement";
 
 class Background extends RenderableElement {
-  program: WebGLProgram
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string

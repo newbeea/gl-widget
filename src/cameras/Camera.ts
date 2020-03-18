@@ -23,7 +23,7 @@ class Camera extends Object3D {
   lookTarget( target?: Vector3 ) {
     target = target || this.target
     var m1 = new Matrix4();
-    m1.lookAt( this.position, target, this.up );
+    m1.lookAt( this.position, target, this.up )
     this.quaternion.setFromRotationMatrix( m1 );
 
   }

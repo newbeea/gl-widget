@@ -85,17 +85,7 @@ class Renderer {
     }
     this.programs = new Map()
   }
-  // setMatrixUniform(uniform, value) {
 
-  //   this.renderList.forEach(element => {
-  //     this.gl.useProgram(element.program)
-  //     var location = this.gl.getUniformLocation(element.program, uniform);
-  //     if (location != null) {
-  //       this.gl.uniformMatrix4fv(location, false, value.elements)
-  //     }
-      
-  //   });
-  // }
   setupMouse(){
     let gl = this.gl
     let mouseEnter = {
@@ -113,8 +103,8 @@ class Renderer {
 
     let setMouseUniform = (x, y) => {
       this.renderList.forEach(element => {
-        gl.useProgram(element.program)
-        var location = gl.getUniformLocation(element.program, 'mouse');
+        gl.useProgram(element.glProgram)
+        var location = gl.getUniformLocation(element.glProgram, 'mouse');
         if (location != null) {
           gl.uniform2f(location, x, y)   
         }
@@ -144,16 +134,16 @@ class Renderer {
     let bufferManager = new BufferManager()
     let extensions = new Extensions(gl)
     
+
+    // parse render list
     if (background) {
       this.renderList.push(background)
-      background.setup(gl, bufferManager, this.canvas.width, this.canvas.height)
     }
     
     if (scene) {
       scene.traverse((shape) => {
         if (shape instanceof RenderableElement){
           this.renderList.push(shape)
-          shape.setup(gl, bufferManager, this.canvas.width, this.canvas.height)
         }  
       })
     }
@@ -178,15 +168,18 @@ class Renderer {
     
     camera = camera || this.defaultCamera
     // let scale = new Matrix4()
+    // scale.lookAt(new Vector3(0, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0))
+    // console.log(scale.elements[0], scale.elements[4], scale.elements[8], scale.elements[12])
+    // console.log(scale.elements[1], scale.elements[5], scale.elements[9], scale.elements[13])
+    // console.log(scale.elements[2], scale.elements[6], scale.elements[10], scale.elements[14])
+    // console.log(scale.elements[3], scale.elements[7], scale.elements[11], scale.elements[15])
     // scale.makeScale(1, 1, 1)
     // mvpMatrix.multiply(scale)
     // this.setMatrixUniform('mvpMatrix', mvpMatrix)
     let skyboxCamera
     let clock = new Clock()
     let animate = () => {
-      //setup time uniform
-      
-      
+   
       let pvMatrix = new Matrix4()
       pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
     
@@ -194,10 +187,10 @@ class Renderer {
 
       this.renderList.forEach((element: RenderableElement) => {
       
-        gl.useProgram(element.program)
-        element.updateBuffer()
-        element.updateUniforms() 
+        
+        element.update(gl)
 
+        // set matrix
         let mvpMatrix
         if (element instanceof SkyBox) {
           let matrixWorldInverse = new Matrix4()
@@ -211,11 +204,12 @@ class Renderer {
           mvpMatrix.multiply(element.matrixWorld)
         }
 
-        var location = gl.getUniformLocation(element.program, 'mvpMatrix');
+        var location = gl.getUniformLocation(element.glProgram, 'mvpMatrix');
         if (location != null) {
           gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
         }
      
+        // set render side
         switch (element.side) {
           case RenderSide.FRONT:
             gl.enable(gl.CULL_FACE);
@@ -229,20 +223,26 @@ class Renderer {
             gl.disable(gl.CULL_FACE);
             break
         }
+
+        // set depth test
         if(element instanceof Background) {
           gl.disable(gl.DEPTH_TEST);
         } else if (this.contextAttributes.depth) {
           gl.enable(gl.DEPTH_TEST);
         }
-
+        
+        //draw    
         gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
       });
-      //draw    
+      
+      // animate
       requestAnimationFrame(animate)
 
     }
-    // setTimeout(animate, 100)
+
     animate()
+
+    // TODO remove
     this.setupMouse()
   }
 }

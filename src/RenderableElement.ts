@@ -8,7 +8,8 @@ import { RenderSide } from "./Constants";
 
 
 class RenderableElement extends Object3D {
-  program: WebGLProgram
+  glProgram: WebGLProgram
+  program: Program
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string
@@ -40,44 +41,38 @@ class RenderableElement extends Object3D {
     this.geometry = geometry
     
   }
-  setup(gl: WebGLRenderingContext, bufferManager: BufferManager, width: number, height: number) {
-    this.bufferManager = bufferManager
-    this.gl = gl
+
+  getVertexNum(): number {
+    return this.vertexNum
+  }
+  getProgram(): WebGLProgram {
+    return this.glProgram
+  }
+  update(gl) {
     let shader: ShaderObject = {
       vertexShader: this.vertexShader,
       fragmentShader: this.fragmentShader
     }
 
-    let program: Program = new Program(gl, shader)
-    this.program = program.program
+    if (!this.program) {
+      this.program  = new Program(gl, shader)
+      this.glProgram = this.program.program
+    }
+    gl.useProgram(this.glProgram)
+    this.updateBuffer(gl)
+    this.updateUniforms(gl)
     
-    this.vertexNum = bufferManager.initBuffer(gl, this.program, this.geometry)
-    this.setSize(width, height)
-
-    this.uniformManager = new UniformManager(gl, this.program)
-    // this.updateUniforms({
-    //   time: {value: 200}
-    // })
-    // let uvTransform = new Matrix3()
-    // // uvTransform.setUvTransform(0.5, 0.5, 2, 2, 0, 0, 0)
-    // var location = gl.getUniformLocation(this.program, 'uvTransform');
-    // gl.uniformMatrix3fv(location, false, uvTransform.elements)
   }
-  setSize(width: number, height: number) {
-    var r = this.gl.getUniformLocation(this.program, 'resolution')
-    this.gl.uniform2f(r, width, height);
+  updateBuffer(gl) {
+    if (!this.bufferManager) {
+      this.bufferManager = new BufferManager()
+      this.vertexNum = this.bufferManager.initBuffer(gl, this.glProgram, this.geometry)
+    } else {
+      this.bufferManager.bindBuffer(gl, this.glProgram, this.geometry)
+    }  
   }
-  getVertexNum(): number {
-    return this.vertexNum
-  }
-  getProgram(): WebGLProgram {
-    return this.program
-  }
-  updateBuffer() {
-    this.bufferManager.updateBuffer(this.gl, this.program, this.geometry)
-  }
-  updateUniforms() {
-    this.uniformManager.updateUniforms(this.uniforms)
+  updateUniforms(gl) {
+    this.program.uniformManager.updateUniforms(this.uniforms)
   }
 }
 export {

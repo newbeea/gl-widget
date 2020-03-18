@@ -60,11 +60,14 @@ import parseXML from 'xml-parse-from-string'
 import svgString from '../examples/svg/good.svg';
 let doc = parseXML(svgString)
 let svgNode = doc.querySelector('svg');
-
+import { Vector2 } from './math/Vector2';
 
 let svg = new SvgElement({
   fragmentShader: backgroundShader.fluidShader,
   uniforms: {
+    resolution: {
+      value: new Vector2(800, 480)
+    },
     time: {
       value: 0
     }
@@ -94,6 +97,7 @@ sphere.position.y = 1
 import { SkyBox } from './SkyBox'
 import { PerspectiveCamera } from './cameras/PerspectiveCamera';
 import { OrthographicCamera } from './cameras/OrthographicCamera';
+
 let sky = new SkyBox({
   uniforms: {
     cube: {

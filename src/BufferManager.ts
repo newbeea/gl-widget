@@ -28,8 +28,8 @@ class BufferManager {
 
       this.buffers.set(attribute, buffer)
 
-    }
-    var vertexNum = 0
+    } 
+
     let buffer = gl.createBuffer();
     if (!buffer) {
       console.log('Failed to create the buffer object');
@@ -42,7 +42,8 @@ class BufferManager {
     return geometry.index.array.length
   
   }
-  updateBuffer(gl: WebGLRenderingContext, program: WebGLProgram, geometry: Geometry) {
+  bindBuffer(gl: WebGLRenderingContext, program: WebGLProgram, geometry: Geometry) {
+
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.buffers.get(geometry.index))
     
     for(let [name, attribute] of geometry.attributes.entries()) {

@@ -7,7 +7,6 @@ import { Background } from "./Background";
 import { RenderSide } from "./Constants";
 
 class SkyBox extends Background {
-  program: WebGLProgram
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string

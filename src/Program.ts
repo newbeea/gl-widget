@@ -1,10 +1,14 @@
 import { Shader } from './Shader'
+import { UniformManager } from './UniformManager'
+import { BufferManager } from './BufferManager'
 export interface ShaderObject {
   vertexShader: string,
   fragmentShader: string
 }
 class Program {
   program: WebGLProgram
+  uniformManager: UniformManager
+  // bufferManager: BufferManager
   constructor(gl: WebGLRenderingContext, shader: ShaderObject) {
     this.program = gl.createProgram();
     
@@ -25,8 +29,12 @@ class Program {
     }
     gl.useProgram(this.program)
     gl.deleteShader( vertexShader );
-	  gl.deleteShader( fragmentShader );
+    gl.deleteShader( fragmentShader );
+    
+    this.uniformManager = new UniformManager(gl, this.program)
+    // this.bufferManager = new BufferManager()
   }
+
 }
 export {
   Program
