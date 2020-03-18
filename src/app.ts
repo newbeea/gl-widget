@@ -122,12 +122,12 @@ let aspect = renderer.canvas.width / renderer.canvas.height
 
 // camera = new PerspectiveCamera(50, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
 let camera = renderer.defaultCamera
-renderer.render(sky, scene);
+renderer.render(sky, scene, undefined);
 
 // test custom uniforms by users
 let clock = new Clock()
 let phi = 0
-let r = 1
+let r = 4
 function animate() {
 
   camera.position.x = r * Math.sin(phi)

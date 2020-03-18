@@ -5,6 +5,7 @@ import { Geometry } from "./Geometry";
 import { Object3D } from "./Object3D";
 import { UniformManager } from "./UniformManager";
 import { RenderSide } from "./Constants";
+import { ProgramManager } from "./ProgramManager";
 
 
 class RenderableElement extends Object3D {
@@ -18,7 +19,9 @@ class RenderableElement extends Object3D {
   geometry: Geometry
   bufferManager: BufferManager
   uniformManager: UniformManager
+  programManager: ProgramManager
   side: RenderSide
+
   constructor(material?: any, geometry?: Geometry) {
     super()
     this.vertexShader = `
@@ -39,7 +42,7 @@ class RenderableElement extends Object3D {
 
     this.side = material.side || RenderSide.FRONT
     this.geometry = geometry
-    
+    this.programManager = new ProgramManager()
   }
 
   getVertexNum(): number {
@@ -48,16 +51,20 @@ class RenderableElement extends Object3D {
   getProgram(): WebGLProgram {
     return this.glProgram
   }
-  update(gl) {
-    let shader: ShaderObject = {
+
+  update(gl, material?:any ) {
+    let shader: ShaderObject = material ? material : {
       vertexShader: this.vertexShader,
       fragmentShader: this.fragmentShader
     }
 
-    if (!this.program) {
-      this.program  = new Program(gl, shader)
-      this.glProgram = this.program.program
-    }
+    
+    this.program = this.programManager.getProgram(gl, shader)
+    this.glProgram = this.program.program
+    // if (!this.program) {
+    //   this.program  = new Program(gl, shader)
+    //   this.glProgram = this.program.program
+    // }
     gl.useProgram(this.glProgram)
     this.updateBuffer(gl)
     this.updateUniforms(gl)
