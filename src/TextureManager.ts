@@ -9,7 +9,26 @@ class TextureManager {
     this.gl = gl
     this.textureCache = new WeakMap()
   }
+
+  setRenderTarget(texture: Texture, width, height) {
+    let gl = this.gl
+    let cached = this.textureCache.get(texture)
+    if (!cached) {
+      cached = {}
+      cached.glTexture = this.gl.createTexture();
+      cached.loaded = false
+      this.textureCache.set(texture, cached)
+    }
+    let glTexture = cached.glTexture
+    gl.bindTexture(gl.TEXTURE_2D, glTexture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, width, height, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
+    return glTexture
+    
+  }
   setTexture2D(texture: Texture, options) {
+    if (!texture) return
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
     if (!cached) {
@@ -30,6 +49,7 @@ class TextureManager {
       // if (texture.version > 0 && cached.version !== texture.version) { 
         cached.version = texture.version
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
         gl.generateMipmap( gl.TEXTURE_2D )
         cached.loaded = true
       } else {
@@ -37,6 +57,7 @@ class TextureManager {
         let im = new ImageData(new Uint8ClampedArray([0, 0, 0, 0]), 1, 1)
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im)     
       } 
+      gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false )
     }      
   }
   setTextureCube(texture: Texture, options) {

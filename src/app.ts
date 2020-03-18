@@ -84,7 +84,7 @@ scene.add(svg)
 
 // Shere
 import { SphereElement } from './extras/plugins/Geometries'
-import { BlinnPhongMaterial, PhongMaterial } from './extras/plugins/Materials';
+import { BlinnPhongMaterial, PhongMaterial, CopyShader } from './extras/plugins/Materials';
 let sphere = new SphereElement(new PhongMaterial, {
   radius: 0.4, 
 })
@@ -109,9 +109,19 @@ sky.scale.x = 10
 sky.scale.y = 10
 sky.scale.z = 10
 
+// plane
 
-let frustumSize = 8
-let aspect = renderer.canvas.width / renderer.canvas.height
+import { PlaneGeometry } from './extras/plugins/Geometries/PlaneGeometry';
+import { RenderableElement } from './RenderableElement';
+
+let planeGeometry = new PlaneGeometry()
+let copyShader = new CopyShader()
+let plane = new RenderableElement(copyShader, planeGeometry)
+plane.position.x = 1
+copyShader.uniforms.tDiffuse.value = new Texture(image, 1, 1)
+scene.add(plane)
+// let frustumSize = 8
+// let aspect = renderer.canvas.width / renderer.canvas.height
 // let camera: any = new OrthographicCamera(
 //   frustumSize * aspect / -2, 
 //   frustumSize * aspect / 2, 

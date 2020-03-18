@@ -6,7 +6,7 @@ class Texture {
   type: any
   version: number
   needsUpdate: boolean
-  constructor (image, format, type) {
+  constructor (image, format=1, type=1) { // TODO
     if (image instanceof Array) {
       this.images = image
     } else {

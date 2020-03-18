@@ -13,6 +13,7 @@ import { Camera } from './cameras/Camera';
 import { SkyBox } from './SkyBox';
 import { RenderSide } from './Constants';
 import { ShaderObject } from './Program';
+import { RenderTarget } from './RenderTarget';
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -128,6 +129,13 @@ class Renderer {
       mouseOld.x = mouseOffset.x
       mouseOld.y = mouseOffset.y
     }, false );
+  }
+  setRenderTarget (renderTarget: RenderTarget) {
+    if (!renderTarget) {
+      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+    } else {
+      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, renderTarget.frameBuffer);
+    }  
   }
   renderElement(element: RenderableElement, camera:Camera, shader?:ShaderObject) {
     let gl = this.gl

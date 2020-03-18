@@ -3,10 +3,6 @@ import { Geometry } from '../../../Geometry'
 import { Float32Attribute } from '../../../Float32Attribute'
 import { Uint32Attribute } from '../../../Uint32Attribute'
 import { Vector3 } from '../../../math/Vector3'
-interface FontOptions {
-  size ?: number
-  divisions ?: number
-}
 
 class SphereGeometry extends Geometry {
   indices: any[]
