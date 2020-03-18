@@ -144,7 +144,7 @@ let renderPass = new RenderPass(sky, scene, camera)
 let copyShader2 = new CopyShader()
 let copyPass = new ShaderPass(copyShader2)
 renderFlow.addPass(renderPass)
-// renderFlow.addPass(copyPass)
+renderFlow.addPass(copyPass)
 renderFlow.render()
 // test custom uniforms by users
 let clock = new Clock()

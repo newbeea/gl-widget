@@ -17,15 +17,15 @@ class RenderFlow {
   renderer: Renderer;
   constructor(renderer: Renderer, renderTarget?: RenderTarget) {
     this.renderer = renderer;
-
+    let parameters = {
+      // minFilter: LinearFilter,
+      // magFilter: LinearFilter,
+      // format: RGBAFormat,
+      // stencilBuffer: false
+    };
     if ( renderTarget === undefined ) {
 
-      let parameters = {
-        // minFilter: LinearFilter,
-        // magFilter: LinearFilter,
-        // format: RGBAFormat,
-        // stencilBuffer: false
-      };
+      
 
       let size: Vector2 = renderer.getSize();
       this.pixelRatio = renderer.getPixelRatio();
@@ -44,7 +44,8 @@ class RenderFlow {
     }
 
     this.renderTarget1 = renderTarget;
-    this.renderTarget2 = renderTarget.clone();
+    // this.renderTarget2 = renderTarget.clone();
+    this.renderTarget2 = new RenderTarget( renderer.gl, this.width * this.pixelRatio, this.height * this.pixelRatio, parameters );
     // this.renderTarget2.texture.name = 'EffectComposer.rt2';
 
     this.writeBuffer = this.renderTarget1;

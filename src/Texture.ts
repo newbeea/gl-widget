@@ -1,5 +1,6 @@
 
 class Texture {
+  glTextrue: any;
   image: any
   images: Array<any>
   format: any
@@ -17,7 +18,7 @@ class Texture {
     this.type = type
     this.version = 0
     this.needsUpdate = false
-
+    this.glTextrue = null
     // this.needsUpdate = new Proxy(true, {
     //   set: (target, key, value, receiver) => {
     //     let v = Reflect.set(target, key, value, receiver)

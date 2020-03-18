@@ -25,14 +25,14 @@ class ShaderPass extends Pass {
 
 		if ( this.uniforms[ this.textureID ] ) {
 
-			// this.uniforms[ this.textureID ].value = readBuffer.texture;
+			this.uniforms[ this.textureID ].value = readBuffer.texture;
 
 		}
     console.log(this.renderToScreen)
 		if ( this.renderToScreen ) {
 
 			renderer.setRenderTarget( null );
-			// renderer.renderElement(this.fullScreenQuad, this.camera)
+			renderer.renderElement(this.fullScreenQuad, this.camera)
 
 		} else {
 
