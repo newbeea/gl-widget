@@ -145,7 +145,7 @@ class Renderer {
   }
   renderElement(element: RenderableElement, camera:Camera, shader?:ShaderObject) {
     let gl = this.gl
-    let extensions = new Extensions(gl) // TODO
+    // let extensions = new Extensions(gl) // TODO
     let pvMatrix = new Matrix4()
     pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
   

@@ -14,7 +14,7 @@ class Texture {
   imageLoadedCount: number
   state: State
   constructor (imageSrc?, format=1, type=1) { // TODO
-    this.version = 0
+    
     this.state = new Proxy( {
       needsUpdate: false,
       version: 0
@@ -29,8 +29,9 @@ class Texture {
         return v
       }
     })
+    this.version = 0
     this.imageLoadedCount = 0
-
+    this.image = null
     this.images = []
     if (imageSrc instanceof Array) {
       

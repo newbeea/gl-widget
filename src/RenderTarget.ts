@@ -14,7 +14,8 @@ class RenderTarget  {
     this.textureManager = new TextureManager(gl)
     this.width = width
     this.height = height
-    this.texture = new Texture(undefined)
+    this.texture = new Texture()
+    
     this.textureManager.createTexture(this.texture, width, height)
 
     this.frameBuffer = gl.createFramebuffer()

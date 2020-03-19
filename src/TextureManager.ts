@@ -14,29 +14,34 @@ class TextureManager {
     let gl = this.gl
     texture.glTextrue = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture.glTextrue);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, width, height, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
     gl.bindTexture(gl.TEXTURE_2D, null);
     
   }
   setTexture2D(texture: Texture, options) {
 
-    // texture = texture || new Texture()
+    // if (!texture) return
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
     if (!cached) {
       cached = {
         version: 0
       }
+      console.log(texture)
       this.textureCache.set(texture, cached)
       this.unit ++
     }
+    // if (! texture.image)console.log(texture)
+
     let glTexture = texture.glTextrue ? texture.glTextrue : gl.createTexture()
     texture.glTextrue = glTexture
     // let glTexture = cached.glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
     gl.bindTexture(gl.TEXTURE_2D, glTexture)
-    
-    if (cached.version != texture.version) {
+    gl.generateMipmap( gl.TEXTURE_2D )
+
+    if (texture.version > 0 && cached.version != texture.version) {
       console.log(cached.version, texture.version)
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
 

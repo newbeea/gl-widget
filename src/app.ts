@@ -127,10 +127,10 @@ let planeGeometry1 = new PlaneGeometry()
 let copyShader1 = new CopyShader()
 let plane1 = new RenderableElement(copyShader1, planeGeometry1)
 plane1.position.x = -1
-// copyShader1.uniforms.tDiffuse.value = null
+copyShader1.uniforms.tDiffuse.value = new Texture(image, 1, 1)
 scene.add(plane1)
-// let frustumSize = 8
-// let aspect = renderer.canvas.width / renderer.canvas.height
+let frustumSize = 8
+let aspect = renderer.canvas.width / renderer.canvas.height
 // let camera: any = new OrthographicCamera(
 //   frustumSize * aspect / -2, 
 //   frustumSize * aspect / 2, 
@@ -150,8 +150,8 @@ let renderPass = new RenderPass(sky, scene, camera)
 let copyShader2 = new CopyShader()
 let copyPass = new ShaderPass(copyShader2)
 renderFlow.addPass(renderPass)
-// renderFlow.render()
-// renderFlow.addPass(copyPass)
+
+renderFlow.addPass(copyPass)
 // setInterval(()=> {
 //   renderFlow.render()
 
