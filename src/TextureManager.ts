@@ -19,24 +19,25 @@ class TextureManager {
     
   }
   setTexture2D(texture: Texture, options) {
-    if (!texture) return
-   
+
+    // texture = texture || new Texture()
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
     if (!cached) {
       cached = {
-        version: texture.version
+        version: 0
       }
       this.textureCache.set(texture, cached)
+      this.unit ++
     }
     let glTexture = texture.glTextrue ? texture.glTextrue : gl.createTexture()
     texture.glTextrue = glTexture
     // let glTexture = cached.glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
     gl.bindTexture(gl.TEXTURE_2D, glTexture)
-    this.unit ++
-
+    
     if (cached.version != texture.version) {
+      console.log(cached.version, texture.version)
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
 
       cached.version = texture.version
@@ -51,16 +52,17 @@ class TextureManager {
     let cached = this.textureCache.get(texture)
     if (!cached) {
       cached = {
-        version: texture.version
+        version: 0
       }
       this.textureCache.set(texture, cached)
+      this.unit ++
     }
 
     let glTexture = texture.glTextrue ? texture.glTextrue : gl.createTexture()
     texture.glTextrue = glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, glTexture)
-    this.unit ++
+    
 
     if (cached.version != texture.version) {
       for (let i = 0; i < 6; i++) {

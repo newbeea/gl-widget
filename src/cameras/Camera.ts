@@ -17,7 +17,7 @@ class Camera extends Object3D {
     // this.matrixWorld = new Matrix4()
     // this.matrixWorld.makeTranslation(0, 0, 10)
     this.target = new Vector3()
-    this.position.z = 10
+    // this.position.z = 10
     
   }
   lookTarget( target?: Vector3 ) {

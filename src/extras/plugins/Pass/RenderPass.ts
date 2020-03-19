@@ -10,10 +10,8 @@ class RenderPass extends Pass {
     super()
     this.background = background
     this.scene = scene;
-	  this.camera = camera;
-
-	
-	  this.needsSwap = false;
+	this.camera = camera;
+	this.needsSwap = false;
 
   }
   render ( renderer: Renderer, writeBuffer, readBuffer /*, deltaTime, maskActive */ ) {
@@ -39,7 +37,7 @@ class RenderPass extends Pass {
 		// 	renderer.clearDepth();
 
 		// }
-    console.log(this.renderToScreen)
+   		// console.log(this.renderToScreen)
 		renderer.setRenderTarget( this.renderToScreen ? null : readBuffer );
 
 		// TODO: Avoid using autoClear properties, see https://github.com/mrdoob/three.js/pull/15571#issuecomment-465669600

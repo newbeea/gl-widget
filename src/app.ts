@@ -11,15 +11,12 @@ const renderer: Renderer = new Renderer({
 }, {});
 
 let scene: Object3D = new Object3D()
-let image = new Image()
-image.src = require('../examples/image/combine.png').default
+let image = require('../examples/image/combine.png').default
 let images = []
 let imagenames = ['posx', 'negx', 'posy', 'negy', 'posz', 'negz']
 
 for (let i = 0; i < 6; i++) {
-  let image = new Image()
-  image.src = require(`../examples/image/${imagenames[i]}.jpg`).default
-  images.push(image)
+  images.push(require(`../examples/image/${imagenames[i]}.jpg`).default)
 }
 // Background
 let background: Background = new Background({
@@ -117,6 +114,7 @@ import { RenderFlow } from './RenderFlow';
 import { RenderPass } from './extras/plugins/Pass/RenderPass';
 import { Shader } from './Shader';
 import { ShaderPass } from './extras/plugins/Pass/ShaderPass';
+import { TextureManager } from './TextureManager';
 
 let planeGeometry = new PlaneGeometry()
 let copyShader = new CopyShader()
@@ -124,6 +122,13 @@ let plane = new RenderableElement(copyShader, planeGeometry)
 plane.position.x = 1
 copyShader.uniforms.tDiffuse.value = new Texture(image, 1, 1)
 scene.add(plane)
+
+let planeGeometry1 = new PlaneGeometry()
+let copyShader1 = new CopyShader()
+let plane1 = new RenderableElement(copyShader1, planeGeometry1)
+plane1.position.x = -1
+// copyShader1.uniforms.tDiffuse.value = null
+scene.add(plane1)
 // let frustumSize = 8
 // let aspect = renderer.canvas.width / renderer.canvas.height
 // let camera: any = new OrthographicCamera(
@@ -136,16 +141,22 @@ scene.add(plane)
 
 // camera = new PerspectiveCamera(50, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
 let camera = renderer.defaultCamera
-renderer.render(sky, scene, camera);
+// renderer.render(sky, scene, camera);
 
 // render flow
 let renderFlow = new RenderFlow(renderer)
 let renderPass = new RenderPass(sky, scene, camera)
+
 let copyShader2 = new CopyShader()
 let copyPass = new ShaderPass(copyShader2)
 renderFlow.addPass(renderPass)
-// renderFlow.addPass(copyPass)
 // renderFlow.render()
+// renderFlow.addPass(copyPass)
+// setInterval(()=> {
+//   renderFlow.render()
+
+// }, 1000)
+
 // test custom uniforms by users
 let clock = new Clock()
 let phi = 0
@@ -159,7 +170,8 @@ function animate() {
   background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
   // renderer.render(sky, scene, camera, true);
-  // renderFlow.render()
+  renderFlow.render()
+  // copyShader1.uniforms.tDiffuse.value = renderFlow.readBuffer.texture
   requestAnimationFrame(animate)
 }
 animate()

@@ -13,7 +13,8 @@ class Texture {
   imageCount: number
   imageLoadedCount: number
   state: State
-  constructor (image, format=1, type=1) { // TODO
+  constructor (imageSrc?, format=1, type=1) { // TODO
+    this.version = 0
     this.state = new Proxy( {
       needsUpdate: false,
       version: 0
@@ -21,51 +22,57 @@ class Texture {
       set: (target, key, value, receiver) => {
         let v = Reflect.set(target, key, value, receiver)
         if (key === 'needsUpdate' && value === true) {
+          
           this.version ++
+          console.log('version', this.version)
         }
         return v
       }
     })
     this.imageLoadedCount = 0
-    if (image instanceof Array) {
-      this.images = image
-      this.imageCount = this.images.length
-      image.forEach(img => {
-        this.addImageListener(img)
+
+    this.images = []
+    if (imageSrc instanceof Array) {
+      
+      this.imageCount = imageSrc.length
+      imageSrc.forEach(src => {
+        let image = new Image()
+        image.onload =  () => {
+          console.log('onload')
+          this.loadedCallback();
+          image.onload = null;
+        };
+        image.src = src
+        this.images.push(image)
       })
-    } else {
+    } else if (imageSrc) {
+      let image = new Image()
+      image.onload =  () => {
+        console.log('onload')
+        this.loadedCallback();
+        image.onload = null;
+      };
+      image.src = imageSrc
       this.image = image
+
       this.imageCount = 1
-      this.addImageListener(image)
+
     }
     
     this.format = format
     this.type = type
-    this.version = 0
+    
     this.needsUpdate = false
     this.glTextrue = null
   }
   loadedCallback () {
     this.imageLoadedCount += 1
     if (this.imageLoadedCount == this.imageCount) {
+      console.log('image load')
       this.state.needsUpdate = true
     }
   }
-  addImageListener (img) {
-    if (!img) return
-    if (img.complete) {
-      this.loadedCallback();
-    } else {
-        img.onload =  () => {
-          this.loadedCallback();
-          img.onload = null;
-        };
-    };
-  }
   
-  update () {
-    this.version ++
-  }
   clone () {
 
 		return new Texture(undefined).copy( this );

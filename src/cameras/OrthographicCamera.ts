@@ -37,7 +37,7 @@ class OrthographicCamera extends Camera {
 
     this.near = ( near !== undefined ) ? near : 0.1;
     this.far = ( far !== undefined ) ? far : 2000;
-
+    // this.lookTarget()
     this.updateProjectionMatrix();
 
   }

@@ -1,5 +1,7 @@
 import { TextureManager } from "./TextureManager";
+import Texture from "./Texture";
 
+let emptyTexture = new Texture();
 // --- Setters ---
 
 // Note: Defining these methods externally, because they come in a bunch
@@ -63,7 +65,7 @@ function setValueT1( gl, v, textureManager ) {
 
 	
 	gl.uniform1i( this.addr, textureManager.unit );
-	textureManager.setTexture2D( v );
+	textureManager.setTexture2D( v || emptyTexture );
 
 }
 

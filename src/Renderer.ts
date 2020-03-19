@@ -69,6 +69,7 @@ class Renderer {
       // element.appendChild(this.canvas)
       let aspect = this.canvas.width / this.canvas.height
       this.defaultCamera = new PerspectiveCamera(50, aspect, 0.1, 1000) 
+      this.defaultCamera.position.z = 10
       this.cameraMode = options.cameraMode || CAMERA.PERSPECTIVE
       element.insertBefore(this.canvas, element.firstChild)
     }
@@ -144,6 +145,7 @@ class Renderer {
   }
   renderElement(element: RenderableElement, camera:Camera, shader?:ShaderObject) {
     let gl = this.gl
+    let extensions = new Extensions(gl) // TODO
     let pvMatrix = new Matrix4()
     pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
   
@@ -206,7 +208,7 @@ class Renderer {
   render(background?: RenderableElement, scene?: Object3D, camera?: Camera, once: boolean = false) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);  
-    let extensions = new Extensions(gl)
+    
     let renderFrame = () => {
    
        

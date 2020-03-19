@@ -7,9 +7,9 @@ class RenderFlow {
   clock: Clock;
   passes: any[];
   renderToScreen: boolean;
-  readBuffer: any;
+  readBuffer: RenderTarget;
   writeBuffer: RenderTarget;
-  renderTarget2: any;
+  renderTarget2: RenderTarget;
   renderTarget1: RenderTarget;
   height: number;
   width: number;
