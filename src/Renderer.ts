@@ -44,6 +44,9 @@ class Renderer {
   contextAttributes: ContextAttributes
   cameraMode: CAMERA
   defaultCamera: Camera
+  pixelRatio: number;
+  width: any;
+  height: any;
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
     this.renderList = []
     this.renderTarget = null
@@ -66,6 +69,11 @@ class Renderer {
       // this.canvas.style.left = '0'
       this.canvas.width = element.clientWidth
       this.canvas.height = element.clientHeight
+      this.width = element.clientWidth
+      this.height = element.clientHeight
+      this.setPixelRatio(1)
+      // this.canvas.width = element.clientWidth
+      // this.canvas.height = element.clientHeight
       // element.appendChild(this.canvas)
       let aspect = this.canvas.width / this.canvas.height
       this.defaultCamera = new PerspectiveCamera(50, aspect, 0.1, 1000) 
@@ -90,6 +98,8 @@ class Renderer {
       this.gl.enable(this.gl.DEPTH_TEST);
     }
     this.programs = new Map()
+    // this.pixelRatio = 
+    
   }
 
   setupMouse(){
@@ -196,14 +206,42 @@ class Renderer {
     gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
   
   }
+
   getRenderTarget(): RenderTarget {
     return this.renderTarget
   }
+  setPixelRatio ( value ) {
+
+		if ( value === undefined ) return;
+
+		this.pixelRatio = value;
+
+		this.setSize( this.width, this.height, false );
+
+	}
   getPixelRatio(): number {
-    return 1
+    return this.pixelRatio
   } 
+  setSize ( width, height, updateStyle ) {
+
+
+
+		this.width = width;
+		this.height = height;
+
+		this.canvas.width = Math.floor( width * this.pixelRatio );
+		this.canvas.height = Math.floor( height * this.pixelRatio );
+
+
+    this.canvas.style.width = width + 'px';
+    this.canvas.style.height = height + 'px';
+
+
+		// this.setViewport( 0, 0, width, height );
+
+	}
   getSize(): Vector2 {
-    return new Vector2(this.canvas.width, this.canvas.height)
+    return new Vector2(this.width, this.height)
   }
   render(background?: RenderableElement, scene?: Object3D, camera?: Camera, once: boolean = false) {
     let gl = this.gl
