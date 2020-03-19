@@ -15,12 +15,12 @@ class RenderTarget  {
     this.width = width
     this.height = height
     this.texture = new Texture(undefined)
-    this.textureBuffer = this.textureManager.setRenderTarget(this.texture, width, height)
+    this.textureManager.createTexture(this.texture, width, height)
 
     this.frameBuffer = gl.createFramebuffer()
   
     gl.bindFramebuffer( gl.FRAMEBUFFER, this.frameBuffer );
-    gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.textureBuffer, null );
+    gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture.glTextrue, null );
     gl.bindFramebuffer( gl.FRAMEBUFFER, null );
   }
   setupDepthTexture (framebuffer, renderTarget) {

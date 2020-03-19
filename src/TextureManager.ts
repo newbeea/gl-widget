@@ -10,53 +10,39 @@ class TextureManager {
     this.textureCache = new WeakMap()
   }
 
-  setRenderTarget(texture: Texture, width, height) {
+  createTexture(texture: Texture, width, height) {
     let gl = this.gl
-    let cached = this.textureCache.get(texture)
-    if (!cached) {
-      cached = {}
-      cached.glTexture = this.gl.createTexture();
-      cached.loaded = false
-      this.textureCache.set(texture, cached)
-    }
-    let glTexture = cached.glTexture
-    gl.bindTexture(gl.TEXTURE_2D, glTexture);
+    texture.glTextrue = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture.glTextrue);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, width, height, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
     gl.bindTexture(gl.TEXTURE_2D, null);
-
-    return glTexture
     
   }
   setTexture2D(texture: Texture, options) {
     if (!texture) return
+   
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
     if (!cached) {
-      cached = {}
-      cached.glTexture = gl.createTexture();
-      cached.loaded = false
+      cached = {
+        version: texture.version
+      }
       this.textureCache.set(texture, cached)
     }
-
-    let glTexture = cached.glTexture
+    let glTexture = texture.glTextrue ? texture.glTextrue : gl.createTexture()
+    texture.glTextrue = glTexture
+    // let glTexture = cached.glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
     gl.bindTexture(gl.TEXTURE_2D, glTexture)
     this.unit ++
 
-    if (!cached.loaded) {
+    if (cached.version != texture.version) {
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
-      if (texture.image.complete) {
-      // if (texture.version > 0 && cached.version !== texture.version) { 
-        cached.version = texture.version
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
-        gl.generateMipmap( gl.TEXTURE_2D )
-        cached.loaded = true
-      } else {
-      // if (texture.version == 0) {
-        let im = new ImageData(new Uint8ClampedArray([0, 0, 0, 0]), 1, 1)
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im)     
-      } 
+
+      cached.version = texture.version
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+      gl.generateMipmap( gl.TEXTURE_2D )
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false )
     }      
   }
@@ -64,35 +50,23 @@ class TextureManager {
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
     if (!cached) {
-      cached = {}
-      cached.glTexture = gl.createTexture();
-      cached.loaded = false
+      cached = {
+        version: texture.version
+      }
       this.textureCache.set(texture, cached)
     }
 
-    let glTexture = cached.glTexture
+    let glTexture = texture.glTextrue ? texture.glTextrue : gl.createTexture()
+    texture.glTextrue = glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, glTexture)
     this.unit ++
-    if (!cached.loaded) {
-      let imageCount = 0
-      texture.images.forEach(image => {
-        if (image.complete) {
-          imageCount += 1
-        }
-      })
+
+    if (cached.version != texture.version) {
       for (let i = 0; i < 6; i++) {
         let image = texture.images[i]
-        if (imageCount === 6) {
-          // if (texture.version > 0 && cached.version !== texture.version) { 
-            // cached.version = texture.version
-            gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
-            cached.loaded = true
-          } else {
-          // if (texture.version == 0) {
-            let im = new ImageData(new Uint8ClampedArray([0, 0, 0, 0]), 1, 1)
-            gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im)     
-          } 
+        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+        cached.version = texture.version
       }
       gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
