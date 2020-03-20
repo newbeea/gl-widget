@@ -72,8 +72,8 @@ class Renderer {
       this.canvas.height = element.clientHeight
       this.width = element.clientWidth
       this.height = element.clientHeight
-      // this.setPixelRatio(window.devicePixelRatio)
-      this.setPixelRatio(1)
+      this.setPixelRatio(window.devicePixelRatio)
+      // this.setPixelRatio(1)
       // this.canvas.width = element.clientWidth
       // this.canvas.height = element.clientHeight
       // element.appendChild(this.canvas)
