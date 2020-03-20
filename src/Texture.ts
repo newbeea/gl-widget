@@ -3,7 +3,7 @@ interface State {
   version: number
 }
 class Texture {
-  glTextrue: any;
+  glTexture: any;
   image: any
   images: Array<any>
   format: any
@@ -64,7 +64,7 @@ class Texture {
     this.type = type
     
     this.needsUpdate = false
-    this.glTextrue = null
+    this.glTexture = null
   }
   loadedCallback () {
     this.imageLoadedCount += 1

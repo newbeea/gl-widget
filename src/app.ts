@@ -127,7 +127,7 @@ let planeGeometry1 = new PlaneGeometry()
 let copyShader1 = new CopyShader()
 let plane1 = new RenderableElement(copyShader1, planeGeometry1)
 plane1.position.x = -1
-copyShader1.uniforms.tDiffuse.value = new Texture(image, 1, 1)
+copyShader1.uniforms.tDiffuse.value = null
 scene.add(plane1)
 let frustumSize = 8
 let aspect = renderer.canvas.width / renderer.canvas.height

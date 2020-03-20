@@ -12,8 +12,8 @@ class TextureManager {
 
   createTexture(texture: Texture, width, height) {
     let gl = this.gl
-    texture.glTextrue = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture.glTextrue);
+    texture.glTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture.glTexture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
     gl.bindTexture(gl.TEXTURE_2D, null);
@@ -34,14 +34,14 @@ class TextureManager {
     }
     // if (! texture.image)console.log(texture)
 
-    let glTexture = texture.glTextrue ? texture.glTextrue : gl.createTexture()
-    texture.glTextrue = glTexture
+    texture.glTexture =texture.glTexture ? texture.glTexture : gl.createTexture()
+
     // let glTexture = cached.glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
-    gl.bindTexture(gl.TEXTURE_2D, glTexture)
+    gl.bindTexture(gl.TEXTURE_2D, texture.glTexture)
     // gl.generateMipmap( gl.TEXTURE_2D )
 
-    if (texture.version > 0 && cached.version != texture.version) {
+    if (texture.image && texture.version > 0 && cached.version != texture.version) {
       console.log(cached.version, texture.version)
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
 
@@ -63,13 +63,13 @@ class TextureManager {
       this.unit ++
     }
 
-    let glTexture = texture.glTextrue ? texture.glTextrue : gl.createTexture()
-    texture.glTextrue = glTexture
+    texture.glTexture = texture.glTexture ? texture.glTexture : gl.createTexture()
+    // texture.glTexture = glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
-    gl.bindTexture(gl.TEXTURE_CUBE_MAP, glTexture)
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.glTexture)
     
 
-    if (texture.version > 0 && cached.version != texture.version) {
+    if (texture.images.length && texture.version > 0 && cached.version != texture.version) {
       for (let i = 0; i < 6; i++) {
         let image = texture.images[i]
         gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)

@@ -21,7 +21,7 @@ class RenderTarget  {
     this.frameBuffer = gl.createFramebuffer()
   
     gl.bindFramebuffer( gl.FRAMEBUFFER, this.frameBuffer );
-    gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture.glTextrue, null );
+    gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture.glTexture, null );
     gl.bindFramebuffer( gl.FRAMEBUFFER, null );
   }
   setupDepthTexture (framebuffer, renderTarget) {
