@@ -20,8 +20,18 @@ for (let i = 0; i < 6; i++) {
   images.push(require(`../examples/image/${imagenames[i]}.jpg`).default)
 }
 // Background
-let t = new TextureMaterial(new Texture(image))
-let background: Background = new Background(t);
+// let t = new TextureMaterial(new Texture(image))
+let background: Background = new Background({
+  fragmentShader: backgroundShader.curveShader,
+  uniforms: {
+    resolution:{
+      value: renderer.getSize()
+    },
+    time: {
+      value: 0
+    }
+  },
+});
 
 // Text
 import fontJson from '../examples/font/averia.json';

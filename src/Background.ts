@@ -15,7 +15,7 @@ class Background extends RenderableElement {
       fragmentShader: 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}',
       uniforms: {}
     }, material)
-    super(material, geometry || new PlaneGeometry())   
+    super(material, geometry || new PlaneGeometry(2, 2))   
    
   }
 }
