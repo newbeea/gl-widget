@@ -30,7 +30,7 @@ class TextureManager {
       cached = {
         version: 0
       }
-      console.log(texture)
+      // console.log(texture)
       this.textureCache.set(texture, cached)
       this.unit ++
     }
@@ -44,7 +44,7 @@ class TextureManager {
     // gl.generateMipmap( gl.TEXTURE_2D )
 
     if (texture.image && texture.version > 0 && cached.version != texture.version) {
-      console.log(cached.version, texture.version)
+      // console.log(cached.version, texture.version)
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
 
       cached.version = texture.version

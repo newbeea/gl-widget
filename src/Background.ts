@@ -3,6 +3,7 @@
 import { BackgroundGeometry } from "./BackgroundGeometry";
 import { Geometry } from "./Geometry";
 import { RenderableElement } from "./RenderableElement";
+import { PlaneGeometry } from "./extras/plugins/Geometries/PlaneGeometry";
 
 class Background extends RenderableElement {
   gl: WebGLRenderingContext
@@ -14,7 +15,7 @@ class Background extends RenderableElement {
       fragmentShader: 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}',
       uniforms: {}
     }, material)
-    super(material, geometry || new BackgroundGeometry())   
+    super(material, geometry || new PlaneGeometry())   
    
   }
 }

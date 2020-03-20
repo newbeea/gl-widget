@@ -24,7 +24,7 @@ class Texture {
         if (key === 'needsUpdate' && value === true) {
           
           this.version ++
-          console.log('version', this.version)
+          // console.log('version', this.version)
         }
         return v
       }
@@ -39,7 +39,7 @@ class Texture {
       imageSrc.forEach(src => {
         let image = new Image()
         image.onload =  () => {
-          console.log('onload')
+          // console.log('onload')
           this.loadedCallback();
           image.onload = null;
         };
@@ -49,7 +49,7 @@ class Texture {
     } else if (imageSrc) {
       let image = new Image()
       image.onload =  () => {
-        console.log('onload')
+        // console.log('onload')
         this.loadedCallback();
         image.onload = null;
       };
@@ -69,7 +69,7 @@ class Texture {
   loadedCallback () {
     this.imageLoadedCount += 1
     if (this.imageLoadedCount == this.imageCount) {
-      console.log('image load')
+      // console.log('image load')
       this.state.needsUpdate = true
     }
   }

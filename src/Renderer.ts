@@ -158,8 +158,14 @@ class Renderer {
   renderElement(element: RenderableElement, camera:Camera, shader?:ShaderObject) {
     let gl = this.gl
     let pvMatrix = new Matrix4()
-    pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
-  
+    // set depth test
+    if(element instanceof Background) {
+      gl.disable(gl.DEPTH_TEST);
+    } else {
+      gl.enable(gl.DEPTH_TEST);
+      pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
+    }
+    
     element.update(gl, shader)
 
     // set matrix
@@ -196,12 +202,7 @@ class Renderer {
         break
     }
 
-    // set depth test
-    if(element instanceof Background) {
-      gl.disable(gl.DEPTH_TEST);
-    } else if (this.contextAttributes.depth) {
-      gl.enable(gl.DEPTH_TEST);
-    }
+    
     
     //draw    
     gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)

@@ -3,7 +3,8 @@ import { Vector3 } from './math/Vector3';
 import backgroundShader from '../examples/background/index'
 import shapeShader from '../examples/shape/index'
 import Texture from './Texture'
-
+import { BlinnPhongMaterial, PhongMaterial, TextureMaterial } from './extras/plugins/Materials';
+import { RenderableElement } from './RenderableElement';
 import AB from '.'
 const renderer: Renderer = new Renderer({
   // cameraMode: CAMERA.ORTHOGRAPHIC,
@@ -19,14 +20,8 @@ for (let i = 0; i < 6; i++) {
   images.push(require(`../examples/image/${imagenames[i]}.jpg`).default)
 }
 // Background
-let background: Background = new Background({
-  fragmentShader: backgroundShader.curveShader,
-  uniforms: {
-    time: {
-      value: 0
-    }
-  }
-});
+let t = new TextureMaterial(new Texture(image))
+let background: Background = new Background(t);
 
 // Text
 import fontJson from '../examples/font/averia.json';
@@ -62,8 +57,8 @@ import { Vector2 } from './math/Vector2';
 let svg = new SvgElement({
   fragmentShader: backgroundShader.fluidShader,
   uniforms: {
-    resolution: {
-      value: new Vector2(800, 480)
+    resolution:{
+      value: renderer.getSize()
     },
     time: {
       value: 0
@@ -81,7 +76,6 @@ scene.add(svg)
 
 // Shere
 import { SphereElement } from './extras/plugins/Geometries'
-import { BlinnPhongMaterial, PhongMaterial, CopyShader } from './extras/plugins/Materials';
 let sphere = new SphereElement(new PhongMaterial, {
   radius: 0.4, 
 })
@@ -109,7 +103,7 @@ sky.scale.z = 10
 // plane
 
 import { PlaneGeometry } from './extras/plugins/Geometries/PlaneGeometry';
-import { RenderableElement } from './RenderableElement';
+
 import { RenderFlow } from './RenderFlow';
 import { RenderPass } from './extras/plugins/Pass/RenderPass';
 import { Shader } from './Shader';
@@ -117,17 +111,17 @@ import { ShaderPass } from './extras/plugins/Pass/ShaderPass';
 import { TextureManager } from './TextureManager';
 
 let planeGeometry = new PlaneGeometry()
-let copyShader = new CopyShader()
-let plane = new RenderableElement(copyShader, planeGeometry)
+let textureMaterial = new TextureMaterial()
+let plane = new RenderableElement(textureMaterial, planeGeometry)
 plane.position.x = 1
-copyShader.uniforms.tDiffuse.value = new Texture(image, 1, 1)
+textureMaterial.uniforms.tDiffuse.value = new Texture(image, 1, 1)
 scene.add(plane)
 
 let planeGeometry1 = new PlaneGeometry()
-let copyShader1 = new CopyShader()
-let plane1 = new RenderableElement(copyShader1, planeGeometry1)
+let textureMaterial1 = new TextureMaterial()
+let plane1 = new RenderableElement(textureMaterial1, planeGeometry1)
 plane1.position.x = -1
-copyShader1.uniforms.tDiffuse.value = null
+textureMaterial1.uniforms.tDiffuse.value = null
 scene.add(plane1)
 let frustumSize = 8
 let aspect = renderer.canvas.width / renderer.canvas.height
@@ -147,8 +141,8 @@ let camera = renderer.defaultCamera
 let renderFlow = new RenderFlow(renderer)
 let renderPass = new RenderPass(sky, scene, camera)
 
-let copyShader2 = new CopyShader()
-let copyPass = new ShaderPass(copyShader2)
+let textureMaterial2 = new TextureMaterial()
+let copyPass = new ShaderPass(textureMaterial2)
 renderFlow.addPass(renderPass)
 
 renderFlow.addPass(copyPass)
@@ -167,11 +161,11 @@ function animate() {
   camera.position.z = r * Math.cos(phi)
   phi += 0.001
   camera.lookTarget()
-  background.uniforms['time'].value = clock.getElapsedTime()
+  // background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
-  // renderer.render(sky, scene, camera, true);
+  // renderer.render(background, scene, camera, true);
   renderFlow.render()
-  // copyShader1.uniforms.tDiffuse.value = renderFlow.readBuffer.texture
+  // TextureMaterial1.uniforms.tDiffuse.value = renderFlow.readBuffer.texture
   requestAnimationFrame(animate)
 }
 animate()

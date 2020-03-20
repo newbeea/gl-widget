@@ -1,9 +1,11 @@
-import { Vector3 } from "../../../math/Vector3";
-class CopyShader {
+import { RenderSide } from "../../../Constants";
+import Texture from "../../../Texture";
+class TextureMaterial {
   vertexShader: string
   fragmentShader:string
   uniforms: any
-  constructor () {
+  side: RenderSide;
+  constructor (tDiffuse: Texture = null) {
     this.vertexShader = `
       attribute vec4 position;
       attribute vec4 normal;
@@ -28,12 +30,13 @@ class CopyShader {
         gl_FragColor = opacity * texel;
       }
     `
-    this.uniforms= {
+    this.uniforms = {
 
-      "tDiffuse": { value: null },
+      "tDiffuse": { value: tDiffuse },
       "opacity": { value: 1.0 }
 
     }
+    this.side = RenderSide.DOUBLE
   }
 }
-export default CopyShader
+export default TextureMaterial
