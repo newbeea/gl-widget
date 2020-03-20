@@ -3,7 +3,7 @@ interface State {
   version: number
 }
 class Texture {
-  glTexture: any;
+  glTexture: WebGLTexture;
   image: any
   images: Array<any>
   format: any

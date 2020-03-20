@@ -131,7 +131,7 @@ let planeGeometry1 = new PlaneGeometry()
 let textureMaterial1 = new TextureMaterial()
 let plane1 = new RenderableElement(textureMaterial1, planeGeometry1)
 plane1.position.x = -1
-textureMaterial1.uniforms.tDiffuse.value = null
+textureMaterial1.uniforms.tDiffuse.value = new Texture(image)
 scene.add(plane1)
 let frustumSize = 8
 let aspect = renderer.canvas.width / renderer.canvas.height

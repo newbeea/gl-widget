@@ -5,6 +5,7 @@ class WebGL {
   emptyTextures: any
   constructor(gl: WebGLRenderingContext) {
     this.gl = gl
+    this.emptyTextures = []
     this.emptyTextures[ gl.TEXTURE_2D ] = this.createTexture( gl.TEXTURE_2D, gl.TEXTURE_2D, 1 );
 	  this.emptyTextures[ gl.TEXTURE_CUBE_MAP ] = this.createTexture( gl.TEXTURE_CUBE_MAP, gl.TEXTURE_CUBE_MAP_POSITIVE_X, 6 );
   }
@@ -32,6 +33,7 @@ class WebGL {
   static getInstance(gl) {
     if (!WebGL.webGL) {
       WebGL.webGL = new WebGL(gl)
+      return WebGL.webGL
     } else {
       return WebGL.webGL
     }

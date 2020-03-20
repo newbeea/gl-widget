@@ -5,8 +5,9 @@ precision mediump float;
 uniform float time;
 uniform vec2 resolution;
 uniform vec2 mouse;
-
+varying vec2 vUv;
 void main(){
+  vUv;
   vec2 p=gl_FragCoord.xy/resolution.x*.7;
   vec2 rw=(gl_FragCoord.xy/(resolution.x+resolution.y));
   vec3 col;

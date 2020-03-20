@@ -101,7 +101,8 @@ class Renderer {
     }
     this.programs = new Map()
     this.extensions = new Extensions(this.gl) // TODO
-    
+    this.gl.enable(this.gl.BLEND);
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
   }
 
   setupMouse(){

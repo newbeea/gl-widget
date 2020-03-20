@@ -12,7 +12,7 @@ class SvgElement extends RenderableElement {
         uniform mat4 mvpMatrix;
         void main () {
           gl_Position = mvpMatrix*position;
-          vUv = ( uvTransform * vec3( uv, 1 ) ).xy;;
+          vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
         }
       `
     }, material)
