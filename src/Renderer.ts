@@ -47,6 +47,7 @@ class Renderer {
   pixelRatio: number;
   width: any;
   height: any;
+  extensions: Extensions;
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
     this.renderList = []
     this.renderTarget = null
@@ -71,6 +72,7 @@ class Renderer {
       this.canvas.height = element.clientHeight
       this.width = element.clientWidth
       this.height = element.clientHeight
+      // this.setPixelRatio(window.devicePixelRatio)
       this.setPixelRatio(1)
       // this.canvas.width = element.clientWidth
       // this.canvas.height = element.clientHeight
@@ -98,7 +100,7 @@ class Renderer {
       this.gl.enable(this.gl.DEPTH_TEST);
     }
     this.programs = new Map()
-    // this.pixelRatio = 
+    this.extensions = new Extensions(this.gl) // TODO
     
   }
 
@@ -155,7 +157,6 @@ class Renderer {
   }
   renderElement(element: RenderableElement, camera:Camera, shader?:ShaderObject) {
     let gl = this.gl
-    // let extensions = new Extensions(gl) // TODO
     let pvMatrix = new Matrix4()
     pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
   

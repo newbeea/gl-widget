@@ -15,7 +15,7 @@ class TextureManager {
     texture.glTextrue = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture.glTextrue);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
     gl.bindTexture(gl.TEXTURE_2D, null);
     
   }
@@ -39,7 +39,7 @@ class TextureManager {
     // let glTexture = cached.glTexture
     gl.activeTexture(gl.TEXTURE0 + this.unit)
     gl.bindTexture(gl.TEXTURE_2D, glTexture)
-    gl.generateMipmap( gl.TEXTURE_2D )
+    // gl.generateMipmap( gl.TEXTURE_2D )
 
     if (texture.version > 0 && cached.version != texture.version) {
       console.log(cached.version, texture.version)
@@ -47,8 +47,8 @@ class TextureManager {
 
       cached.version = texture.version
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
-      gl.generateMipmap( gl.TEXTURE_2D )
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      // gl.generateMipmap( gl.TEXTURE_2D )
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false )
     }      
   }
@@ -69,7 +69,7 @@ class TextureManager {
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, glTexture)
     
 
-    if (cached.version != texture.version) {
+    if (texture.version > 0 && cached.version != texture.version) {
       for (let i = 0; i < 6; i++) {
         let image = texture.images[i]
         gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
