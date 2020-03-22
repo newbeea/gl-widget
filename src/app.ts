@@ -119,6 +119,7 @@ import { RenderPass } from './extras/plugins/Pass/RenderPass';
 import { Shader } from './Shader';
 import { ShaderPass } from './extras/plugins/Pass/ShaderPass';
 import { TextureManager } from './TextureManager';
+import OrbitControls from './extras/plugins/Controls/OrbitControls';
 
 let planeGeometry = new PlaneGeometry()
 let textureMaterial = new TextureMaterial()
@@ -165,16 +166,19 @@ renderFlow.addPass(copyPass)
 let clock = new Clock()
 let phi = 0
 let r = 4
+let controls = new OrbitControls(camera, renderer.canvas)
 function animate() {
 
-  camera.position.x = r * Math.sin(phi)
-  camera.position.z = r * Math.cos(phi)
-  phi += 0.001
-  camera.lookTarget()
+  // camera.position.x = r * Math.sin(phi)
+  // camera.position.z = r * Math.cos(phi)
+  // phi += 0.001
+  // camera.lookTarget()
   // background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
   // renderer.render(background, scene, camera, true);
   renderFlow.render()
+
+  controls.update()
   // TextureMaterial1.uniforms.tDiffuse.value = renderFlow.readBuffer.texture
   requestAnimationFrame(animate)
 }

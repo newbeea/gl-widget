@@ -47,5 +47,13 @@ class Vector2 {
   equals(v: Vector2) {
     return ((v.x === this.x) && (v.y === this.y));
   }
+  subVectors ( a, b ) {
+
+		this.x = a.x - b.x;
+		this.y = a.y - b.y;
+
+		return this;
+
+	}
 }
 export { Vector2 }
