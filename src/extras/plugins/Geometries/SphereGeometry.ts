@@ -99,7 +99,6 @@ class SphereGeometry extends Geometry {
       }
   
     }
- 
     this.addAttribute( 'position', positions );
     this.addAttribute( 'normal', normals );
     this.addAttribute( 'uv', uvs );
