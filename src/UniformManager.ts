@@ -1,5 +1,5 @@
 import { TextureManager } from "./TextureManager";
-import Texture from "./Texture";
+import { Texture } from "./Texture";
 
 let emptyTexture = new Texture();
 // --- Setters ---

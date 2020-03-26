@@ -1,5 +1,5 @@
 import { RenderSide } from "../../../Constants";
-import Texture from "../../../Texture";
+import { Texture } from "../../../Texture";
 class TextureMaterial {
   vertexShader: string
   fragmentShader:string

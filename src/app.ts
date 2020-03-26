@@ -2,10 +2,10 @@ import { Renderer, Background, Clock, CAMERA, Object3D } from './Renderer';
 import { Vector3 } from './math/Vector3';
 import backgroundShader from '../examples/background/index'
 import shapeShader from '../examples/shape/index'
-import Texture from './Texture'
+import { Texture } from './Texture'
 import { BlinnPhongMaterial, PhongMaterial, TextureMaterial } from './extras/plugins/Materials';
 import { RenderableElement } from './RenderableElement';
-import AB from '.'
+import { RenderSide } from '.'
 const renderer: Renderer = new Renderer({
   // cameraMode: CAMERA.ORTHOGRAPHIC,
   element: 'awesome-bg'
@@ -43,7 +43,7 @@ let text = new FontElement({
       value: 0
     }
   },
-  side: AB.RenderSide.DOUBLE
+  side: RenderSide.DOUBLE
 }, 'Phil', {
   font: fontJson,
   size: 0.5,
@@ -74,7 +74,7 @@ let svg = new SvgElement({
       value: 0
     }
   },
-  side: AB.RenderSide.DOUBLE
+  side: RenderSide.DOUBLE
 }, svgNode, {
   size: 1,
   // isCCW: true                                                   

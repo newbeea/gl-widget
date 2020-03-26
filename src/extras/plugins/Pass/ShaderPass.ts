@@ -3,7 +3,7 @@ import { RenderableElement } from "../../../RenderableElement";
 import { PlaneGeometry } from "../Geometries/PlaneGeometry";
 import { Renderer } from "../../../Renderer";
 import { OrthographicCamera } from "../../../cameras/OrthographicCamera";
-import Texture from "../../../Texture";
+import { Texture } from "../../../Texture";
 import { RenderTarget } from "../../../RenderTarget";
 
 class ShaderPass extends Pass {

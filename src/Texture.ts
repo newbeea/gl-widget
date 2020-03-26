@@ -119,4 +119,6 @@ class Texture {
 	}
 }
 
-export default Texture
+export {
+  Texture
+}

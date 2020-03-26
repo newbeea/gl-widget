@@ -1,10 +1,26 @@
 import { Renderer } from './Renderer'
-import { RenderSide } from './Constants'
 import { PerspectiveCamera } from './cameras/PerspectiveCamera'
 import { OrthographicCamera } from './cameras/OrthographicCamera'
-export default {
+import { Background } from './Background';
+import { Vector3 } from './math/Vector3';
+import { Clock } from './Clock';
+import { Object3D } from './Object3D';
+import { Vector2 } from './math/Vector2';
+import { Texture } from './Texture';
+import { RenderFlow } from './RenderFlow';
+import { SkyBox } from './SkyBox';
+import { Geometry } from './Geometry';
+export * from './Constants'
+export  {
   Renderer,
-  RenderSide,
   OrthographicCamera,
-  PerspectiveCamera
+  PerspectiveCamera,
+  Clock,
+  Object3D,
+  Texture,
+  Vector3,
+  Vector2,
+  RenderFlow,
+  SkyBox,
+  Geometry
 }
