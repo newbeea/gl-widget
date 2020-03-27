@@ -44,12 +44,10 @@ class RenderableElement extends Object3D {
       this.uniforms = material.uniforms
     }
     this.transparent = material.transparent || false
-    console.log(material.transparent)
     this.side = material.side || RenderSide.FRONT
     if (geometry instanceof Geometry) {
       this.geometry = geometry
       this.bufferGeometry = this.geometry.toBufferGeometry()
-      console.log(this.bufferGeometry)
     } else {
       this.bufferGeometry = geometry
     }
@@ -86,7 +84,7 @@ class RenderableElement extends Object3D {
     if (!this.bufferManager) {
       this.bufferManager = new BufferManager()
       let format: any = this.bufferManager.initBuffer(gl, this.glProgram, this.bufferGeometry)
-      console.log(format)
+
       this.vertexNum = format.count
       this.hasIndex = format.hasIndex
     } else {

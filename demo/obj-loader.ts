@@ -2,7 +2,7 @@ import { Renderer, RenderableElement, Object3D } from '../src/'
 import OrbitControls  from '../src/extras/plugins/Controls/OrbitControls'
 import BlinnPhongMaterial from '../src/extras/plugins/Materials/BlinnPhongMaterial'
 
-import { Geometry } from '../src'
+import { BufferGeometry } from '../src'
 import xhr from 'xhr'
 import parseOBJ from 'parse-wavefront-obj'
 import { Float32Attribute } from '../src/Float32Attribute';
@@ -18,7 +18,7 @@ xhr({
       return
   }
   let obj = parseOBJ(body);
-  let geometry = new Geometry() 
+  let geometry = new BufferGeometry() 
   let normal = []
   console.log(obj);
   let position = []

@@ -6,6 +6,12 @@ import { Texture } from './Texture'
 import { BlinnPhongMaterial, PhongMaterial, TextureMaterial } from './extras/plugins/Materials';
 import { RenderableElement } from './RenderableElement';
 import { RenderSide } from '.'
+import {
+  parse
+} from './extras/plugins/Parsers/obj-parser/index'
+parse(1)
+// let a = require('../lib/index.js')
+// console.log(1, glWidget)
 const renderer: Renderer = new Renderer({
   // cameraMode: CAMERA.ORTHOGRAPHIC,
   element: 'awesome-bg'
@@ -125,7 +131,7 @@ import { Geometry } from './Geometry';
 let planeGeometry = new PlaneGeometry()
 let textureMaterial = new TextureMaterial()
 textureMaterial.transparent = true
-console.log(textureMaterial)
+
 let plane = new RenderableElement(textureMaterial, planeGeometry)
 plane.position.x = 1
 textureMaterial.uniforms.tDiffuse.value = new Texture(image, 1, 1)
@@ -133,7 +139,7 @@ scene.add(plane)
 
 import bunny from 'bunny'
 import normals from 'normals'
-console.log(bunny)
+import { parentPort } from 'worker_threads';
 let planeGeometry1 = new Geometry()
 planeGeometry1.cells = bunny.cells
 planeGeometry1.positions = bunny.positions

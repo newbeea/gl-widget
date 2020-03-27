@@ -5,14 +5,14 @@ module.exports = {
   devServer:{
     contentBase:['dist', '.']
   },
-  entry: __dirname + '/src/index.ts',
+  entry: {
+    index: "./src/app.ts",
+    objLoader: './demo/obj-loader.ts'
+  },
   output: {
-    path: __dirname + '/lib',
-    filename: 'index.js',
-    library: '@gl-widget/gl-widget',
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    globalObject: "typeof self !== 'undefined' ? self : this"
+    publicPath: "/", // 打包后资源文件的引用会基于此路径
+    path: path.resolve(__dirname, "dist"), // 打包后的输出目录
+    filename: "[name].bundle.js"
   },
   module: {
     rules: [
@@ -46,5 +46,16 @@ module.exports = {
     extensions: ['.ts', '.js', '.glsl', '.svg']
   },
   plugins:[
-  ]
+    new HtmlWebpackPlugin({
+      title: 'index',
+      template: 'index.html',
+      chunks: ['index']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'obj-loader',
+      filename: 'obj-loader.html',
+      template: 'index.html',
+      chunks: ['objLoader']
+    })
+]
 }

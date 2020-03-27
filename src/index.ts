@@ -11,7 +11,9 @@ import { RenderFlow } from './RenderFlow';
 import { SkyBox } from './SkyBox';
 import { Geometry } from './Geometry';
 import { RenderableElement } from './RenderableElement';
+import { BufferGeometry } from './BufferGeometry';
 export * from './Constants'
+
 export  {
   Renderer,
   RenderableElement,
@@ -24,5 +26,6 @@ export  {
   Vector2,
   RenderFlow,
   SkyBox,
+  BufferGeometry,
   Geometry
 }
