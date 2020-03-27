@@ -124,6 +124,8 @@ import { Geometry } from './Geometry';
 
 let planeGeometry = new PlaneGeometry()
 let textureMaterial = new TextureMaterial()
+textureMaterial.transparent = true
+console.log(textureMaterial)
 let plane = new RenderableElement(textureMaterial, planeGeometry)
 plane.position.x = 1
 textureMaterial.uniforms.tDiffuse.value = new Texture(image, 1, 1)

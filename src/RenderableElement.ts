@@ -23,6 +23,7 @@ class RenderableElement extends Object3D {
   uniformManager: UniformManager
   programManager: ProgramManager
   side: RenderSide
+  transparent: boolean
   hasIndex: boolean;
 
   constructor(material?: any, geometry?: Geometry | BufferGeometry) {
@@ -42,7 +43,8 @@ class RenderableElement extends Object3D {
     if (material.uniforms) {
       this.uniforms = material.uniforms
     }
-
+    this.transparent = material.transparent || false
+    console.log(material.transparent)
     this.side = material.side || RenderSide.FRONT
     if (geometry instanceof Geometry) {
       this.geometry = geometry
