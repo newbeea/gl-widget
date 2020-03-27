@@ -40,7 +40,6 @@ class Renderer {
   canvas: HTMLCanvasElement;
   gl: WebGLRenderingContext
   programs: Map<object, WebGLProgram>
-  renderList: Array<RenderableElement>
   contextAttributes: ContextAttributes
   cameraMode: CAMERA
   defaultCamera: Camera
@@ -48,8 +47,10 @@ class Renderer {
   width: any;
   height: any;
   extensions: Extensions;
+  opaqueList: Array<RenderableElement> = []
+  transparentList: Array<RenderableElement> = []
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
-    this.renderList = []
+
     this.renderTarget = null
     if (options.element instanceof HTMLCanvasElement) {
       this.canvas = options.element
@@ -121,7 +122,7 @@ class Renderer {
     }
 
     let setMouseUniform = (x, y) => {
-      this.renderList.forEach(element => {
+      this.opaqueList.forEach(element => {
         gl.useProgram(element.glProgram)
         var location = gl.getUniformLocation(element.glProgram, 'mouse');
         if (location != null) {
@@ -202,12 +203,15 @@ class Renderer {
         gl.disable(gl.CULL_FACE);
         break
     }
-
     
+    if (element.hasIndex) {
+      //draw    
+      gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
+        
+    } else {
+      gl.drawArrays(gl.TRIANGLES, 0, element.vertexNum)
+    }
     
-    //draw    
-    gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
-  
   }
 
   getRenderTarget(): RenderTarget {
@@ -255,16 +259,22 @@ class Renderer {
        
       // let extensions = new Extensions(gl)
       
-      this.renderList = []
+      this.opaqueList = []
+      this.transparentList = []
       // parse render list
       if (background) {
-        this.renderList.push(background)
+        this.opaqueList.push(background)
       }
       
       if (scene) {
         scene.traverse((shape) => {
           if (shape instanceof RenderableElement){
-            this.renderList.push(shape)
+            if (shape.transparent) {
+              this.transparentList.push(shape)
+            } else {
+              this.opaqueList.push(shape)
+            }
+            
           }  
         })
       }
@@ -273,8 +283,11 @@ class Renderer {
       camera = camera || this.defaultCamera
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      this.renderList.forEach((element: RenderableElement) => {
-      
+      this.opaqueList.forEach((element: RenderableElement) => {
+        this.renderElement(element, camera)  
+      });
+
+      this.transparentList.forEach((element: RenderableElement) => {
         this.renderElement(element, camera)  
       });
       

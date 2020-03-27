@@ -1,8 +1,8 @@
 
 import { Uint32Attribute } from "./Uint32Attribute"
 import { Float32Attribute } from "./Float32Attribute"
-import { Geometry } from "./Geometry";
-class SkyboxGeometry extends Geometry {
+import { BufferGeometry } from "./BufferGeometry";
+class SkyboxGeometry extends BufferGeometry {
   constructor() {
     super()
     this.addAttribute('position', new Float32Attribute([

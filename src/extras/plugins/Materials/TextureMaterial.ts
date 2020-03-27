@@ -5,6 +5,7 @@ class TextureMaterial {
   fragmentShader:string
   uniforms: any
   side: RenderSide;
+  transparent = false 
   constructor (tDiffuse: Texture = null) {
     this.vertexShader = `
       attribute vec4 position;
@@ -37,6 +38,7 @@ class TextureMaterial {
 
     }
     this.side = RenderSide.DOUBLE
+
   }
 }
 export default TextureMaterial
