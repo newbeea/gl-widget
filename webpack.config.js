@@ -3,15 +3,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'production' || 'development',
   devServer:{
-    contentBase:'dist',
+    contentBase:['dist', '.']
   },
   entry: {
-    index: "./src/app.ts"
+    index: "./src/app.ts",
+    objLoader: './demo/obj-loader.ts'
   },
   output: {
     publicPath: "/", // 打包后资源文件的引用会基于此路径
     path: path.resolve(__dirname, "dist"), // 打包后的输出目录
-    filename: "app.bundle.js"
+    filename: "[name].bundle.js"
   },
   module: {
     rules: [
@@ -46,8 +47,15 @@ module.exports = {
   },
   plugins:[
     new HtmlWebpackPlugin({
-      title: 'Hello World app',
-      template: 'index.html'
+      title: 'index',
+      template: 'index.html',
+      chunks: ['index']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'obj-loader',
+      filename: 'obj-loader.html',
+      template: 'index.html',
+      chunks: ['objLoader']
     })
 ]
 }
