@@ -1,0 +1,30 @@
+declare class Vector3 {
+    x: number;
+    y: number;
+    z: number;
+    constructor(x?: number, y?: number, z?: number);
+    set(x: number, y: number, z: number): this;
+    add(v: Vector3): this;
+    sub(v: Vector3): this;
+    subVectors(a: any, b: any): this;
+    fromArray(array: any, offset: any): this;
+    setFromMatrixColumn(m: any, index: any): this;
+    lengthSq(): number;
+    multiply(v: Vector3): this;
+    multiplyScalar(scalar: number): this;
+    dot(v: Vector3): number;
+    clone(): Vector3;
+    copy(v: Vector3): this;
+    equals(v: Vector3): boolean;
+    length(): number;
+    crossVectors(a: any, b: any): this;
+    divideScalar(scalar: any): this;
+    normalize(): this;
+    applyQuaternion(q: any): this;
+    addScaledVector(v: any, s: any): this;
+    setFromSpherical(s: any): this;
+    setFromSphericalCoords(radius: any, phi: any, theta: any): this;
+    distanceTo(v: any): number;
+    distanceToSquared(v: any): number;
+}
+export { Vector3 };
