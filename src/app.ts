@@ -120,6 +120,7 @@ import { Shader } from './Shader';
 import { ShaderPass } from './extras/plugins/Pass/ShaderPass';
 import { TextureManager } from './TextureManager';
 import OrbitControls from './extras/plugins/Controls/OrbitControls';
+import { Geometry } from './Geometry';
 
 let planeGeometry = new PlaneGeometry()
 let textureMaterial = new TextureMaterial()
@@ -128,9 +129,16 @@ plane.position.x = 1
 textureMaterial.uniforms.tDiffuse.value = new Texture(image, 1, 1)
 scene.add(plane)
 
-let planeGeometry1 = new PlaneGeometry()
+import bunny from 'bunny'
+import normals from 'normals'
+console.log(bunny)
+let planeGeometry1 = new Geometry()
+planeGeometry1.cells = bunny.cells
+planeGeometry1.positions = bunny.positions
+planeGeometry1.vertexNormals = normals.vertexNormals(bunny.cells, bunny.positions);
+planeGeometry1.faceNormals = normals.faceNormals(bunny.cells, bunny.positions);
 let textureMaterial1 = new TextureMaterial()
-let plane1 = new RenderableElement(textureMaterial1, planeGeometry1)
+let plane1 = new RenderableElement(new PhongMaterial(), planeGeometry1)
 plane1.position.x = -1
 textureMaterial1.uniforms.tDiffuse.value = new Texture(image)
 scene.add(plane1)
@@ -146,7 +154,7 @@ let aspect = renderer.canvas.width / renderer.canvas.height
 
 // camera = new PerspectiveCamera(50, renderer.canvas.width/renderer.canvas.height, 1, 1000) 
 let camera = renderer.defaultCamera
-// renderer.render(sky, scene, camera);
+renderer.render(sky, scene, camera);
 
 // render flow
 let renderFlow = new RenderFlow(renderer)
@@ -176,7 +184,7 @@ function animate() {
   // background.uniforms['time'].value = clock.getElapsedTime()
   svg.uniforms['time'].value = clock.getElapsedTime()
   // renderer.render(background, scene, camera, true);
-  renderFlow.render()
+  // renderFlow.render()
 
   controls.update()
   // TextureMaterial1.uniforms.tDiffuse.value = renderFlow.readBuffer.texture

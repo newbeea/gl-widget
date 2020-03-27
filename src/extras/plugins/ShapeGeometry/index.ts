@@ -1,6 +1,6 @@
 
 import { ShapeUtils } from '../Triangulate/ShapeUtils';
-import { Geometry } from '../../../Geometry'
+import { BufferGeometry } from '../../../BufferGeometry'
 import { Float32Attribute } from '../../../Float32Attribute'
 import { Uint32Attribute } from '../../../Uint32Attribute'
 interface FontOptions {
@@ -20,7 +20,7 @@ enum Flip {
   LEFTTOP,
   RIGHTTOP
 }
-class ShapeGeometry extends Geometry {
+class ShapeGeometry extends BufferGeometry {
   indices: any[];
   uvs: any[];
   positions: any[];

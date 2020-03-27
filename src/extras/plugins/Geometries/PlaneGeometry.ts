@@ -1,8 +1,8 @@
-import { Geometry } from "../../../Geometry";
+import { BufferGeometry } from "../../../BufferGeometry";
 import { Float32Attribute } from "../../../Float32Attribute";
 import { Uint32Attribute } from "../../../Uint32Attribute";
 
-class PlaneGeometry extends Geometry {
+class PlaneGeometry extends BufferGeometry {
   constructor(width: number = 1, height: number = 1, widthSegments: number = 1, heightSegments: number = 1) {
     super()
     var width_half = width / 2;

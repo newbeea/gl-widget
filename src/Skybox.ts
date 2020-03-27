@@ -1,17 +1,15 @@
 
 
 import { SkyboxGeometry } from "./SkyboxGeometry";
-import { Geometry } from "./Geometry";
-import { RenderableElement } from "./RenderableElement";
 import { Background } from "./Background";
-import { RenderSide } from "./Constants";
+import { Geometry } from "./Geometry";
+import { BufferGeometry } from "./BufferGeometry";
 
 class SkyBox extends Background {
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string
-  geometry: Geometry
-  constructor(material={}, geometry?: Geometry) {
+  constructor(material={}, geometry?: Geometry | BufferGeometry) {
     material = Object.assign({
       vertexShader: `
         uniform mat4 mvpMatrix;

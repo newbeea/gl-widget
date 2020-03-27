@@ -1,10 +1,10 @@
 
-import { Geometry } from '../../../Geometry'
+import { BufferGeometry } from '../../../BufferGeometry'
 import { Float32Attribute } from '../../../Float32Attribute'
 import { Uint32Attribute } from '../../../Uint32Attribute'
 import { Vector3 } from '../../../math/Vector3'
 
-class SphereGeometry extends Geometry {
+class SphereGeometry extends BufferGeometry {
   indices: any[]
   uvs: any[]
   positions: any[]

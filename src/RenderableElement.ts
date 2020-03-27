@@ -1,11 +1,12 @@
 
 import { ShaderObject, Program } from "./Program";
 import { BufferManager } from "./BufferManager";
-import { Geometry } from "./Geometry";
+import { BufferGeometry } from "./BufferGeometry";
 import { Object3D } from "./Object3D";
 import { UniformManager } from "./UniformManager";
 import { RenderSide } from "./Constants";
 import { ProgramManager } from "./ProgramManager";
+import { Geometry } from "./Geometry";
 
 
 class RenderableElement extends Object3D {
@@ -17,12 +18,14 @@ class RenderableElement extends Object3D {
   vertexShader: string
   uniforms: any
   geometry: Geometry
+  bufferGeometry: BufferGeometry
   bufferManager: BufferManager
   uniformManager: UniformManager
   programManager: ProgramManager
   side: RenderSide
+  hasIndex: boolean;
 
-  constructor(material?: any, geometry?: Geometry) {
+  constructor(material?: any, geometry?: Geometry | BufferGeometry) {
     super()
     this.vertexShader = `
         attribute vec4 position;
@@ -41,7 +44,14 @@ class RenderableElement extends Object3D {
     }
 
     this.side = material.side || RenderSide.FRONT
-    this.geometry = geometry
+    if (geometry instanceof Geometry) {
+      this.geometry = geometry
+      this.bufferGeometry = this.geometry.toBufferGeometry()
+      console.log(this.bufferGeometry)
+    } else {
+      this.bufferGeometry = geometry
+    }
+    
     this.programManager = new ProgramManager()
   }
 
@@ -73,9 +83,12 @@ class RenderableElement extends Object3D {
   updateBuffer(gl) {
     if (!this.bufferManager) {
       this.bufferManager = new BufferManager()
-      this.vertexNum = this.bufferManager.initBuffer(gl, this.glProgram, this.geometry)
+      let format: any = this.bufferManager.initBuffer(gl, this.glProgram, this.bufferGeometry)
+      console.log(format)
+      this.vertexNum = format.count
+      this.hasIndex = format.hasIndex
     } else {
-      this.bufferManager.bindBuffer(gl, this.glProgram, this.geometry)
+      this.bufferManager.bindBuffer(gl, this.glProgram, this.bufferGeometry)
     }  
   }
   updateUniforms(gl) {

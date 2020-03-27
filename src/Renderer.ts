@@ -202,12 +202,15 @@ class Renderer {
         gl.disable(gl.CULL_FACE);
         break
     }
-
     
+    if (element.hasIndex) {
+      //draw    
+      gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
+        
+    } else {
+      gl.drawArrays(gl.TRIANGLES, 0, element.vertexNum)
+    }
     
-    //draw    
-    gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
-  
   }
 
   getRenderTarget(): RenderTarget {
