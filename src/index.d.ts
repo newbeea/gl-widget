@@ -11,5 +11,7 @@ import { SkyBox } from './SkyBox';
 import { Geometry } from './Geometry';
 import { RenderableElement } from './RenderableElement';
 import { BufferGeometry } from './BufferGeometry';
+import { Float32Attribute } from './Float32Attribute';
+import { Uint32Attribute } from './Uint32Attribute';
 export * from './Constants';
-export { Renderer, RenderableElement, OrthographicCamera, PerspectiveCamera, Clock, Object3D, Texture, Vector3, Vector2, RenderFlow, SkyBox, BufferGeometry, Geometry };
+export { Renderer, RenderableElement, OrthographicCamera, PerspectiveCamera, Clock, Object3D, Texture, Vector3, Vector2, RenderFlow, SkyBox, BufferGeometry, Geometry, Float32Attribute, Uint32Attribute };

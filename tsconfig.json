@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "module": "commonjs",
+    "declaration": false,
+    "module": "es6",
     "esModuleInterop": true,
     "target": "es6",
+    "outDir": "typings",
     "lib": [
       "es2019",
       "dom"

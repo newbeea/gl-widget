@@ -1,2 +1,2 @@
-declare function parse(objString: any): void;
+declare function parse(objString: any): any;
 export { parse };

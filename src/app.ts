@@ -6,10 +6,7 @@ import { Texture } from './Texture'
 import { BlinnPhongMaterial, PhongMaterial, TextureMaterial } from './extras/plugins/Materials';
 import { RenderableElement } from './RenderableElement';
 import { RenderSide } from '.'
-import {
-  parse
-} from './extras/plugins/Parsers/obj-parser/index'
-parse(1)
+
 // let a = require('../lib/index.js')
 // console.log(1, glWidget)
 const renderer: Renderer = new Renderer({

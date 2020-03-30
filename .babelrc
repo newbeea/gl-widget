@@ -9,8 +9,6 @@
             "ie": "11"
         }
       }
-    ], [
-      "@babel/typescript"
     ]
   ]
     

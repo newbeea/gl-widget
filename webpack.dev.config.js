@@ -6,7 +6,7 @@ module.exports = {
     contentBase:['dist', '.']
   },
   entry: {
-    index: "./src/app.ts",
+    // index: "./src/app.ts",
     objLoader: './demo/obj-loader.ts'
   },
   output: {
@@ -28,6 +28,7 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/
       },
+      
       {
         test: /\.glsl$/,
         loader: 'raw-loader'
@@ -46,11 +47,11 @@ module.exports = {
     extensions: ['.ts', '.js', '.glsl', '.svg']
   },
   plugins:[
-    new HtmlWebpackPlugin({
-      title: 'index',
-      template: 'index.html',
-      chunks: ['index']
-    }),
+    // new HtmlWebpackPlugin({
+    //   title: 'index',
+    //   template: 'index.html',
+    //   chunks: ['index']
+    // }),
     new HtmlWebpackPlugin({
       title: 'obj-loader',
       filename: 'obj-loader.html',
