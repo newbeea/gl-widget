@@ -2,10 +2,11 @@
 
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
 import typescript from 'rollup-plugin-typescript2';
 import {terser} from 'rollup-plugin-terser';
 import babel from 'rollup-plugin-babel';
-
+import builtins from 'rollup-plugin-node-builtins';
 
 export default {
   input: 'index.ts',
@@ -31,8 +32,10 @@ export default {
     resolve({
       jsnext: true,
       main: true,
-      browser: true
+      preferBuiltins: true
     }),
+    builtins(),
+    json(),
     commonjs({ extensions: ['.js', '.ts'] }),
     terser()
     

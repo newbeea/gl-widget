@@ -31,7 +31,7 @@ class Skybox extends Background {
       `
     }, material)
     
-    super(material, geometry || new SkyboxGeometry())   
+    super(material, geometry || new SkyboxGeometry()) 
   }
 }
 export {

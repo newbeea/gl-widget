@@ -11,7 +11,7 @@ export default {
   input: 'index.ts',
   output: [
     {
-      file: 'dist/index.es.js',
+      file: 'dist/index.esm.js',
       format: 'esm',
       sourcemap: true
     }, {

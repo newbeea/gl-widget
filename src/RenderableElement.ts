@@ -25,7 +25,8 @@ class RenderableElement extends Object3D {
   side: RenderSide
   transparent: boolean
   hasIndex: boolean;
-
+  isRenderableElement: boolean = true
+  isBackground: boolean = false
   constructor(material?: any, geometry?: Geometry | BufferGeometry) {
     super()
     this.vertexShader = `

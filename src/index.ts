@@ -1,37 +1,18 @@
-import { Renderer } from './Renderer'
+export { Renderer } from './Renderer'
 
-import { PerspectiveCamera } from './cameras/PerspectiveCamera'
-import { OrthographicCamera } from './cameras/OrthographicCamera'
-import { Background } from './Background';
-import { Vector3 } from './math/Vector3';
-import { Clock } from './Clock';
-import { Object3D } from './Object3D';
-import { Vector2 } from './math/Vector2';
-import { Texture } from './Texture';
-import { RenderFlow } from './RenderFlow';
-import { Skybox } from './Skybox';
-import { Geometry } from './Geometry';
-import { RenderableElement } from './RenderableElement';
-import { BufferGeometry } from './BufferGeometry';
-import { Float32Attribute } from './Float32Attribute';
-import { Uint32Attribute } from './Uint32Attribute';
+export { PerspectiveCamera } from './cameras/PerspectiveCamera'
+export { OrthographicCamera } from './cameras/OrthographicCamera'
+export { Clock } from './Clock';
+export { Object3D } from './Object3D';
+export { Texture } from './Texture';
+export { RenderFlow } from './RenderFlow';
+export { Skybox } from './Skybox';
+export { Geometry } from './Geometry';
+export { RenderableElement } from './RenderableElement';
+export { BufferGeometry } from './BufferGeometry';
+export { Float32Attribute } from './Float32Attribute';
+export { Uint32Attribute } from './Uint32Attribute';
 export { Camera } from './cameras/Camera'
 export * from './Constants'
-export * from './math'
+export * from './math/index'
 
-export  {
-  Renderer,
-  RenderableElement,
-  OrthographicCamera,
-  PerspectiveCamera,
-  Clock,
-  Object3D,
-  Texture,
-  RenderFlow,
-  Skybox,
-  BufferGeometry,
-  Geometry,
-  Float32Attribute,
-  Uint32Attribute
-  
-}

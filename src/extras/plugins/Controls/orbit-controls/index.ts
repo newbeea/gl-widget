@@ -94,7 +94,7 @@ class OrbitControls {
 
     // Set to false to disable rotating
     this.enableRotate = true;
-    this.rotateSpeed = 1.0;
+    this.rotateSpeed = 0.3;
 
     // Set to false to disable panning
     // this.enablePan = true;
@@ -348,7 +348,7 @@ class OrbitControls {
     }
   
     this.onMouseWheel = ( event ) => {
-  
+
       if ( this.enabled === false || this.enableZoom === false || ( this.state !== STATE.NONE && this.state !== STATE.ROTATE ) ) return;
   
       event.preventDefault();
@@ -425,7 +425,7 @@ class OrbitControls {
 
 		}
 
-		// this.update();
+		this.update();
 
   }
   rotateLeft( angle ) {
@@ -440,11 +440,11 @@ class OrbitControls {
   }
   dollyIn( dollyScale ) {
 
-		if ( this.camera instanceof PerspectiveCamera ) {
+		if ( this.camera.isPerspective ) {
 
 			this.scale /= dollyScale;
 
-		} else if ( this.camera instanceof OrthographicCamera ) {
+		} else if ( this.camera.isOrthographic ) {
 
 			this.camera.zoom = Math.max( this.minZoom, Math.min( this.maxZoom, this.camera.zoom * dollyScale ) );
 			this.camera.updateProjectionMatrix();
@@ -460,11 +460,11 @@ class OrbitControls {
 
 	dollyOut( dollyScale ) {
 
-		if ( this.camera instanceof PerspectiveCamera ) {
+    if ( this.camera.isPerspective ) {
 
 			this.scale *= dollyScale;
 
-		} else if ( this.camera instanceof OrthographicCamera ) {
+    } else if (this.camera.isOrthographic) {
 
 			this.camera.zoom = Math.max( this.minZoom, Math.min( this.maxZoom, this.camera.zoom / dollyScale ) );
 			this.camera.updateProjectionMatrix();

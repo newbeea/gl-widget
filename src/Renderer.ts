@@ -161,7 +161,7 @@ class Renderer {
     let gl = this.gl
     let pvMatrix = new Matrix4()
     // set depth test
-    if(element instanceof Background) {
+    if(element.isBackground) {
       gl.disable(gl.DEPTH_TEST);
     } else {
       gl.enable(gl.DEPTH_TEST);
@@ -268,7 +268,7 @@ class Renderer {
       
       if (scene) {
         scene.traverse((shape) => {
-          if (shape instanceof RenderableElement){
+          if (shape.isRenderableElement){
             if (shape.transparent) {
               this.transparentList.push(shape)
             } else {

@@ -8,21 +8,7 @@ class OrthographicCamera extends Camera {
   bottom: any;
   near: any;
   far: any;
-  updateProjectionMatrix() {
-    var dx = ( this.right - this.left ) / ( 2 * this.zoom );
-		var dy = ( this.top - this.bottom ) / ( 2 * this.zoom );
-		var cx = ( this.right + this.left ) / 2;
-		var cy = ( this.top + this.bottom ) / 2;
-
-		var left = cx - dx;
-		var right = cx + dx;
-		var top = cy + dy;
-		var bottom = cy - dy;
-
-	
-
-		this.projectionMatrix.makeOrthographic( left, right, top, bottom, this.near, this.far );
-  }
+  isOrthographic: boolean = true
 
 	constructor ( left, right, top, bottom, near, far ) {
 
@@ -41,7 +27,19 @@ class OrthographicCamera extends Camera {
     this.updateProjectionMatrix();
 
   }
+  updateProjectionMatrix() {
+    var dx = ( this.right - this.left ) / ( 2 * this.zoom );
+		var dy = ( this.top - this.bottom ) / ( 2 * this.zoom );
+		var cx = ( this.right + this.left ) / 2;
+		var cy = ( this.top + this.bottom ) / 2;
 
+		var left = cx - dx;
+		var right = cx + dx;
+		var top = cy + dy;
+    var bottom = cy - dy;
+    
+		this.projectionMatrix.makeOrthographic( left, right, top, bottom, this.near, this.far );
+  }
 }
 
 

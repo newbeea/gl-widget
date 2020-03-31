@@ -13,6 +13,7 @@ class PerspectiveCamera extends Camera {
   // view: any;
   filmGauge: number;
   filmOffset: number;
+  isPerspective: boolean = true
   constructor( fov, aspect, near, far ) {
 
     super();
