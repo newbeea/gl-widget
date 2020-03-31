@@ -58,7 +58,7 @@ class OrbitControls {
   mouseButtons: { LEFT: number; MIDDLE: number; RIGHT: number; };
   camera: Camera;
   domElement: HTMLElement;
-  constructor(camera, domElement) {
+  constructor(camera: Camera, domElement) {
     this.camera = camera
     this.domElement = domElement
     this.enabled = true

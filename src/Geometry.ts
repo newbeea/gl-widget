@@ -16,6 +16,7 @@ import { Uint32Attribute } from "./Uint32Attribute"
   name: 'foo'           // mesh name
 }
 */
+
 class Geometry {
 	sameIndex: boolean
 	positions: [][]

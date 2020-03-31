@@ -1,4 +1,5 @@
 import { Renderer } from './Renderer'
+
 import { PerspectiveCamera } from './cameras/PerspectiveCamera'
 import { OrthographicCamera } from './cameras/OrthographicCamera'
 import { Background } from './Background';
@@ -14,6 +15,7 @@ import { RenderableElement } from './RenderableElement';
 import { BufferGeometry } from './BufferGeometry';
 import { Float32Attribute } from './Float32Attribute';
 import { Uint32Attribute } from './Uint32Attribute';
+export { Camera } from './cameras/Camera'
 export * from './Constants'
 export * from './math'
 
@@ -25,8 +27,6 @@ export  {
   Clock,
   Object3D,
   Texture,
-  Vector3,
-  Vector2,
   RenderFlow,
   SkyBox,
   BufferGeometry,
