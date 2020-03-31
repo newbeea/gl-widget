@@ -34,7 +34,7 @@ export default {
       browser: true
     }),
     commonjs({ extensions: ['.js', '.ts'] }),
-    // terser()
+    terser()
     
   ]
 }

@@ -10,7 +10,7 @@ import { RenderableElement } from './RenderableElement';
 import { Object3D } from './Object3D';
 import { Vector3 } from './math/Vector3';
 import { Camera } from './cameras/Camera';
-import { SkyBox } from './SkyBox';
+import { Skybox } from './Skybox';
 import { RenderSide } from './Constants';
 import { ShaderObject } from './Program';
 import { RenderTarget } from './RenderTarget';
@@ -172,7 +172,7 @@ class Renderer {
 
     // set matrix
     let mvpMatrix
-    if (element instanceof SkyBox) {
+    if (element instanceof Skybox) {
       let matrixWorldInverse = new Matrix4()
       matrixWorldInverse.extractRotation( camera.matrixWorld );
       matrixWorldInverse.getInverse( matrixWorldInverse );

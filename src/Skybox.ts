@@ -4,8 +4,7 @@ import { SkyboxGeometry } from "./SkyboxGeometry";
 import { Background } from "./Background";
 import { Geometry } from "./Geometry";
 import { BufferGeometry } from "./BufferGeometry";
-
-class SkyBox extends Background {
+class Skybox extends Background {
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string
@@ -36,5 +35,5 @@ class SkyBox extends Background {
   }
 }
 export {
-  SkyBox
+  Skybox
 } 

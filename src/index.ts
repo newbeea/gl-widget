@@ -9,7 +9,7 @@ import { Object3D } from './Object3D';
 import { Vector2 } from './math/Vector2';
 import { Texture } from './Texture';
 import { RenderFlow } from './RenderFlow';
-import { SkyBox } from './SkyBox';
+import { Skybox } from './Skybox';
 import { Geometry } from './Geometry';
 import { RenderableElement } from './RenderableElement';
 import { BufferGeometry } from './BufferGeometry';
@@ -28,7 +28,7 @@ export  {
   Object3D,
   Texture,
   RenderFlow,
-  SkyBox,
+  Skybox,
   BufferGeometry,
   Geometry,
   Float32Attribute,
