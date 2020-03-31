@@ -1,9 +1,6 @@
-import { Camera } from "../../../cameras/Camera";
-import { Vector3 } from "../../../math/Vector3";
-import { Vector2 } from "../../../math/Vector2";
-import { OrthographicCamera } from "../../../cameras/OrthographicCamera";
-import { PerspectiveCamera } from "../../../cameras/PerspectiveCamera";
-import { Quaternion } from "../../../math/Quaternion";
+import { Camera, Vector2, Vector3, OrthographicCamera, PerspectiveCamera, Quaternion } from "@gl-widget/gl-widget";
+
+
 import Spherical from "./Spherical";
 let MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 let TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };

@@ -1,5 +1,5 @@
-import { RenderSide } from "../../../Constants";
-import { Texture } from "../../../Texture";
+import { RenderSide, Texture } from "@gl-widget/gl-widget";
+
 class TextureMaterial {
   vertexShader: string
   fragmentShader:string

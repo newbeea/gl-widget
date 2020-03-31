@@ -15,7 +15,7 @@ import { BufferGeometry } from './BufferGeometry';
 import { Float32Attribute } from './Float32Attribute';
 import { Uint32Attribute } from './Uint32Attribute';
 export * from './Constants'
-
+export * from './math'
 
 export  {
   Renderer,

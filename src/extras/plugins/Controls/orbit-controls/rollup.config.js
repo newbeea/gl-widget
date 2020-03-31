@@ -20,7 +20,7 @@ export default {
       sourcemap: true
     }, {
       file: 'dist/index.umd.js',
-      name: 'parse',
+      name: 'orbit-controls',
       format: 'umd',
       sourcemap: true
     }

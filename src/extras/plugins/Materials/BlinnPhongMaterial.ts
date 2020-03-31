@@ -1,4 +1,4 @@
-import { Vector3 } from "../../../math/Vector3";
+import { Vector3 } from "@gl-widget/gl-widget";
 class BlinnPhongMaterial {
   uniforms: any
   fragmentShader: string;
