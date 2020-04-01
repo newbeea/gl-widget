@@ -159,34 +159,50 @@ class Renderer {
   }
   renderElement(element: RenderableElement, camera:Camera, shader?:ShaderObject) {
     let gl = this.gl
-    let pvMatrix = new Matrix4()
+
     // set depth test
     if(element.type == 'Background') {
       gl.disable(gl.DEPTH_TEST);
     } else {
       gl.enable(gl.DEPTH_TEST);
-      pvMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
+
     }
     
     element.update(gl, shader)
 
     // set matrix
-    let mvpMatrix
+
+    let viewMatrix, modelViewMatrix, projectionMatrix, mvpMatrix;
+    
     if (element instanceof Skybox) {
       let matrixWorldInverse = new Matrix4()
       matrixWorldInverse.extractRotation( camera.matrixWorld );
       matrixWorldInverse.getInverse( matrixWorldInverse );
-      mvpMatrix = new Matrix4()
-      mvpMatrix.multiplyMatrices(camera.projectionMatrix, matrixWorldInverse)
-      mvpMatrix.multiply(element.matrixWorld)
+      viewMatrix = matrixWorldInverse
+
     } else {
-      mvpMatrix = pvMatrix.clone()
-      mvpMatrix.multiply(element.matrixWorld)
+      viewMatrix = camera.matrixWorldInverse
+      // mvpMatrix = pvMatrix.clone()
+      // mvpMatrix.multiply(element.matrixWorld)
     }
+    mvpMatrix = new Matrix4()
+    projectionMatrix = camera.projectionMatrix
+    modelViewMatrix = new Matrix4().multiplyMatrices(viewMatrix, element.matrixWorld)
+    mvpMatrix.multiplyMatrices(camera.projectionMatrix, modelViewMatrix)
 
     var location = gl.getUniformLocation(element.glProgram, 'mvpMatrix');
     if (location != null) {
       gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
+    }
+
+    location = gl.getUniformLocation(element.glProgram, 'modelViewMatrix');
+    if (location != null) {
+      gl.uniformMatrix4fv(location, false, modelViewMatrix.elements)
+    }
+
+    location = gl.getUniformLocation(element.glProgram, 'projectionMatrix');
+    if (location != null) {
+      gl.uniformMatrix4fv(location, false, projectionMatrix.elements)
     }
   
     // set render side

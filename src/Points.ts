@@ -6,11 +6,16 @@ class Points extends RenderableElement {
   constructor(material?: any, geometry?: Geometry | BufferGeometry) {
     material = Object.assign({
       vertexShader: `
-        uniform mat4 mvpMatrix;
-        attribute vec4 position;
+        uniform mat4 projectionMatrix;
+        uniform mat4 modelViewMatrix;
+        
+        attribute vec3 position;
         void main () {
-          gl_PointSize = 2.0;
-          gl_Position = mvpMatrix*position;
+          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+				  gl_PointSize = 0.2 * ( 300.0 / - mvPosition.z );
+
+				  gl_Position = projectionMatrix * mvPosition;
         }
       `,
       fragmentShader:`
