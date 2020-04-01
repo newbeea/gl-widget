@@ -11,7 +11,11 @@ class BufferManager {
     let count = 0
     for(let [name, attribute] of geometry.attributes.entries()) {
       let array = attribute.array
-      let buffer = gl.createBuffer();
+      let buffer = this.buffers.get(attribute)
+      
+      if (!buffer) {
+        buffer = gl.createBuffer();
+      }
       if (!buffer) {
         console.log('Failed to create the buffer object');
         return -1;

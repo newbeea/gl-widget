@@ -12,11 +12,14 @@ class Background extends RenderableElement {
   
   constructor(material={}, geometry?: Geometry | BufferGeometry) {
     material = Object.assign({
-      fragmentShader: 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}',
+      fragmentShader: `
+      void main() {
+        gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+      }`,
       uniforms: {}
     }, material)
     super(material, geometry || new PlaneGeometry(2, 2))   
-    this.isBackground = true
+    this.type = 'Background'
    
   }
 }

@@ -26,7 +26,7 @@ class RenderableElement extends Object3D {
   transparent: boolean
   hasIndex: boolean;
   isRenderableElement: boolean = true
-  isBackground: boolean = false
+  type: string = ''
   constructor(material?: any, geometry?: Geometry | BufferGeometry) {
     super()
     this.vertexShader = `
@@ -81,11 +81,22 @@ class RenderableElement extends Object3D {
     this.updateUniforms(gl)
     
   }
+  updateGeometry(gl) {
+    if (!this.bufferManager) {
+      this.bufferManager = new BufferManager()
+    
+    }
+    if (this.geometry) {
+      this.bufferGeometry = this.geometry.toBufferGeometry()
+    }
+    let format: any = this.bufferManager.initBuffer(gl, this.glProgram, this.bufferGeometry)
+    this.vertexNum = format.count
+    this.hasIndex = format.hasIndex
+  }
   updateBuffer(gl) {
     if (!this.bufferManager) {
       this.bufferManager = new BufferManager()
       let format: any = this.bufferManager.initBuffer(gl, this.glProgram, this.bufferGeometry)
-
       this.vertexNum = format.count
       this.hasIndex = format.hasIndex
     } else {

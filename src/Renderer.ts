@@ -161,7 +161,7 @@ class Renderer {
     let gl = this.gl
     let pvMatrix = new Matrix4()
     // set depth test
-    if(element.isBackground) {
+    if(element.type == 'Background') {
       gl.disable(gl.DEPTH_TEST);
     } else {
       gl.enable(gl.DEPTH_TEST);
@@ -203,13 +203,14 @@ class Renderer {
         gl.disable(gl.CULL_FACE);
         break
     }
-    
+    let mode = gl.TRIANGLES
+    if (element.type == 'Points') {
+      mode = gl.POINTS
+    }
     if (element.hasIndex) {
-      //draw    
-      gl.drawElements(gl.TRIANGLES, element.vertexNum, gl.UNSIGNED_INT, 0)
-        
+      gl.drawElements(mode, element.vertexNum, gl.UNSIGNED_INT, 0)   
     } else {
-      gl.drawArrays(gl.TRIANGLES, 0, element.vertexNum)
+      gl.drawArrays(mode, 0, element.vertexNum)
     }
     
   }
