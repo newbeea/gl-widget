@@ -14,6 +14,7 @@ export { Float32Attribute } from './Float32Attribute';
 export { Uint32Attribute } from './Uint32Attribute';
 export { Camera } from './cameras/Camera'
 export { Points } from './Points'
+export { Background } from './Background'
 export * from './Constants'
 export * from './math/index'
 

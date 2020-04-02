@@ -267,7 +267,7 @@ class Renderer {
   getSize(): Vector2 {
     return new Vector2(this.width, this.height)
   }
-  render(background?: RenderableElement, scene?: Object3D, camera?: Camera, once: boolean = false) {
+  render(scene?: Object3D, camera?: Camera, once: boolean = false) {
     let gl = this.gl
     gl.clearColor(0.0, 0.0, 0.0, 0.0);  
     
@@ -279,9 +279,9 @@ class Renderer {
       this.opaqueList = []
       this.transparentList = []
       // parse render list
-      if (background) {
-        this.opaqueList.push(background)
-      }
+      // if (background) {
+      //   this.opaqueList.push(background)
+      // }
       
       if (scene) {
         scene.traverse((shape) => {

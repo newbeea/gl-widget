@@ -30,9 +30,11 @@ class RenderableElement extends Object3D {
   constructor(material?: any, geometry?: Geometry | BufferGeometry) {
     super()
     this.vertexShader = `
-        attribute vec4 position;
+        attribute vec3 position;
+        varying vec3 vPosition;
         void main () {
-          gl_Position = position;
+          vPosition = position;
+          gl_Position = vec4(position, 1.0);
         }
       ` 
     if (material.fragmentShader) {

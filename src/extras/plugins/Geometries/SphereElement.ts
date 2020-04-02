@@ -5,11 +5,11 @@ class SphereElement extends RenderableElement {
 	constructor(material, options) {
     material = Object.assign({
       vertexShader: `
-        attribute vec4 position;
-        attribute vec4 normal;
+        attribute vec3 position;
+        attribute vec3 normal;
         attribute vec2 uv                                                                                                                                                                                                                                                                                                                       ;
         varying vec2 vUv;
-        varying vec4 vNormal;
+        varying vec3 vNormal;
         uniform mat3 uvTransform;
         uniform mat4 mvpMatrix;
         void main () {

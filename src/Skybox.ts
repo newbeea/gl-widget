@@ -12,8 +12,8 @@ class Skybox extends Background {
     material = Object.assign({
       vertexShader: `
         uniform mat4 mvpMatrix;
-        attribute vec4 position;
-        varying vec4 vTexCoords;
+        attribute vec3 position;
+        varying vec3 vTexCoords;
         void main () {
           vTexCoords = position;
           gl_Position = mvpMatrix*position;
@@ -24,7 +24,7 @@ class Skybox extends Background {
         precision mediump float;
         #endif
         uniform samplerCube cube;
-        varying vec4 vTexCoords;
+        varying vec3 vTexCoords;
         void main() {
           gl_FragColor = textureCube(cube, vTexCoords.xyz);
         }
