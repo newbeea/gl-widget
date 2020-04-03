@@ -6,6 +6,23 @@ import typescript from 'rollup-plugin-typescript2';
 import {terser} from 'rollup-plugin-terser';
 import babel from 'rollup-plugin-babel';
 
+let isProd = process.env.NODE_ENV === 'production'
+
+const basePlugins = [
+  typescript({ module: 'ESNext' }),
+  babel(),
+  resolve({
+    jsnext: true,
+    main: true,
+    browser: true
+  }),
+  commonjs({ extensions: ['.js', '.ts'] }),
+]
+const devPlugins = []
+const prodPlugins = [terser()]
+
+let plugins = [...basePlugins].concat(isProd ? prodPlugins : devPlugins)
+
 
 export default {
   input: 'src/index.ts',
@@ -25,16 +42,5 @@ export default {
       sourcemap: true
     }
   ],
-  plugins: [
-    typescript({ module: 'ESNext' }),
-    babel(),
-    resolve({
-      jsnext: true,
-      main: true,
-      browser: true
-    }),
-    commonjs({ extensions: ['.js', '.ts'] }),
-    terser()
-    
-  ]
+  plugins: plugins
 }

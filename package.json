@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "rollup -c -w --environment NODE_ENV:development",
     "build": "rollup -c --environment NODE_ENV:production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "push": "npm run build && npm version patch && npm publish --access=public",
+    "dev-link": "npm link"
   },
   "author": "",
   "license": "ISC",
