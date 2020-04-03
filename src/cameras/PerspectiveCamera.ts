@@ -1,5 +1,6 @@
 import { Matrix4 } from "../math/Matrix4"
 import { Camera } from "./Camera"
+import { CameraType } from "../Constants";
 
 class PerspectiveCamera extends Camera {
   
@@ -13,7 +14,7 @@ class PerspectiveCamera extends Camera {
   // view: any;
   filmGauge: number;
   filmOffset: number;
-  isPerspective: boolean = true
+  type: CameraType = CameraType.PERSPECTIVE
   constructor( fov, aspect, near, far ) {
 
     super();

@@ -2,6 +2,7 @@ import { RenderTarget } from "./RenderTarget";
 import { Renderer } from "./Renderer";
 import { Vector2 } from "./math/Vector2";
 import { Clock } from "./Clock";
+import { GLWidget } from "./GLWidget";
 
 class RenderFlow {
   clock: Clock;
@@ -14,9 +15,9 @@ class RenderFlow {
   height: number;
   width: number;
   pixelRatio: number;
-  renderer: Renderer;
-  constructor(renderer: Renderer, renderTarget?: RenderTarget) {
-    this.renderer = renderer;
+  glWidget: GLWidget;
+  constructor(glWidget: GLWidget, renderTarget?: RenderTarget) {
+    this.glWidget = glWidget;
     let parameters = {
       // minFilter: LinearFilter,
       // magFilter: LinearFilter,
@@ -27,12 +28,12 @@ class RenderFlow {
 
       
 
-      let size: Vector2 = renderer.getSize();
-      this.pixelRatio = renderer.getPixelRatio();
+      let size: Vector2 = glWidget.getSize();
+      this.pixelRatio = glWidget.getPixelRatio();
       this.width = size.x;
       this.height = size.y;
 
-      renderTarget = new RenderTarget( renderer.gl, this.width * this.pixelRatio, this.height * this.pixelRatio, parameters );
+      renderTarget = new RenderTarget( glWidget.gl, this.width * this.pixelRatio, this.height * this.pixelRatio, parameters );
       // renderTarget.texture.name = 'EffectComposer.rt1';
 
     } else {
@@ -45,7 +46,7 @@ class RenderFlow {
 
     this.renderTarget1 = renderTarget;
     // this.renderTarget2 = renderTarget.clone();
-    this.renderTarget2 = new RenderTarget( renderer.gl, this.width * this.pixelRatio, this.height * this.pixelRatio, parameters );
+    this.renderTarget2 = new RenderTarget( glWidget.gl, this.width * this.pixelRatio, this.height * this.pixelRatio, parameters );
     // this.renderTarget2.texture.name = 'EffectComposer.rt2';
 
     this.writeBuffer = this.renderTarget1;
@@ -105,7 +106,7 @@ class RenderFlow {
 
 		}
 
-		var currentRenderTarget = this.renderer.getRenderTarget();
+		var currentRenderTarget = this.glWidget.getRenderTarget();
 
 		var maskActive = false;
 
@@ -118,7 +119,7 @@ class RenderFlow {
 			if ( pass.enabled === false ) continue;
 
 			pass.renderToScreen = ( this.renderToScreen && this.isLastEnabledPass( i ) );
-			pass.render( this.renderer, this.writeBuffer, this.readBuffer, deltaTime, maskActive );
+			pass.render( this.glWidget, this.writeBuffer, this.readBuffer, deltaTime, maskActive );
 
 			if ( pass.needsSwap ) {
 
@@ -157,7 +158,7 @@ class RenderFlow {
 
 		}
 
-		this.renderer.setRenderTarget( currentRenderTarget );
+		this.glWidget.setRenderTarget( currentRenderTarget );
 
 	}
 }

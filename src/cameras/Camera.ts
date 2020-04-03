@@ -1,6 +1,7 @@
 import { Matrix4 } from "../math/Matrix4"
 import { Object3D } from "../Object3D";
 import { Vector3 } from "../math/Vector3";
+import { CameraType } from "../Constants";
 
 class Camera extends Object3D {
   projectionMatrix: Matrix4
@@ -9,6 +10,7 @@ class Camera extends Object3D {
   up: Vector3
   target: Vector3
   copy: any
+  type: CameraType
   constructor() {
     super()
     this.up = new Vector3(0, 1, 0)

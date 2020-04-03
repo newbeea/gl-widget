@@ -1,4 +1,5 @@
 import { Camera } from "./Camera";
+import { CameraType } from "../Constants";
 
 class OrthographicCamera extends Camera {
   zoom: number;
@@ -8,8 +9,7 @@ class OrthographicCamera extends Camera {
   bottom: any;
   near: any;
   far: any;
-  isOrthographic: boolean = true
-
+  type: CameraType = CameraType.ORTHOGRAPHIC
 	constructor ( left, right, top, bottom, near, far ) {
 
 

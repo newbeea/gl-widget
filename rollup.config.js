@@ -20,7 +20,7 @@ export default {
       sourcemap: true
     }, {
       file: 'dist/index.umd.js',
-      name: 'GlWidget',
+      name: 'GLWidget',
       format: 'umd',
       sourcemap: true
     }

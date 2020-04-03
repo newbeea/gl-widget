@@ -3,3 +3,7 @@ export enum RenderSide {
   BACK,
   DOUBLE
 }
+export enum CameraType {
+  PERSPECTIVE,
+  ORTHOGRAPHIC
+}
