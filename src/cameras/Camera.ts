@@ -11,6 +11,7 @@ class Camera extends Object3D {
   target: Vector3
   copy: any
   type: CameraType
+  zoom: number
   constructor() {
     super()
     this.up = new Vector3(0, 1, 0)
@@ -35,6 +36,6 @@ class Camera extends Object3D {
 		this.matrixWorldInverse.getInverse( this.matrixWorld );
 
 	}
-
+  updateProjectionMatrix () {}
 }
 export { Camera }
