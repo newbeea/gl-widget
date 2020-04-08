@@ -84,21 +84,15 @@ class Renderer {
     modelViewMatrix = new Matrix4().multiplyMatrices(viewMatrix, element.matrixWorld)
     mvpMatrix.multiplyMatrices(camera.projectionMatrix, modelViewMatrix)
 
-    var location = gl.getUniformLocation(element.glProgram, 'mvpMatrix');
-    if (location != null) {
-      gl.uniformMatrix4fv(location, false, mvpMatrix.elements)
-    }
 
-    location = gl.getUniformLocation(element.glProgram, 'modelViewMatrix');
-    if (location != null) {
-      gl.uniformMatrix4fv(location, false, modelViewMatrix.elements)
-    }
+    element.uniforms['mvpMatrix'].value = mvpMatrix
+    element.uniforms['modelMatrix'].value = element.matrixWorld
+    element.uniforms['modelViewMatrix'].value = modelViewMatrix
+    element.uniforms['viewMatrix'].value = viewMatrix
+    element.uniforms['projectionMatrix'].value = projectionMatrix
+    element.uniforms['cameraPosition'].value = camera.position
+    element.uniforms['isOrthographic'].value = camera.type == CameraType.ORTHOGRAPHIC
 
-    location = gl.getUniformLocation(element.glProgram, 'projectionMatrix');
-    if (location != null) {
-      gl.uniformMatrix4fv(location, false, projectionMatrix.elements)
-    }
-  
     // set render side
     switch (element.side) {
       case RenderSide.FRONT:

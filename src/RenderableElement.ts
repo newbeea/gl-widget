@@ -7,6 +7,8 @@ import { UniformManager } from "./UniformManager";
 import { RenderSide } from "./Constants";
 import { ProgramManager } from "./ProgramManager";
 import { Geometry } from "./Geometry";
+import { Matrix4 } from "./math/Matrix4";
+import { Vector3, Matrix3 } from "./index";
 
 
 class RenderableElement extends Object3D {
@@ -46,6 +48,32 @@ class RenderableElement extends Object3D {
     if (material.uniforms) {
       this.uniforms = material.uniforms
     }
+    Object.assign(this.uniforms, {
+      cameraPosition: {
+        value: new Vector3()
+      },
+      mvpMatrix: {
+        value: new Matrix4()
+      },
+      modelMatrix: {
+        value: new Matrix4()
+      },
+      viewMatrix: {
+        value: new Matrix4()
+      },
+      modelViewMatrix: {
+        value: new Matrix4()
+      },
+      projectionMatrix: {
+        value: new Matrix4()
+      },
+      normalMatrix: {
+        value: new Matrix3()
+      },
+      isOrthographic: {
+        value: 0
+      }
+    })
     this.transparent = material.transparent || false
     this.side = material.side || RenderSide.FRONT
     if (geometry instanceof Geometry) {
