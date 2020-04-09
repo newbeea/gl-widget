@@ -274,6 +274,31 @@ function PureArrayUniform( id, activeInfo, addr ) {
 	// this.path = activeInfo.name; // DEBUG
 
 }
+
+
+function StructuredUniform( id ) {
+
+	this.id = id;
+
+	this.seq = [];
+	this.map = {};
+
+}
+
+StructuredUniform.prototype.setValue = function ( gl, value, textures ) {
+
+	var seq = this.seq;
+
+	for ( var i = 0, n = seq.length; i !== n; ++ i ) {
+		
+		var u = seq[ i ];
+
+		u.setValue( gl, value[ u.id ], textures );
+
+	}
+
+};
+
 class UniformManager {
   map: any
   seq: any[]
@@ -291,11 +316,13 @@ class UniformManager {
       var info = gl.getActiveUniform( program, i ),
         path = info.name,
         addr = gl.getUniformLocation( program, path );
-
+			
       this.parseUniform( info, addr, this );
-
     }
-  }
+	}
+	
+
+
   addUniform( container, uniformObject ) {
 
     container.seq.push( uniformObject );
@@ -314,13 +341,13 @@ class UniformManager {
   
       var match = RePathPart.exec( path ),
         matchEnd = RePathPart.lastIndex,
-  
+			
         id = match[ 1 ],
         idIsIndex = match[ 2 ] === ']',
         subscript = match[ 3 ];
-  
-      if ( idIsIndex ) id = id + 0; // convert to integer
-  
+
+      // if ( idIsIndex ) id = id | 0; // convert to integer
+
       if ( subscript === undefined ||
           subscript === '[' && matchEnd + 2 === pathLength ) {
         // bare name or "pure" bottom-level array "[0]" suffix
@@ -339,8 +366,8 @@ class UniformManager {
   
         if ( next === undefined ) {
   
-          // next = new StructuredUniform( id );
-          // addUniform( container, next );
+          next = new StructuredUniform( id );
+          this.addUniform( container, next );
   
         }
   
@@ -353,7 +380,8 @@ class UniformManager {
   }
   updateUniforms(uniforms = {}) {
 		this.textureManager.unit = 0
-    let seq = this.filterUniforms(Object.keys(uniforms))
+		let seq = this.filterUniforms(Object.keys(uniforms))
+
     for ( var i = 0, n = seq.length; i !== n; ++ i ) {
   
       var u = seq[ i ], v = uniforms[ u.id ];

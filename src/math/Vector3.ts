@@ -43,6 +43,18 @@ class Vector3 {
 		return this;
 
   }
+  toArray ( array, offset ) {
+
+		if ( array === undefined ) array = [];
+		if ( offset === undefined ) offset = 0;
+
+		array[ offset ] = this.x;
+		array[ offset + 1 ] = this.y;
+		array[ offset + 2 ] = this.z;
+
+		return array;
+
+	}
   fromArray (array, offset) {
 
 		if ( offset === undefined ) offset = 0;
