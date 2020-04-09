@@ -2,6 +2,7 @@ import { Matrix4 } from "./math/Matrix4"
 import { Vector3 } from "./math/Vector3";
 import { Quaternion } from "./math/Quaternion";
 import { RenderableElement } from "./RenderableElement";
+import { Matrix3 } from "./math/index";
 class Object3D {
   matrix: Matrix4
   matrixWorldNeedsUpdate: boolean;
@@ -13,11 +14,12 @@ class Object3D {
   readonly quaternion: any;
   readonly scale: Vector3;
   changed: boolean;
+  normalMatrix: Matrix3;
   constructor () {
     this.changed = false
     this.matrix = new Matrix4()
     this.matrixWorld = new Matrix4()
-
+    this.normalMatrix = new Matrix3()
     this.position = new Proxy(new Vector3(), {
       set: (target, key, value, receiver) => {
         let v = Reflect.set(target, key, value, receiver)

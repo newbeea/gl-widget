@@ -1,3 +1,5 @@
+import { Encoding } from "./Constants";
+
 interface State {
   needsUpdate: boolean,
   version: number
@@ -13,6 +15,7 @@ class Texture {
   imageCount: number
   imageLoadedCount: number
   state: State
+  encoding: Encoding = Encoding.sRGBEncoding
   constructor (imageSrc?, format=1, type=1) { // TODO
     
     this.state = new Proxy( {

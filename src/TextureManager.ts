@@ -65,6 +65,7 @@ class TextureManager {
     gl.bindTexture(gl.TEXTURE_2D, texture.glTexture || WebGL.getInstance(gl).getEmptyTexture(gl.TEXTURE_2D))     
   }
   setTextureCube(texture: Texture, options) {
+    
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
     let currentUnit = this.unit
@@ -83,17 +84,16 @@ class TextureManager {
       // texture.glTexture = glTexture
       gl.activeTexture(gl.TEXTURE0 + this.unit)
       gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.glTexture)
-      
       for (let i = 0; i < 6; i++) {
         let image = texture.images[i]
         gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
         cached.version = texture.version
       }
-      gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
       gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      // gl.generateMipmap( gl.TEXTURE_CUBE_MAP )
+      gl.generateMipmap( gl.TEXTURE_CUBE_MAP )
     }
     gl.activeTexture(gl.TEXTURE0 + currentUnit)
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.glTexture || WebGL.getInstance(gl).getEmptyTexture(gl.TEXTURE_CUBE_MAP)) 

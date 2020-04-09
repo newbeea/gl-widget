@@ -25,6 +25,15 @@ class Vector3 {
     this.z -= v.z;
     return this;
   }
+  addVectors ( a, b ) {
+
+		this.x = a.x + b.x;
+		this.y = a.y + b.y;
+		this.z = a.z + b.z;
+
+		return this;
+
+	}
   subVectors (a, b) {
 
 		this.x = a.x - b.x;

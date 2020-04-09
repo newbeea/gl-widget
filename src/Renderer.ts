@@ -14,7 +14,7 @@ import { Skybox } from './Skybox';
 import { RenderSide, CameraType } from './Constants';
 import { ShaderObject } from './Program';
 import { RenderTarget } from './RenderTarget';
-import { Vector2 } from './math/Vector2';
+import { Matrix3 } from './math/index';
 
 
 export interface rendererOptions {
@@ -84,7 +84,8 @@ class Renderer {
     modelViewMatrix = new Matrix4().multiplyMatrices(viewMatrix, element.matrixWorld)
     mvpMatrix.multiplyMatrices(camera.projectionMatrix, modelViewMatrix)
 
-
+    let normalMatrix = new Matrix3()
+    normalMatrix.getNormalMatrix( modelViewMatrix );
     element.uniforms['mvpMatrix'].value = mvpMatrix
     element.uniforms['modelMatrix'].value = element.matrixWorld
     element.uniforms['modelViewMatrix'].value = modelViewMatrix
@@ -92,6 +93,8 @@ class Renderer {
     element.uniforms['projectionMatrix'].value = projectionMatrix
     element.uniforms['cameraPosition'].value = camera.position
     element.uniforms['isOrthographic'].value = camera.type == CameraType.ORTHOGRAPHIC
+    element.uniforms['normalMatrix'].value = normalMatrix
+    
 
     // set render side
     switch (element.side) {

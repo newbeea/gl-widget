@@ -71,7 +71,7 @@ function setValueT1( gl, v, textureManager ) {
 
 function setValueT6( gl, v, textureManager ) {
 	gl.uniform1i( this.addr, textureManager.unit );
-	textureManager.setTextureCube( v );
+	textureManager.setTextureCube( v || emptyTexture);
 
 }
 

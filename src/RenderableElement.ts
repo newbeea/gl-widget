@@ -7,8 +7,8 @@ import { UniformManager } from "./UniformManager";
 import { RenderSide } from "./Constants";
 import { ProgramManager } from "./ProgramManager";
 import { Geometry } from "./Geometry";
-import { Matrix4 } from "./math/Matrix4";
-import { Vector3, Matrix3 } from "./index";
+import { Matrix4 } from "./math/index";
+import { Vector3, Matrix3 } from "./math/index";
 
 
 class RenderableElement extends Object3D {
