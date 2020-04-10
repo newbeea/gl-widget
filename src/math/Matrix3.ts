@@ -132,6 +132,6 @@ class Matrix3 {
 
 		return this;
 
-	}
+  }
 }
 export { Matrix3 }

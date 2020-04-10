@@ -22,20 +22,18 @@ class TextureManager {
     gl.bindTexture(gl.TEXTURE_2D, null);
     
   }
-  setTexture2D(texture: Texture, options) {
+  setTexture2D(texture: Texture, unit) {
 
     // if (!texture) return
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
-    let currentUnit = this.unit
+
     if (!cached) {
       cached = {
-        version: 0
+        version: 0,
       }
       // console.log(texture)
       this.textureCache.set(texture, cached)
-      this.unit ++
-      // console.log(this.unit)
     }
     // if (! texture.image)console.log(texture)
 
@@ -48,7 +46,7 @@ class TextureManager {
     if (texture.image && texture.version > 0 && cached.version != texture.version) {
         // console.log(cached.version, texture.version)
       texture.glTexture =texture.glTexture ? texture.glTexture : gl.createTexture()
-      gl.activeTexture(gl.TEXTURE0 + currentUnit)
+      gl.activeTexture(gl.TEXTURE0 + unit)
       gl.bindTexture(gl.TEXTURE_2D, texture.glTexture)
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
 
@@ -61,20 +59,28 @@ class TextureManager {
       gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false )
       
     } 
-    gl.activeTexture(gl.TEXTURE0 + currentUnit)
+    gl.activeTexture(gl.TEXTURE0 + unit)
+
     gl.bindTexture(gl.TEXTURE_2D, texture.glTexture || WebGL.getInstance(gl).getEmptyTexture(gl.TEXTURE_2D))     
   }
-  setTextureCube(texture: Texture, options) {
+  resetUnit() {
+    this.unit = 0
+  }
+  allocateUnit() {
+    let currentUnit = this.unit
+    this.unit += 1
+    return currentUnit
+  }
+  setTextureCube(texture: Texture, unit) {
     
     let gl: WebGLRenderingContext = this.gl
     let cached = this.textureCache.get(texture)
-    let currentUnit = this.unit
+
     if (!cached) {
       cached = {
         version: 0
       }
       this.textureCache.set(texture, cached)
-      this.unit ++
     }
 
     
@@ -82,7 +88,7 @@ class TextureManager {
     if (texture.images.length && texture.version > 0 && cached.version != texture.version) {
       texture.glTexture = texture.glTexture ? texture.glTexture : gl.createTexture()
       // texture.glTexture = glTexture
-      gl.activeTexture(gl.TEXTURE0 + this.unit)
+      gl.activeTexture(gl.TEXTURE0 + unit)
       gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.glTexture)
       for (let i = 0; i < 6; i++) {
         let image = texture.images[i]
@@ -95,7 +101,8 @@ class TextureManager {
       gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       gl.generateMipmap( gl.TEXTURE_CUBE_MAP )
     }
-    gl.activeTexture(gl.TEXTURE0 + currentUnit)
+    gl.activeTexture(gl.TEXTURE0 + unit)
+
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.glTexture || WebGL.getInstance(gl).getEmptyTexture(gl.TEXTURE_CUBE_MAP)) 
     
         

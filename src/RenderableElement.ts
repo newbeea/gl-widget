@@ -3,7 +3,7 @@ import { ShaderObject, Program } from "./Program";
 import { BufferManager } from "./BufferManager";
 import { BufferGeometry } from "./BufferGeometry";
 import { Object3D } from "./Object3D";
-import { UniformManager } from "./UniformManager";
+
 import { RenderSide } from "./Constants";
 import { ProgramManager } from "./ProgramManager";
 import { Geometry } from "./Geometry";
@@ -22,7 +22,7 @@ class RenderableElement extends Object3D {
   geometry: Geometry
   bufferGeometry: BufferGeometry
   bufferManager: BufferManager
-  uniformManager: UniformManager
+
   programManager: ProgramManager
   side: RenderSide
   transparent: boolean
@@ -45,9 +45,7 @@ class RenderableElement extends Object3D {
     if (material.vertexShader) {
       this.vertexShader = material.vertexShader
     }
-    if (material.uniforms) {
-      this.uniforms = material.uniforms
-    }
+    this.uniforms = material.uniforms || {}
     Object.assign(this.uniforms, {
       cameraPosition: {
         value: new Vector3()

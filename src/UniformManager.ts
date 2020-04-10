@@ -63,15 +63,16 @@ function setValue4fm( gl, v ) {
 
 function setValueT1( gl, v, textureManager ) {
 
-	
-	gl.uniform1i( this.addr, textureManager.unit );
-	textureManager.setTexture2D( v || emptyTexture );
+	let unit = textureManager.allocateUnit()
+	gl.uniform1i( this.addr, unit );
+	textureManager.setTexture2D( v || emptyTexture, unit );
 
 }
 
 function setValueT6( gl, v, textureManager ) {
-	gl.uniform1i( this.addr, textureManager.unit );
-	textureManager.setTextureCube( v || emptyTexture);
+	let unit = textureManager.allocateUnit()
+	gl.uniform1i( this.addr, unit );
+	textureManager.setTextureCube( v || emptyTexture, unit );
 
 }
 
@@ -379,7 +380,7 @@ class UniformManager {
   
   }
   updateUniforms(uniforms = {}) {
-		this.textureManager.unit = 0
+		this.textureManager.resetUnit()
 		let seq = this.filterUniforms(Object.keys(uniforms))
 
     for ( var i = 0, n = seq.length; i !== n; ++ i ) {
