@@ -1,5 +1,8 @@
 import { Texture } from "./Texture"
 import WebGL from "./WebGL";
+import { Wrapping, TextureFilter } from "./Constants";
+
+
 
 class TextureManager {
   unit: number
@@ -10,7 +13,28 @@ class TextureManager {
     this.gl = gl
     this.textureCache = new WeakMap()
   }
-
+  getGLWrapping (wrapping: Wrapping) {
+    let gl = this.gl
+    let wrappingToGL = {
+      [ Wrapping.RepeatWrapping ]: gl.REPEAT,
+      [ Wrapping.ClampToEdgeWrapping ]: gl.CLAMP_TO_EDGE,
+      [ Wrapping.MirroredRepeatWrapping ]: gl.MIRRORED_REPEAT
+    }
+    return wrappingToGL[wrapping]
+  }
+  getGLFilter (filter: TextureFilter) {
+    let gl = this.gl
+    let filterToGL = {
+      [ TextureFilter.NearestFilter ]: gl.NEAREST,
+      [ TextureFilter.NearestMipmapNearestFilter ]: gl.NEAREST_MIPMAP_NEAREST,
+      [ TextureFilter.NearestMipmapLinearFilter ]: gl.NEAREST_MIPMAP_LINEAR,
+    
+      [ TextureFilter.LinearFilter ]: gl.LINEAR,
+      [ TextureFilter.LinearMipmapNearestFilter ]: gl.LINEAR_MIPMAP_NEAREST,
+      [ TextureFilter.LinearMipmapLinearFilter ]: gl.LINEAR_MIPMAP_LINEAR
+    };
+    return filterToGL[filter]
+  }
   createTexture(texture: Texture, width, height) {
     let gl = this.gl
     texture.glTexture = gl.createTexture();
@@ -32,32 +56,30 @@ class TextureManager {
       cached = {
         version: 0,
       }
-      // console.log(texture)
       this.textureCache.set(texture, cached)
     }
-    // if (! texture.image)console.log(texture)
-
-    // texture.glTexture =texture.glTexture ? texture.glTexture : gl.createTexture()
-
-    // let glTexture = cached.glTexture
-    
-    // gl.generateMipmap( gl.TEXTURE_2D )
 
     if (texture.image && texture.version > 0 && cached.version != texture.version) {
         // console.log(cached.version, texture.version)
       texture.glTexture =texture.glTexture ? texture.glTexture : gl.createTexture()
       gl.activeTexture(gl.TEXTURE0 + unit)
       gl.bindTexture(gl.TEXTURE_2D, texture.glTexture)
-      gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true )
+
+      gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, texture.options.flipY );
+      gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.options.premultiplyAlpha );
+      gl.pixelStorei( gl.UNPACK_ALIGNMENT, texture.options.unpackAlignment );
+
 
       cached.version = texture.version
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image)
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.getGLFilter(texture.options.minFilter))
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.getGLFilter(texture.options.magFilter))
       // gl.generateMipmap( gl.TEXTURE_2D )
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false )
-      
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.getGLWrapping(texture.options.wrapS));
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.getGLWrapping(texture.options.wrapT));
+      if (texture.options.generateMipmaps) {
+        gl.generateMipmap( gl.TEXTURE_2D )
+      }
     } 
     gl.activeTexture(gl.TEXTURE0 + unit)
 

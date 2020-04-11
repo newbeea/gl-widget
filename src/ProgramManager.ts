@@ -9,8 +9,10 @@ class ProgramManager {
     let key = this.getProgramCacheKey(shader)
     let program = this.programCache.get(key)
     if (program) {
-      
+
     } else {
+      console.log(shader)
+      console.log(2)
       program  = new Program(gl, shader)
       this.programCache.set(key, program)
     }

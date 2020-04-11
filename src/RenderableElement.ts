@@ -12,13 +12,11 @@ import { Vector3, Matrix3 } from "./math/index";
 
 
 class RenderableElement extends Object3D {
+  material: any;
   glProgram: WebGLProgram
   program: Program
   gl: WebGLRenderingContext
   vertexNum: number
-  fragmentShader: string
-  vertexShader: string
-  uniforms: any
   geometry: Geometry
   bufferGeometry: BufferGeometry
   bufferManager: BufferManager
@@ -29,24 +27,11 @@ class RenderableElement extends Object3D {
   hasIndex: boolean;
   isRenderableElement: boolean = true
   type: string = ''
-  constructor(material?: any, geometry?: Geometry | BufferGeometry) {
+  constructor(material: any = {}, geometry: Geometry | BufferGeometry) {
     super()
-    this.vertexShader = `
-        attribute vec3 position;
-        varying vec3 vPosition;
-        void main () {
-          vPosition = position;
-          gl_Position = vec4(position, 1.0);
-        }
-      ` 
-    if (material.fragmentShader) {
-      this.fragmentShader = material.fragmentShader
-    }
-    if (material.vertexShader) {
-      this.vertexShader = material.vertexShader
-    }
-    this.uniforms = material.uniforms || {}
-    Object.assign(this.uniforms, {
+    this.material = material
+
+    let commonUniforms = {
       cameraPosition: {
         value: new Vector3()
       },
@@ -71,9 +56,14 @@ class RenderableElement extends Object3D {
       isOrthographic: {
         value: 0
       }
-    })
-    this.transparent = material.transparent || false
-    this.side = material.side || RenderSide.FRONT
+      
+    }
+    this.material.uniforms = material.uniforms ? Object.assign(material.uniforms, commonUniforms) : commonUniforms
+
+    
+    
+    // this.transparent = material.transparent || false
+    // this.side = material.side || RenderSide.FRONT
     if (geometry instanceof Geometry) {
       this.geometry = geometry
       this.bufferGeometry = this.geometry.toBufferGeometry()
@@ -93,8 +83,8 @@ class RenderableElement extends Object3D {
 
   update(gl, material?:any ) {
     let shader: ShaderObject = material ? material : {
-      vertexShader: this.vertexShader,
-      fragmentShader: this.fragmentShader
+      vertexShader: this.material.vertexShader,
+      fragmentShader: this.material.fragmentShader
     }
 
     
@@ -132,7 +122,7 @@ class RenderableElement extends Object3D {
     }  
   }
   updateUniforms(gl) {
-    this.program.uniformManager.updateUniforms(this.uniforms)
+    this.program.uniformManager.updateUniforms(this.material.uniforms)
   }
 }
 export {

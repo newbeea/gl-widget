@@ -1,10 +1,31 @@
-import { Encoding } from "./Constants";
+import { Encoding, Mapping, Wrapping, TextureFilter, PixelFormat, TextureDataType } from "./Constants";
+import { Object3D } from "./Object3D";
 
-interface State {
+
+export interface State {
   needsUpdate: boolean,
   version: number
 }
+export interface TextureOptions {
+  mipmaps: Array<any>,
+  mapping: Mapping,
+  wrapS: Wrapping,
+  wrapT: Wrapping,
+  magFilter: TextureFilter,
+  minFilter: TextureFilter,
+  anisotropy: number,
+  format: PixelFormat,
+  type: TextureDataType,
+  flipY: boolean,
+  unpackAlignment: number,
+  encoding: Encoding,
+  generateMipmaps: boolean,
+  premultiplyAlpha: boolean
+
+}
 class Texture {
+  options: TextureOptions;
+  mipmaps: Array<any>;
   glTexture: WebGLTexture;
   image: any
   images: Array<any>
@@ -16,7 +37,7 @@ class Texture {
   imageLoadedCount: number
   state: State
   encoding: Encoding = Encoding.sRGBEncoding
-  constructor (imageSrc?, format=1, type=1) { // TODO
+  constructor (imageSrc?, options={}) { // TODO
     
     this.state = new Proxy( {
       needsUpdate: false,
@@ -62,9 +83,25 @@ class Texture {
       this.imageCount = 1
 
     }
+
+    this.options = Object.assign({
+      mipmaps: [],
+      mapping: Mapping.UVMapping,
+      wrapS: Wrapping.RepeatWrapping,
+      wrapT: Wrapping.RepeatWrapping,
+      magFilter: TextureFilter.LinearFilter,
+      minFilter: TextureFilter.LinearMipmapLinearFilter,
+      anisotropy: 1,
+      format: PixelFormat.RGBAFormat,
+      type: TextureDataType.UnsignedByteType,
+      flipY: true,
+      unpackAlignment: 4,
+      encoding: Encoding.sRGBEncoding,
+      generateMipmaps: true,
+      premultiplyAlpha: false
+
+    }, options)
     
-    this.format = format
-    this.type = type
     
     this.needsUpdate = false
     this.glTexture = null
@@ -84,39 +121,9 @@ class Texture {
 	}
 
 	copy ( source ) {
-
-		// this.name = source.name;
-
-		this.image = source.image;
-		// this.mipmaps = source.mipmaps.slice( 0 );
-
-		// this.mapping = source.mapping;
-
-		// this.wrapS = source.wrapS;
-		// this.wrapT = source.wrapT;
-
-		// this.magFilter = source.magFilter;
-		// this.minFilter = source.minFilter;
-
-		// this.anisotropy = source.anisotropy;
-
-		this.format = source.format;
-		this.type = source.type;
-
-		// this.offset.copy( source.offset );
-		// this.repeat.copy( source.repeat );
-		// this.center.copy( source.center );
-		// this.rotation = source.rotation;
-
-		// this.matrixAutoUpdate = source.matrixAutoUpdate;
-		// this.matrix.copy( source.matrix );
-
-		// this.generateMipmaps = source.generateMipmaps;
-		// this.premultiplyAlpha = source.premultiplyAlpha;
-		// this.flipY = source.flipY;
-		// this.unpackAlignment = source.unpackAlignment;
-		// this.encoding = source.encoding;
-
+    this.image = source.image;
+    this.images = source.images;
+    Object.assign(this.options, source.options)
 		return this;
 
 	}

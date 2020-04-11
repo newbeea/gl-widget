@@ -86,14 +86,14 @@ class Renderer {
 
     let normalMatrix = new Matrix3()
     normalMatrix.getNormalMatrix( modelViewMatrix );
-    element.uniforms['mvpMatrix'].value = mvpMatrix
-    element.uniforms['modelMatrix'].value = element.matrixWorld
-    element.uniforms['modelViewMatrix'].value = modelViewMatrix
-    element.uniforms['viewMatrix'].value = viewMatrix
-    element.uniforms['projectionMatrix'].value = projectionMatrix
-    element.uniforms['cameraPosition'].value = camera.position
-    element.uniforms['isOrthographic'].value = camera.type == CameraType.ORTHOGRAPHIC
-    element.uniforms['normalMatrix'].value = normalMatrix
+    element.material.uniforms['mvpMatrix'].value = mvpMatrix
+    element.material.uniforms['modelMatrix'].value = element.matrixWorld
+    element.material.uniforms['modelViewMatrix'].value = modelViewMatrix
+    element.material.uniforms['viewMatrix'].value = viewMatrix
+    element.material.uniforms['projectionMatrix'].value = projectionMatrix
+    element.material.uniforms['cameraPosition'].value = camera.position
+    element.material.uniforms['isOrthographic'].value = camera.type == CameraType.ORTHOGRAPHIC
+    element.material.uniforms['normalMatrix'].value = normalMatrix
     
 
     // set render side
