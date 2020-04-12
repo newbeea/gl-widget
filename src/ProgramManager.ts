@@ -11,8 +11,6 @@ class ProgramManager {
     if (program) {
 
     } else {
-      console.log(shader)
-      console.log(2)
       program  = new Program(gl, shader)
       this.programCache.set(key, program)
     }

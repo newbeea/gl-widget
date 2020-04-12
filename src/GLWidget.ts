@@ -96,8 +96,6 @@ class GLWidget {
       this.gl.enable(this.gl.DEPTH_TEST);
     }
     this.extensions = new Extensions(this.gl) // TODO
-    this.extensions.get('EXT_shader_texture_lod')
-    this.gl.enable(this.gl.POLYGON_OFFSET_FILL);
     this.gl.enable(this.gl.BLEND);
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 
@@ -226,11 +224,12 @@ class GLWidget {
   render(animation: Function) {
 
     let renderFrame = () => {  
-      this.renderFrame()
+      
       // animate
       if(animation) {
         animation()
       }
+      this.renderFrame()
       requestAnimationFrame(renderFrame)
     }
     renderFrame()
