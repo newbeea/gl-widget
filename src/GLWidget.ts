@@ -17,6 +17,8 @@ import { RenderSide } from './Constants';
 import { ShaderObject } from './Program';
 import { RenderTarget } from './RenderTarget';
 import { Vector2 } from './math/Vector2';
+import { RenderFlow } from "./RenderFlow";
+import { Pass } from "./Pass";
 
 export enum CAMERA {
   PERSPECTIVE,
@@ -46,12 +48,13 @@ class GLWidget {
   cameraMode: CAMERA
   camera: Camera
   pixelRatio: number;
-  width: any;
-  height: any;
+  width: number;
+  height: number;
   extensions: Extensions;
   opaqueList: Array<RenderableElement> = []
   transparentList: Array<RenderableElement> = []
   scene: Object3D;
+  renderFlow: RenderFlow;
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
 
     if (options.element instanceof HTMLCanvasElement) {
@@ -101,6 +104,8 @@ class GLWidget {
 
     this.scene = new Object3D()
     this.renderer = new Renderer(this.gl)
+
+    this.renderFlow = new RenderFlow(this)
   }
   add (element: RenderableElement) {
     this.scene.add(element)
@@ -199,7 +204,27 @@ class GLWidget {
   setCamera() {
 
   }
-  renderFrame () {
+  addPass (pass: Pass) {
+    this.renderFlow.addPass(pass)
+  }
+  renderPassFrame () {
+    this.renderFlow.render()
+  }
+  renderElement(element: RenderableElement, camera?: Camera) {
+    this.renderer.renderElement(element, camera || this.camera)  
+  }
+  renderPass (animation?: Function) {
+    let renderPassFrame = () => {  
+      // animate
+      if(animation) {
+        animation()
+      }
+      this.renderPassFrame()
+      requestAnimationFrame(renderPassFrame)
+    }
+    renderPassFrame()
+  }
+  renderFrame (camera?: Camera) {
     this.opaqueList = []
     this.transparentList = []
     this.scene.traverse((shape) => {
@@ -214,14 +239,14 @@ class GLWidget {
     })
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     this.opaqueList.forEach((element: RenderableElement) => {
-      this.renderer.renderElement(element, this.camera)  
+      this.renderElement(element, camera || this.camera)  
     });
     this.transparentList.forEach((element: RenderableElement) => {
-      this.renderer.renderElement(element, this.camera)  
+      this.renderElement(element, camera || this.camera)  
     });
   }
 
-  render(animation: Function) {
+  render(animation: Function, camera?: Camera) {
 
     let renderFrame = () => {  
       
@@ -229,7 +254,7 @@ class GLWidget {
       if(animation) {
         animation()
       }
-      this.renderFrame()
+      this.renderFrame(camera)
       requestAnimationFrame(renderFrame)
     }
     renderFrame()

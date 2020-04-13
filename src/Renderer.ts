@@ -97,7 +97,7 @@ class Renderer {
     
 
     // set render side
-    switch (element.side) {
+    switch (element.material.side) {
       case RenderSide.FRONT:
         gl.enable(gl.CULL_FACE);
         gl.cullFace(gl.BACK)
@@ -108,6 +108,10 @@ class Renderer {
         break
       case RenderSide.DOUBLE:
         gl.disable(gl.CULL_FACE);
+        break
+      default:
+        gl.enable(gl.CULL_FACE);
+        gl.cullFace(gl.BACK)
         break
     }
     let mode = gl.TRIANGLES

@@ -1,3 +1,4 @@
+import { GLWidget } from "./GLWidget";
 
 class Pass {
   renderToScreen: boolean;
@@ -19,7 +20,7 @@ class Pass {
   }
   setSize(width: number, height: number) {
   }
-  render ( renderer, writeBuffer, readBuffer, deltaTime, maskActive ) {
+  render ( glWidget: GLWidget, writeBuffer, readBuffer, deltaTime, maskActive ) {
   }
 
 }

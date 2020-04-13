@@ -2,8 +2,9 @@
 
 import { BufferGeometry } from "./BufferGeometry";
 import { RenderableElement } from "./RenderableElement";
-import { PlaneGeometry } from "./extras/plugins/Geometries/PlaneGeometry";
 import { Geometry } from "./Geometry";
+import { Float32Attribute } from "./Float32Attribute";
+import { Uint32Attribute } from "./Uint32Attribute";
 
 class Background extends RenderableElement {
   gl: WebGLRenderingContext
@@ -18,7 +19,20 @@ class Background extends RenderableElement {
       }`,
       uniforms: {}
     }, material)
-    super(material, geometry || new PlaneGeometry(2, 2))   
+    if (!geometry) {
+      geometry = new BufferGeometry()
+      geometry.addAttribute('position', new Float32Attribute([
+        1, -1, 0,
+        1, 1, 0,
+        -1, 1, 0,
+        -1, -1, 0
+       
+      ], 3))
+      geometry.addAttribute('index', new Uint32Attribute([
+        0, 1, 2, 2, 3, 0
+      ], 1))
+    }
+    super(material, geometry || geometry)   
     this.type = 'Background'
    
   }
