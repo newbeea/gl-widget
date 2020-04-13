@@ -213,6 +213,9 @@ class GLWidget {
   renderElement(element: RenderableElement, camera?: Camera) {
     this.renderer.renderElement(element, camera || this.camera)  
   }
+  clear () {
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+  }
   renderPass (animation?: Function) {
     let renderPassFrame = () => {  
       // animate
@@ -237,7 +240,7 @@ class GLWidget {
         
       }  
     })
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+    this.clear();
     this.opaqueList.forEach((element: RenderableElement) => {
       this.renderElement(element, camera || this.camera)  
     });
