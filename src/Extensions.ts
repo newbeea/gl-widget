@@ -12,8 +12,9 @@ class Extensions {
 		this.get( 'OES_texture_float_linear' );
 		this.get( 'OES_texture_half_float' );
 		this.get( 'OES_texture_half_float_linear' );
-		this.get( 'OES_standard_derivatives' );
-		this.get( 'OES_element_index_uint' );
+    this.get( 'OES_standard_derivatives' );
+    this.get( 'OES_element_index_uint' );
+		this.get( 'GL_EXT_shader_texture_lod' );
 		this.get( 'ANGLE_instanced_arrays' );
   }
 
