@@ -13,6 +13,14 @@ class Background extends RenderableElement {
   
   constructor(material={}, geometry?: Geometry | BufferGeometry) {
     material = Object.assign({
+      vertexShader: `
+        attribute vec3 position;
+        varying vec3 vPosition;
+        void main () {
+          vPosition = position;
+          gl_Position = vec4(position, 1.);
+        }
+      `,
       fragmentShader: `
       void main() {
         gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );

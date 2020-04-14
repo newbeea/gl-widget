@@ -55,6 +55,7 @@ class GLWidget {
   transparentList: Array<RenderableElement> = []
   scene: Object3D;
   renderFlow: RenderFlow;
+  background: any;
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
 
     if (options.element instanceof HTMLCanvasElement) {
@@ -248,8 +249,17 @@ class GLWidget {
       this.renderElement(element, camera || this.camera)  
     });
   }
+  renderBackground(fragmentShader, animation?: Function, camera?: Camera) {
+    if (!this.background) {
+      this.background = new Background()
+      this.add(this.background)
+    }
+    
+    this.background.material.fragmentShader = fragmentShader
+    this.render(animation, camera)
 
-  render(animation: Function, camera?: Camera) {
+  }
+  render(animation?: Function, camera?: Camera) {
 
     let renderFrame = () => {  
       
