@@ -9,8 +9,8 @@ class Skybox extends Background {
   gl: WebGLRenderingContext
   vertexNum: number
   fragmentShader: string
-  constructor(material={}, geometry?: Geometry | BufferGeometry) {
-    material = Object.assign({
+  constructor(shader={}, geometry?: Geometry | BufferGeometry) {
+    shader = Object.assign({
       vertexShader: `
         uniform mat4 mvpMatrix;
         attribute vec3 position;
@@ -30,7 +30,7 @@ class Skybox extends Background {
           gl_FragColor = textureCube(cube, vPosition.xyz);
         }
       `
-    }, material)
+    }, shader)
     if (!geometry) {
       geometry = new BufferGeometry()
       geometry.addAttribute('position', new Float32Attribute([
@@ -50,7 +50,7 @@ class Skybox extends Background {
         0, 3, 2, 0, 2, 1,  4, 0, 5, 0, 1, 5,  5, 1, 2, 5, 2, 6,  6, 2, 3, 6, 3, 7,  7, 3, 0, 7, 0, 4,  4, 5, 6, 4, 6, 7
       ], 1))
     }
-    super(material, geometry) 
+    super(shader, geometry) 
   }
 }
 export {

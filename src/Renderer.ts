@@ -86,18 +86,18 @@ class Renderer {
 
     let normalMatrix = new Matrix3()
     normalMatrix.getNormalMatrix( modelViewMatrix );
-    element.material.uniforms['mvpMatrix'].value = mvpMatrix
-    element.material.uniforms['modelMatrix'].value = element.matrixWorld
-    element.material.uniforms['modelViewMatrix'].value = modelViewMatrix
-    element.material.uniforms['viewMatrix'].value = viewMatrix
-    element.material.uniforms['projectionMatrix'].value = projectionMatrix
-    element.material.uniforms['cameraPosition'].value = camera.position
-    element.material.uniforms['isOrthographic'].value = camera.type == CameraType.ORTHOGRAPHIC
-    element.material.uniforms['normalMatrix'].value = normalMatrix
+    element.shader.uniforms['mvpMatrix'].value = mvpMatrix
+    element.shader.uniforms['modelMatrix'].value = element.matrixWorld
+    element.shader.uniforms['modelViewMatrix'].value = modelViewMatrix
+    element.shader.uniforms['viewMatrix'].value = viewMatrix
+    element.shader.uniforms['projectionMatrix'].value = projectionMatrix
+    element.shader.uniforms['cameraPosition'].value = camera.position
+    element.shader.uniforms['isOrthographic'].value = camera.type == CameraType.ORTHOGRAPHIC
+    element.shader.uniforms['normalMatrix'].value = normalMatrix
     
 
     // set render side
-    switch (element.material.side) {
+    switch (element.shader.side) {
       case RenderSide.FRONT:
         gl.enable(gl.CULL_FACE);
         gl.cullFace(gl.BACK)

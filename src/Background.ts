@@ -11,8 +11,8 @@ class Background extends RenderableElement {
   vertexNum: number
   fragmentShader: string
   
-  constructor(material={}, geometry?: Geometry | BufferGeometry) {
-    material = Object.assign({
+  constructor(shader={}, geometry?: Geometry | BufferGeometry) {
+    shader = Object.assign({
       vertexShader: `
         attribute vec3 position;
         varying vec3 vPosition;
@@ -26,7 +26,7 @@ class Background extends RenderableElement {
         gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
       }`,
       uniforms: {}
-    }, material)
+    }, shader)
     if (!geometry) {
       geometry = new BufferGeometry()
       geometry.addAttribute('position', new Float32Attribute([
@@ -40,7 +40,7 @@ class Background extends RenderableElement {
         0, 1, 2, 2, 3, 0
       ], 1))
     }
-    super(material, geometry || geometry)   
+    super(shader, geometry || geometry)   
     this.type = 'Background'
    
   }

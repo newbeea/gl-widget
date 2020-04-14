@@ -3,8 +3,8 @@ import { Geometry } from "./Geometry";
 import { BufferGeometry } from "./BufferGeometry";
 
 class Points extends RenderableElement {
-  constructor(material?: any, geometry?: Geometry | BufferGeometry) {
-    material = Object.assign({
+  constructor(shader?: any, geometry?: Geometry | BufferGeometry) {
+    shader = Object.assign({
       vertexShader: `
         uniform mat4 projectionMatrix;
         uniform mat4 modelViewMatrix;
@@ -27,8 +27,8 @@ class Points extends RenderableElement {
           gl_FragColor = vec4(1.0);
         }
       `
-    }, material)
-    super(material, geometry)
+    }, shader)
+    super(shader, geometry)
     this.type = 'Points'
   }
 }

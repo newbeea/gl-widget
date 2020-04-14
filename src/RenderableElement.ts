@@ -12,7 +12,7 @@ import { Vector3, Matrix3 } from "./math/index";
 
 
 class RenderableElement extends Object3D {
-  material: any;
+  shader: any;
   glProgram: WebGLProgram
   program: Program
   gl: WebGLRenderingContext
@@ -27,9 +27,9 @@ class RenderableElement extends Object3D {
   hasIndex: boolean;
   isRenderableElement: boolean = true
   type: string = ''
-  constructor(material: any = {}, geometry: Geometry | BufferGeometry) {
+  constructor(shader: any = {}, geometry: Geometry | BufferGeometry) {
     super()
-    this.material = material
+    this.shader = shader
 
     let commonUniforms = {
       cameraPosition: {
@@ -58,12 +58,12 @@ class RenderableElement extends Object3D {
       }
       
     }
-    this.material.uniforms = material.uniforms ? Object.assign(material.uniforms, commonUniforms) : commonUniforms
+    this.shader.uniforms = shader.uniforms ? Object.assign(shader.uniforms, commonUniforms) : commonUniforms
 
     
     
-    // this.transparent = material.transparent || false
-    // this.side = material.side || RenderSide.FRONT
+    // this.transparent = shader.transparent || false
+    // this.side = shader.side || RenderSide.FRONT
     if (geometry instanceof Geometry) {
       this.geometry = geometry
       this.bufferGeometry = this.geometry.toBufferGeometry()
@@ -81,10 +81,10 @@ class RenderableElement extends Object3D {
     return this.glProgram
   }
 
-  update(gl, material?:any ) {
-    let shader: ShaderObject = material ? material : {
-      vertexShader: this.material.vertexShader,
-      fragmentShader: this.material.fragmentShader
+  update(gl, newShader?:any ) {
+    let shader: ShaderObject = newShader ? newShader : {
+      vertexShader: this.shader.vertexShader,
+      fragmentShader: this.shader.fragmentShader
     }
 
     
@@ -122,7 +122,7 @@ class RenderableElement extends Object3D {
     }  
   }
   updateUniforms(gl) {
-    this.program.uniformManager.updateUniforms(this.material.uniforms)
+    this.program.uniformManager.updateUniforms(this.shader.uniforms)
   }
 }
 export {

@@ -255,7 +255,7 @@ class GLWidget {
       this.add(this.background)
     }
     
-    this.background.material.fragmentShader = fragmentShader
+    this.background.shader.fragmentShader = fragmentShader
     this.render(animation, camera)
 
   }
