@@ -7,8 +7,7 @@ import { BlinnPhongMaterial, PhongMaterial, TextureMaterial } from './extras/plu
 import { RenderableElement } from './RenderableElement';
 import { RenderSide } from '.'
 
-// let a = require('../lib/index.js')
-// console.log(1, glWidget)
+
 const renderer: Renderer = new Renderer({
   // cameraMode: CAMERA.ORTHOGRAPHIC,
   element: 'awesome-bg'
