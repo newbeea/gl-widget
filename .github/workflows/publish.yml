@@ -27,4 +27,4 @@ jobs:
       - name: Automated releases for npm packages.
         uses: mikeal/merge-release@v4.0.7
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
