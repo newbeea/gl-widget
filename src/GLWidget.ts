@@ -249,13 +249,12 @@ class GLWidget {
       this.renderElement(element, camera || this.camera)  
     });
   }
-  renderBackground(fragmentShader, animation?: Function, camera?: Camera) {
+  renderBackground(shader, animation?: Function, camera?: Camera) {
     if (!this.background) {
-      this.background = new Background()
+      this.background = new Background(shader)
       this.add(this.background)
     }
     
-    this.background.shader.fragmentShader = fragmentShader
     this.render(animation, camera)
 
   }
