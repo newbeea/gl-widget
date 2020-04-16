@@ -39,9 +39,6 @@ export interface ContextAttributes {
   premultipliedAlpha?: boolean,
   preserveDrawingBuffer?: boolean
 }
-let requestAnimationFrame = window.requestAnimationFrame ||  window.webkitRequestAnimationFrame;
-
-let cancelAnimationFrame = window.cancelAnimationFrame;
 
 class GLWidget {
   renderer: Renderer;
