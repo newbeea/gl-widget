@@ -39,6 +39,10 @@ export interface ContextAttributes {
   premultipliedAlpha?: boolean,
   preserveDrawingBuffer?: boolean
 }
+let requestAnimationFrame = window.requestAnimationFrame ||  window.webkitRequestAnimationFrame;
+
+let cancelAnimationFrame = window.cancelAnimationFrame;
+
 class GLWidget {
   renderer: Renderer;
   renderTarget: RenderTarget;
@@ -56,6 +60,7 @@ class GLWidget {
   scene: Object3D;
   renderFlow: RenderFlow;
   background: any;
+  stopped: boolean;
   constructor(options: rendererOptions, attributes: ContextAttributes={}) {
 
     if (options.element instanceof HTMLCanvasElement) {
@@ -109,7 +114,9 @@ class GLWidget {
     this.renderFlow = new RenderFlow(this)
   }
   add (element: RenderableElement) {
-    this.scene.add(element)
+    if (this.scene) {
+      this.scene.add(element)
+    }
   }
   setRenderTarget (renderTarget: RenderTarget) {
     if (!renderTarget) {
@@ -259,19 +266,29 @@ class GLWidget {
 
   }
   render(animation?: Function, camera?: Camera) {
-
+    let requestId
     let renderFrame = () => {  
-      
+      if (this.stopped) {
+        cancelAnimationFrame(requestId)
+        return
+      }
       // animate
       if(animation) {
         animation()
       }
       this.renderFrame(camera)
-      requestAnimationFrame(renderFrame)
+      requestId = requestAnimationFrame(renderFrame)
+      
     }
     renderFrame()
     // TODO remove
     // this.setupMouse()
+  }
+  dispose() {  
+    this.stopped = true
+    this.opaqueList = []
+    this.transparentList = [] 
+    this.scene = null
   }
 }
 
