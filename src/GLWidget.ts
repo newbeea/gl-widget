@@ -199,11 +199,16 @@ class GLWidget {
     this.canvas.style.height = height + 'px';
 
 
-		// this.setViewport( 0, 0, width, height );
+		this.setViewport( 0, 0, this.canvas.width, this.canvas.height );
 
-	}
+  }
+  setViewport(x, y, width, height) {
+    if(this.gl) {
+      this.gl.viewport(x, y, width, height)
+    }
+  }
   getSize(): Vector2 {
-    return new Vector2(this.width, this.height)
+    return new Vector2(this.canvas.width, this.canvas.height)
   }
 
   setCamera() {
