@@ -11,6 +11,10 @@
 
 所以我就想写一款内核极简，又能快速完成搭建shader运行环境的引擎，可以使开发人员专注于shader效果的编写，或是直接移植shadertoy上惊艳的效果。同时，在架构上注重扩展性，通过编写插件，可以扩展成功能更全的引擎。
 
+## 用例
+图片滤镜  [vue-awesome-image filter](https://as-image.vercel.app/webgl-filter)
+
+轮播图过渡  [@vue-awesome-image/image-group](https://as-image.vercel.app/image-group)
 ## 安装
 ### npm
 ```bash
